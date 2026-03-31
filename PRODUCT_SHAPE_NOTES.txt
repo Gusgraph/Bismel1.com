@@ -1,0 +1,23 @@
+Initial product-shape placeholder structure expanded
+
+Scope:
+- app section/settings helpers
+- broker provider placeholder structure
+- api key status placeholder structure
+- broker/license/system page data helpers
+- broker/license/system placeholder partials
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only product structure
+Current product direction:
+- /dashboard is the operator landing area
+- /account owns user, membership, and workspace profile state
+- /broker owns broker connectivity and Alpaca-facing credentials
+- /strategy owns strategy definitions and runtime intent
+- /automation owns in-house automation state and execution readiness
+- /billing owns subscriptions, invoices, and commercial access

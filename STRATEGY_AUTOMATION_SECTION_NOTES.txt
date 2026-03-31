@@ -1,0 +1,12 @@
+Strategy and automation section pass completed
+
+Scope:
+- strategy customer section added
+- automation customer section added
+- customer navigation and page structure aligned to in-house automation control-room flow
+
+Rules followed:
+- no execution engine added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

@@ -1,0 +1,86 @@
+Initial application structure placeholders created for:
+- customer requests
+- admin requests
+- policy layer
+- billing services
+- broker services
+- license services
+- dashboard service
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth logic finalized
+- no external integrations called
+- placeholder service and policy structure only
+Initial dashboard action classes added and dashboard service lightly composed around them
+Navigation helpers and shared page data helpers added for customer and admin placeholder areas
+Initial enum and shared label structure added for placeholder domain status and page section consistency
+Dashboard section and stat helpers added for cleaner customer and admin placeholder composition
+Placeholder account role and access map helpers added for cleaner customer/admin area organization
+Placeholder broker provider, API key status, and system settings helpers added for clearer product-shaped page structure
+Customer billing, account, broker, and license placeholder detail helpers added for a more complete product shell
+Admin account management, system health, and audit placeholder helpers added for a more complete admin control shell
+Admin license inventory and audit visibility helpers added for a more complete admin oversight shell
+Customer onboarding, broker credential, subscription, and invoice placeholder helpers added for a more complete SaaS flow shell
+Customer settings, team membership, and admin account-detail placeholder helpers added for a more complete multi-tenant SaaS shell
+Initial shared placeholder UI kit layer added to reduce repeated Blade page structure
+Initial placeholder request validation and form-flow structure added for settings, broker credentials, and system settings
+Initial placeholder notification and notice helpers added for cleaner shared product messaging patterns
+Initial placeholder reporting and analytics helpers added for cleaner overview and report-style product pages
+A full low-risk structure sanity pass was completed across routes, controllers, views, helpers, and placeholder composition
+A shared app-shell layer was added for breadcrumbs, section navigation, and cleaner placeholder page flow
+Initial safe feature-test coverage was added for route and placeholder page reachability across public, customer, and admin areas
+An implementation-readiness mapping pass was completed to connect the placeholder shell to the existing model and migration design
+A focused local DB enablement pass was completed to unblock real implementation against the existing migration design
+The first real local migration pass was completed to move the project from placeholder shell into DB-backed implementation readiness
+The first DB-backed implementation pass connected customer account and billing pages to the existing Eloquent and migration layer
+The second DB-backed implementation pass connected customer broker and license pages to the existing Eloquent and migration layer
+A minimal shared responsive UI layer was added to improve mobile layout behavior without redesigning the current app shell
+The first real access implementation pass replaced placeholder access assumptions with a more structured local-dev user and account access layer
+The first DB-backed admin implementation pass connected core admin pages to the existing Eloquent and migration layer
+The first real write/update pass was attempted for customer settings and admin system flows using only narrow safe DB-backed persistence where the current schema allowed it
+A minimal dedicated system settings persistence layer was added to resolve the admin system update schema gap cleanly
+The first real broker credential write flow was added using narrow DB-backed persistence and native encrypted-at-rest handling
+The first real license/API key write flow was added using narrow DB-backed persistence and safe masked display patterns
+DB-backed flow tests were expanded to cover the first real read/write implementation layers and masked sensitive-value behavior
+The onboarding and reports areas were advanced from placeholder-only summaries to narrow DB-backed real summary reads
+The customer and admin dashboards were advanced to narrow DB-backed real summary reads using the existing model and migration layer
+A customer account-scoping pass reduced broad local-dev record selection assumptions and aligned DB-backed customer flows more closely to the current user/account path
+An admin account-detail scoping pass reduced loose selection assumptions and aligned admin detail flows more cleanly to a route-driven account path
+A billing and invoice detail pass aligned customer billing flows more closely to real subscription, plan, and invoice records through the current account path
+An audit detail pass aligned the admin audit area more closely to real audit and activity records with safer readable display
+A license detail pass aligned the admin license area more closely to real API license and API key records with safer readable display
+A broker detail visibility pass aligned existing admin pages more closely to real broker connection and broker credential state with safer readable display
+A system detail visibility pass aligned the admin system area more closely to real persisted system settings and platform-state records with safer readable display
+A customer detail visibility pass aligned the customer account and settings areas more closely to real current-user/current-account and persisted settings data
+An admin reports detail pass aligned the admin reports area more closely to real DB-backed platform summary records with safer readable display
+A customer reports detail pass aligned the customer reports area more closely to real current-account DB-backed summary records with safer readable display
+A customer onboarding detail pass aligned the onboarding area more closely to real current-account readiness records with safer readable display
+A customer license detail pass aligned the customer license area more closely to real current-account license and API key records with safer readable display
+A customer broker detail pass aligned the customer broker area more closely to real current-account broker connection and credential records with safer readable display
+A customer invoice detail pass aligned the customer invoices area more closely to real current-account invoice records with safer readable display
+A customer billing detail pass aligned the customer billing area more closely to real current-account subscription and plan records with safer readable display
+An admin dashboard detail pass aligned the admin dashboard more closely to real platform records with safer readable display
+A low-risk summary refactor pass reduced repeated current-account and platform-summary logic while preserving behavior
+A low-risk query-shaping refactor pass reduced repeated account and platform data-loading logic while preserving behavior
+A low-risk masking refactor pass reduced repeated secret-adjacent safe-display logic while preserving behavior
+A customer dashboard detail pass aligned the customer dashboard more closely to real current-account records with safer readable display
+A first real native session login/logout flow was added so protected customer and admin areas no longer depend on missing auth routes
+A Firestore integration foundation pass prepared the app for read-first bot/executor data bridging while cleaning remaining low-risk placeholder content
+The minimum Firestore package and config layer was added so the app can proceed toward read-first bot/executor data bridging
+The app direction was refactored from TradingView/webhook execution assumptions toward a fully in-house automation architecture centered on Laravel control, Python strategy services, Alpaca execution, and relational data ownership
+Strategy and automation sections were added to align the customer control room with the in-house automation product direction
+The relational schema direction was expanded to support Alpaca-first in-house automation with strategy, automation, watchlists, signals, and bot runs
+The broker section was aligned to Alpaca-first account connection management for the in-house automation product direction
+The strategy section was advanced to a DB-backed current-account configuration flow for in-house automation
+The automation section was advanced to a DB-backed current-account configuration flow for in-house AI automation control
+The relational visibility layer was prepared for signals, bot runs, and AI activity to support the in-house automation control-room UX
+Firestore integration was refined to a runtime-support role while relational storage remained the primary source of truth for product and trading records
+The app schema and broker layer were prepared for Alpaca-first internal automation with relational data ownership and safe credential handling
+The first real Alpaca account read/sync path was added so broker connectivity and account readiness can be verified inside the product
+The app structure was aligned for multiple linked Alpaca accounts per customer and for the current Stripe package lineup of base plans and add-ons
+The billing layer was advanced to real Stripe Checkout, webhook-confirmed subscription handling, and affiliate/referral attribution for the current package lineup
+The billing layer was advanced to real Stripe Checkout, webhook-confirmed subscription handling, affiliate/referral attribution, and affiliate discount pricing for the current package lineup
+The broker integration was expanded to include real Alpaca positions and orders sync so the product can build toward internal automation on relational broker state
+The broker integration was expanded to include real Alpaca market-data bars fetch for IEX 1H and 4H timeframes to support later internal strategy execution

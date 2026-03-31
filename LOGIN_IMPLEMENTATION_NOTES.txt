@@ -1,0 +1,13 @@
+First real login/logout implementation pass completed
+
+Scope:
+- login page and session login flow added
+- logout flow added
+- protected routes now redirect through a real login path
+- auth tests expanded for login, logout, and protected-route behavior
+
+Rules followed:
+- no third-party auth packages installed
+- no broad auth suite added
+- no deployment/server config changes
+- no unrelated product expansion in this pass

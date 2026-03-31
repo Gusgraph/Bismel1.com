@@ -1,0 +1,12 @@
+Firestore runtime-role pass completed
+
+Scope:
+- Firestore integration was refined as a runtime/live-state support layer
+- relational DB ownership remained primary for product and trading records
+- read-first Firestore behavior preserved
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no product logic redesign
+- no unrelated product expansion in this pass

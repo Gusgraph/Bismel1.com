@@ -1,0 +1,12 @@
+Low-risk masking and safe-display refactor pass completed
+
+Scope:
+- obvious repeated masked-display and safe-display formatting patterns were reduced where safely possible
+- behavior was preserved while narrowing duplicated safe-display code paths
+- no broad architecture or UI rewrite was performed
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

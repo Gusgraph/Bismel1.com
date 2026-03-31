@@ -1,0 +1,14 @@
+Initial navigation and shared page data structure created
+
+Scope:
+- customer navigation structure
+- admin navigation structure
+- shared page data helpers
+- controllers passing cleaner placeholder view data
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no deployment/server config changes
+- placeholder-only shared UI structure

@@ -1,0 +1,30 @@
+Firestore users shortlist
+Database: bismel1
+Collection: /users
+
+Candidate 1
+- id: u_b4wzt9OvKjJVZGQk
+- source: stripe
+- is_active: true
+- active_reason: subscription_active
+- created_at: 2026-03-25T20:54:32.708Z
+- updated_at: 2026-03-25T20:54:32.708Z
+
+Candidate 2
+- id: u_qDDOHGXOrqHC15m0
+- source: stripe
+- is_active: false
+- active_reason: subscription_deleted_test
+- created_at: 2026-03-02T02:12:53.109Z
+- updated_at: 2026-03-02T04:14:16.366Z
+
+Candidate 3
+- id: u_t-Yj9WRy3mSph7Am
+- source: stripe
+- is_active: true
+- active_reason: checkout_completed_test
+- created_at: 2026-03-02T04:44:08.373Z
+- updated_at: 2026-03-03T03:48:41.365Z
+
+Obvious Laravel user match
+- none from the safe metadata currently visible

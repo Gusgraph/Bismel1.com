@@ -1,0 +1,15 @@
+Initial mobile responsive pass completed
+
+Scope:
+- viewport and layout responsiveness reviewed
+- shared UI partial responsiveness improved
+- navigation wrapping improved
+- card/list/form behavior improved for small screens
+- minimal shared responsive styling added only where needed
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no deployment/server config changes
+- no product-area expansion in this pass

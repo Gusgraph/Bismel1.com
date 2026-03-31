@@ -1,0 +1,13 @@
+MySQL primary database migration pass completed
+
+Scope:
+- Laravel was moved from sqlite to MySQL
+- MySQL became the single primary application database
+- schema and runtime write paths were validated against MySQL
+- sqlite was removed from the active runtime path
+
+Rules followed:
+- no DNS/BIND/SSL changes
+- no unrelated domain changes
+- no Firestore writes added
+- no broad product refactor in this pass

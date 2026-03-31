@@ -1,0 +1,12 @@
+Customer broker detail pass completed
+
+Scope:
+- customer broker page now shows cleaner real current-account broker connection and credential detail
+- defensive empty-state handling retained for missing broker data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

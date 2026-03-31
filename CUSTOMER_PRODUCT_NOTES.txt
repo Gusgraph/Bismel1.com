@@ -1,0 +1,17 @@
+Initial customer product placeholder structure expanded
+
+Scope:
+- billing plan catalog placeholder structure
+- account page data helper
+- billing page data helper
+- broker connection detail placeholder structure
+- license detail placeholder structure
+- customer page partial expansion
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only product structure

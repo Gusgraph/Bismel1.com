@@ -1,0 +1,17 @@
+Initial database readiness review completed
+
+Scope:
+- reviewed .env
+- reviewed database config
+- reviewed migrations
+- reviewed models
+- checked migration readiness without executing migrations
+- added minimal factory/seeder preparation only if practical
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no seeders executed
+- no auth scaffolding
+- no deployment/server config changes
+Local MySQL readiness probe completed without destructive changes

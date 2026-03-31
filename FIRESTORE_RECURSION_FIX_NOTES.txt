@@ -1,0 +1,13 @@
+Firestore recursion-fix pass completed
+
+Scope:
+- exact recursion path identified
+- smallest direct recursion fix applied
+- read-only /users/{uid} bridge retried
+- small Firestore-backed dashboard summary retried
+
+Rules followed:
+- no Firestore writes added
+- no product logic redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

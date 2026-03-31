@@ -1,0 +1,34 @@
+Final inspection report
+
+Overall state:
+- The app is MVP-consistent and currently stable for its built customer/admin read and write flows, with green tests, coherent empty states, deterministic local fixtures, and no obvious raw secret exposure in the current surfaced pages.
+
+What is solid:
+- Route, controller, and Blade wiring is aligned across the built customer and admin surfaces.
+- Current-account customer reads are consistently resolved through the shared account resolver rather than obvious global first-record reads.
+- Secret-adjacent customer/admin pages render masked summaries and sanitized flash/detail text instead of raw token or credential values.
+- Empty-state handling is broadly consistent and defensive across the DB-backed pages.
+- Local seed data is now deterministic and minimal for repeatable demo/testing resets.
+- Feature coverage is organized cleanly by surface area and currently passes end to end.
+
+What still needs work:
+- Local/testing area middleware still intentionally allows any authenticated local user through admin and customer routes before the normal access checks, which is a real safety weakness even if it matches the current local-dev contract.
+- Several older placeholder-oriented support/domain classes remain in the tree and are now secondary to the newer ViewData/DB-backed path, so there is still some stale logic and naming drift.
+- A number of migrations and older test/support files still do not use the newer header-comment convention because they predate this pass.
+- Route listing now includes framework vendor routes like `storage/*` and `up`, so project-specific route verification may still prefer the `--except-vendor` variant for day-to-day review.
+- The public `home` and `welcome` surfaces still read more like lightweight shells than polished product pages.
+
+MVP blockers:
+- none
+
+Recommended next steps:
+1. Tighten local/testing middleware authorization so admin/customer route access is not broadly bypassed for any authenticated local user.
+2. Retire or consolidate remaining placeholder-only support/domain classes that are no longer part of the live ViewData-driven surface.
+3. Normalize the required header-comment block across older PHP files during future touch points, especially tests and migrations.
+4. Add one focused feature test around local area authorization behavior once the intended policy is finalized.
+5. Give the public non-auth shell pages a final polish pass so they match the quality of the DB-backed customer/admin areas.
+
+Rules followed:
+- no broad rewrite performed
+- no new product areas added
+- final inspection focused on real current app quality

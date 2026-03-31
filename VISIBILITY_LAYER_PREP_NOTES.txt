@@ -1,0 +1,11 @@
+Visibility layer preparation pass completed
+
+Scope:
+- relational structures for signals, bot runs, and activity visibility were prepared for dashboard/control-room use
+- internal automation UX direction preserved
+
+Rules followed:
+- no execution engine added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

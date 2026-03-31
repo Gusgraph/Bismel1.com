@@ -1,0 +1,24 @@
+Execution allowed paths
+- only risk-approved `open`, `add`, and `close` signals can reach broker submission
+- automation must be AI-enabled, execution-enabled, and armed
+- broker account must be active, paper, and ready with trade-capable credentials
+
+Order status transitions
+- accepted broker requests are stored locally as `submitted`
+- broker refusals are stored locally as `rejected`
+- transport or API failures are stored locally as `failed`
+- blocked preflight cases are stored as `skipped` in bot-run and activity summaries
+
+Failure/rejection handling
+- duplicate execution attempts for the same signal are blocked
+- missing trade access, missing readiness, or non-paper posture cause safe skips
+- failed broker requests persist safe request intent and broker-safe summary without secrets
+
+Safe user-visible execution summaries
+- submitted: broker action request was submitted with safe execution handling
+- rejected/failed: broker action failed or was rejected with safe execution handling
+- skipped: execution skipped because readiness or automation rules were not satisfied
+
+Hidden strategy handling
+- no Pine logic, Python strategy details, or exact thresholds are exposed
+- signal payload remains summary-only outside restricted internal state

@@ -1,0 +1,12 @@
+Admin license and API key detail pass completed
+
+Scope:
+- admin licenses page now shows cleaner real API license and API key records through DB-backed reads
+- defensive empty-state handling retained for missing license/key data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

@@ -1,0 +1,13 @@
+Firestore uid mapping pass completed
+
+Scope:
+- explicit firestore_uid support added to Laravel users
+- Firestore bridge switched from email-based lookup to explicit uid-based lookup
+- not_mapped and not_found states are handled cleanly
+- Firestore dashboard summary retried only when a real uid mapping is available
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no product logic redesign
+- no unrelated product expansion in this pass

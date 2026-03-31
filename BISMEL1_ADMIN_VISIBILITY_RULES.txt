@@ -1,0 +1,16 @@
+Admin-safe runtime summaries
+- show active, stopped, blocked, broker ready, waiting for next bar close, and recent run completed using safe wording only
+- keep execution, risk, and reconciliation outcomes summary-first and operational
+
+Blocked vs ready categories
+- ready requires active Bismel1 mapping, usable broker account state, and approved market-data posture
+- blocked categories stay high level: strategy mapping missing, broker connection missing, credential missing, account unready, sync stale, or market data unavailable
+
+Execution, risk, and reconciliation wording
+- execution summaries describe submitted, skipped, failed, or reviewed outcomes without raw broker payloads
+- risk summaries describe safe block reasons without thresholds or formulas
+- reconciliation and position-manager summaries describe hold, add, close, or reconcile outcomes without internal logic detail
+
+Hidden strategy handling
+- no raw Pine logic, Python logic, formulas, or exact thresholds appear in admin visibility
+- default to safe summaries, counts, timestamps, and operational categories

@@ -1,0 +1,15 @@
+First DB-backed admin implementation pass completed
+
+Scope:
+- admin accounts page moved from placeholder-only to DB-backed read flow
+- admin account-detail page moved from placeholder-only to DB-backed read flow
+- admin licenses page moved from placeholder-only to DB-backed read flow
+- admin audit page moved from placeholder-only to DB-backed read flow
+- defensive empty-state handling retained
+- minimal local seed data added only if needed for safe local exercise
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

@@ -1,0 +1,14 @@
+Sidebar redesign pass completed
+
+Scope:
+- sidebar visual system cleaned up
+- nested card feeling reduced
+- nav grouping improved through spacing and alignment
+- active state and utility area refined
+- current routes and shell behavior preserved
+
+Rules followed:
+- no packages installed
+- no product logic redesign
+- no deployment/server config changes
+- sidebar-only visual pass

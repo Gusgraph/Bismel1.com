@@ -1,0 +1,22 @@
+Initial migration set created for:
+- accounts
+- account_user
+- subscription_plans
+- subscriptions
+- invoices
+- broker_connections
+- broker_credentials
+- api_licenses
+- api_keys
+- audit_logs
+- activity_logs
+
+Rules followed:
+- no packages installed
+- no migrations executed yet
+- practical first-pass schema only
+- account membership model retained
+- single users table retained
+- secrets stored in fields intended for encryption later
+
+First-pass migration review completed

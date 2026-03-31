@@ -1,0 +1,13 @@
+Forms and settings UX polish pass completed
+
+Scope:
+- customer settings flow polished
+- customer broker flow polished
+- customer license flow polished where applicable
+- admin system settings flow polished
+- shared form spacing, hierarchy, validation, and action treatment improved
+
+Rules followed:
+- no product logic redesign
+- no deployment/server config changes
+- forms/settings-only visual/UX pass

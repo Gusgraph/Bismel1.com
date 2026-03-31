@@ -1,0 +1,13 @@
+First real license/API key write flow completed
+
+Scope:
+- narrow DB-backed license/API key create/store flow added
+- sensitive key values use a native Laravel encrypted-at-rest approach where appropriate
+- license/key display remains masked and non-sensitive
+- no external provisioning or integration was added
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

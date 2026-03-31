@@ -1,0 +1,12 @@
+Firestore blocker analysis completed
+
+Scope:
+- Firestore env/config requirements identified
+- required service-account credential path format identified
+- required PHP grpc extension path identified
+
+Rules followed:
+- no fake credentials added
+- no Firestore writes added
+- no product logic redesign
+- blocker-analysis-only pass

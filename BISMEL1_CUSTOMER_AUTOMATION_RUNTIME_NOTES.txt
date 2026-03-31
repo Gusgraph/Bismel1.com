@@ -1,0 +1,13 @@
+Bismel1 customer automation runtime pass completed
+
+Scope:
+- customer automation page was advanced to a real runtime control surface
+- start/stop AI behavior is now reflected in relational runtime state
+- safe readiness, health, and last/next run visibility were added
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass
+- no broad realtime stream architecture added in this pass

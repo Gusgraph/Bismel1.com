@@ -1,0 +1,17 @@
+Customer page polish pass completed
+
+Scope:
+- account page polished
+- settings page polished
+- billing page polished
+- invoices page polished
+- broker page polished
+- license page polished
+- onboarding page polished
+- reports page polished
+- shared customer page rhythm and detail treatment improved
+
+Rules followed:
+- no product logic redesign
+- no deployment/server config changes
+- customer-page-only visual/UX pass

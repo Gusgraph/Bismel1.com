@@ -1,0 +1,14 @@
+Bismel1 public front page rewrite pass completed
+
+Scope:
+- public pre-login front page copy was rewritten in a real product voice
+- plans were separated onto their own dedicated page
+- public page no longer uses placeholder or meta explanation language
+- AI-markets landing direction was strengthened
+- Juha story section and market tape section were refined
+
+Rules followed:
+- no auth redesign
+- no billing redesign
+- no Firestore writes added
+- no unrelated product expansion in this pass

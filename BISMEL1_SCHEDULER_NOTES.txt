@@ -1,0 +1,13 @@
+Bismel1 scheduler trigger pass completed
+
+Scope:
+- scheduler trigger flow added for 1H and 4H bar-close operation
+- existing scanner flow was connected to scheduler-triggered runs
+- bot-run behavior was prepared for automatic internal operation
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

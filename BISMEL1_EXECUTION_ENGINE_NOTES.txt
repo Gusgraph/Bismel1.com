@@ -1,0 +1,14 @@
+Bismel1 execution engine pass completed
+
+Scope:
+- first live Alpaca execution layer added
+- risk-approved actions can now place real broker orders
+- relational order/execution state was updated cleanly
+- safe execution summaries were added
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass
+- no full position-manager loop added in this pass

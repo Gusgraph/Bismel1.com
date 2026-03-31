@@ -1,0 +1,18 @@
+Initial placeholder notification and alert structure created
+
+Scope:
+- customer alerts placeholder structure
+- admin alerts placeholder structure
+- system notices placeholder structure
+- shared status badge partial
+- shared notice list partial
+- customer/admin alert partials
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no persistence implemented
+- no deployment/server config changes
+- placeholder-only notification structure
+The placeholder notification layer is now treated as low-risk operator note copy rather than TradingView/webhook-style alert orchestration

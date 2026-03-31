@@ -1,0 +1,13 @@
+Bismel1 strategy indicator and evaluation pass completed
+
+Scope:
+- uploaded Pine strategy was used as the source of truth
+- indicator layer was implemented for the in-house Python engine
+- strategy evaluation layer was implemented for closed-candle decisioning
+- the system was prepared for later scanner execution and signal storage
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

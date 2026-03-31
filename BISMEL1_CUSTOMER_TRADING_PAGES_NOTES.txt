@@ -1,0 +1,14 @@
+Bismel1 customer trading pages pass completed
+
+Scope:
+- customer positions page added or completed
+- customer orders page added or completed
+- customer activity page added or completed
+- safe account-scoped visibility for automation outcomes was expanded
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass
+- no broad UI rewrite outside the customer trading pages

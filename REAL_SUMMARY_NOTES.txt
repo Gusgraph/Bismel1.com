@@ -1,0 +1,13 @@
+First real onboarding and reports summary pass completed
+
+Scope:
+- customer onboarding page moved from placeholder-only to DB-backed current-state summary
+- customer reports page moved from placeholder-only to DB-backed summary reads
+- admin reports page moved from placeholder-only to DB-backed summary reads
+- defensive empty-state handling retained
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

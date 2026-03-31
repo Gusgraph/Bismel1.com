@@ -1,0 +1,16 @@
+1H and 4H bar-close timing:
+- Trigger 1H runs only on closed hourly bars
+- Trigger 4H runs only on closed 4-hour bars aligned to UTC bar aggregation
+- Keep all scheduler decisions closed-candle only with no intrabar logic
+
+Dedupe expectations:
+- Do not create a second scheduler-triggered run for the same account, timeframe, and intended bar-close window when a running or completed bot-run already exists
+- Use scheduler-trigger metadata stored with the bot-run summary to identify duplicate bar-close windows
+
+Safe scheduler-triggered visibility:
+- Surface only last scheduler run, next intended run, run health, and safe summary wording
+- Keep scheduler visibility descriptive and operational rather than strategy-diagnostic
+
+Hidden strategy handling:
+- Do not expose raw Pine or raw Python strategy internals in scheduler summaries
+- Keep proprietary strategy state restricted to internal payloads and safe summary wording only

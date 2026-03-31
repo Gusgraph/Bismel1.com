@@ -1,0 +1,12 @@
+Low-risk query-shaping refactor pass completed
+
+Scope:
+- obvious repeated account/platform data-loading patterns were reduced where safely possible
+- behavior was preserved while narrowing duplicated query-shaping code paths
+- no broad architecture rewrite was performed
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

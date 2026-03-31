@@ -1,0 +1,55 @@
+Initial architecture structure created
+
+Domains:
+- Account
+- Admin
+- Billing
+- Broker
+- License
+- Dashboard
+- Audit
+
+Support:
+- app/Support
+
+HTTP:
+- app/Http/Controllers/Customer
+- app/Http/Controllers/Admin
+
+Planned first entities:
+- User
+- Account
+- AccountUser
+- SubscriptionPlan
+- Subscription
+- Invoice
+- BrokerConnection
+- BrokerCredential
+- ApiLicense
+- ApiKey
+- AuditLog
+- ActivityLog
+
+Planned first tables:
+- accounts
+- account_user
+- subscription_plans
+- subscriptions
+- invoices
+- broker_connections
+- broker_credentials
+- api_licenses
+- api_keys
+- audit_logs
+- activity_logs
+
+Rules:
+- single users table
+- account membership model
+- admin/customer separation at route/controller/policy level
+- secrets encrypted at rest
+- no packages installed yet
+- Laravel is the product control plane for dashboard, account, broker, strategy, automation, and billing surfaces
+- Python services are the strategy/runtime workers, while Alpaca remains the external broker execution boundary
+- relational data is the source of truth for product, trading, billing, and audit records
+- Firestore is reserved for optional live runtime and bot-state reads rather than ownership of core business records

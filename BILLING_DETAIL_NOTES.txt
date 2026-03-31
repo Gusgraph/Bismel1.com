@@ -1,0 +1,12 @@
+Billing and invoice detail pass completed
+
+Scope:
+- customer billing page now shows cleaner real subscription and plan detail through the current account path
+- customer invoices page now shows real invoice-oriented records through the current account path
+- defensive empty-state handling retained for missing subscription or invoice data
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

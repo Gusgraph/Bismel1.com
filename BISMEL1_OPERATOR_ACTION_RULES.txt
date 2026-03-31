@@ -1,0 +1,7 @@
+Bismel1 operator action rules
+
+- Allowed manual admin actions are limited to scanner, broker sync, reconciliation, readiness recheck, and pause or resume automation.
+- Pause and resume actions must update relational automation state and keep summaries safe for admin review.
+- Operator-triggered actions must respect confirmed subscription entitlements before protected runtime work runs.
+- Admin-facing summaries should use safe wording such as scanner triggered, broker sync completed, reconciliation completed, automation paused, automation resumed, or readiness check failed.
+- Hidden strategy handling remains mandatory: no raw Pine logic, no raw Python logic, and no exact strategy formulas or thresholds in operator views.

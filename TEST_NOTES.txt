@@ -1,0 +1,14 @@
+Initial placeholder feature test coverage added
+
+Scope:
+- safe route/page reachability tests for public area
+- safe route/page reachability tests for customer area
+- safe route/page reachability tests for admin area
+- no DB-dependent tests added
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no deployment/server config changes
+- placeholder-only safe test coverage

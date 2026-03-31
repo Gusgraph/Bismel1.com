@@ -1,0 +1,25 @@
+Hold/add/close/reconcile decisions
+- hold when a broker position exists and no risk-approved management action is needed
+- add when the strategy evaluation and risk layer allow a closed-candle add action
+- close when the strategy evaluation and risk layer allow a closed-candle close action
+- reconcile when broker position state is absent but recent local trading records still indicate prior open state
+
+Local vs broker reconciliation behavior
+- broker-synced position state remains primary for actual open-position existence
+- missing broker position with recent local order or signal state records a safe reconcile outcome
+- reconcile updates local summaries and linkage without exposing raw broker payloads
+
+Trailing protection summary wording
+- close outcomes are summarized as AI closed on trailing protection
+- hold outcomes are summarized as AI held position
+
+Safe user-visible/admin-visible summaries
+- AI added to position
+- AI held position
+- AI closed on trailing protection
+- AI reconciled broker state
+- AI skipped management action
+
+Hidden strategy handling
+- no raw Pine or Python formulas are exposed
+- proprietary strategy state remains restricted to internal payload storage only

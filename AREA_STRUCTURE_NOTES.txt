@@ -1,0 +1,20 @@
+Initial customer and admin area structure expanded
+
+Customer placeholder areas:
+- dashboard
+- account
+- billing
+- broker
+- license
+
+Admin placeholder areas:
+- dashboard
+- accounts
+- system
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- placeholder controllers and views only
+- no auth scaffolding finalized
+- no deployment/server config changes

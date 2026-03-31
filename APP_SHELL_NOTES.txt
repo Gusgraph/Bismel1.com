@@ -1,0 +1,16 @@
+Initial shared app shell polish pass completed
+
+Scope:
+- shared breadcrumbs partial
+- shared section navigation partial
+- shared page intro partial
+- customer section nav data helper
+- admin section nav data helper
+- placeholder page flow cleanup through shared shell patterns
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no deployment/server config changes
+- no new product areas added in this pass

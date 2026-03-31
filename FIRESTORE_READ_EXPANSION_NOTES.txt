@@ -1,0 +1,14 @@
+Firestore read expansion pass completed
+
+Scope:
+- explicit firestore_uid mapping path reused cleanly
+- Firestore read-first integration expanded beyond one-user proof
+- customer dashboard/onboarding/reports were updated where appropriate
+- small admin-facing Firestore summary signals were added only where low-risk and useful
+- clean unmapped/not_found/success states preserved
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

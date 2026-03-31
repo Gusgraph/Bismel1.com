@@ -1,0 +1,15 @@
+Git setup pass completed
+
+Scope:
+- repository initialized or verified
+- branch normalized to main
+- gitignore safety reviewed
+- first clean commit created
+- remote checked
+- push completed only if remote was already configured safely
+
+Rules followed:
+- no app code changes
+- no packages installed
+- no deployment/server config changes
+- no secrets intentionally committed

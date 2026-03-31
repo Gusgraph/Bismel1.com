@@ -1,0 +1,23 @@
+Front page vs plans page separation:
+- Keep the landing page focused on product identity, value, and tone.
+- Keep plan/package cards on the dedicated public plans page.
+
+No meta or placeholder copy:
+- Do not describe implementation details, pass state, or template intent on public pages.
+- Public copy should read like real product marketing, not internal notes.
+
+AI-markets tone:
+- Keep the tone premium, concise, market-facing, and operationally credible.
+- Emphasize AI markets, automation clarity, and trader workflow quality without hype.
+
+Juha section tone and length:
+- Keep the Juha moment brief, natural, and funny for one breath only.
+- It should add personality without turning the page into a joke.
+
+Market tape wording:
+- Present the tape as a strong market feature section.
+- Avoid explaining internal data wiring or placeholder mechanics in the public copy.
+
+Minimal guest navigation:
+- Keep only clear guest navigation for Login and Plans.
+- Do not reuse signed-in app chrome on public pages.

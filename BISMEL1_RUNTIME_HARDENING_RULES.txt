@@ -1,0 +1,8 @@
+Bismel1 runtime hardening rules
+
+- Paper/live safety: live broker order submission must stay blocked unless explicitly enabled by runtime guardrail config.
+- Startup and runtime guardrails: invalid broker config, missing active paper-ready broker state, and non-IEX runtime posture must fail with safe summaries.
+- Dedupe behavior: scheduler windows and broker orders must use stable dedupe markers so repeated runtime triggers skip safely.
+- Stale-state recovery: stale running scanner, execution, and position-manager runs should be closed safely before retry and recorded as recovery activity.
+- Operator-safe recovery visibility: recovery and blocked states should remain visible through safe summaries such as broker sync is stale and needs refresh or paper trading only: live broker environment blocked.
+- Hidden strategy handling remains mandatory: no raw Pine logic, no raw Python logic, and no exact thresholds or formulas in customer or admin visibility.

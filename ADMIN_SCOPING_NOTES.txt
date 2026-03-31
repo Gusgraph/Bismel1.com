@@ -1,0 +1,12 @@
+Admin account-detail scoping pass completed
+
+Scope:
+- admin account-detail pages now resolve through a cleaner route parameter / bound account path
+- loose admin detail selection assumptions were reduced where safely possible
+- defensive handling retained for missing account-linked data
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

@@ -1,0 +1,23 @@
+Base plan grouping:
+- Keep all core Bismel1 packages together in the base-plan section.
+- Show affiliate-aware display pricing only on eligible base plans.
+
+Add-on grouping:
+- Keep add-ons in a separate section.
+- State clearly that add-ons require a base plan and stay on standard pricing.
+
+Testing plan placement:
+- Keep Speed Executor separate from the main production catalog.
+- Mark it clearly as a demo or testing plan.
+
+Payment link wiring rules:
+- Use the existing billing entry path for plans that already have mapped Stripe prices.
+- Do not invent a purchase link when the Stripe value is missing.
+
+No placeholder or meta copy:
+- Keep all public copy concise, product-facing, and polished.
+- Do not show implementation notes on the public page.
+
+Affiliate base-plan pricing only:
+- Affiliate display pricing applies only to eligible base plans.
+- Add-ons remain standard priced.

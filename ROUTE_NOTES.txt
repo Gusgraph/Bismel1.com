@@ -1,0 +1,15 @@
+Initial route structure created for:
+- public area
+- customer area
+- admin area
+
+Rules followed:
+- placeholder routes only
+- no auth scaffolding yet
+- no packages installed
+- no migrations executed
+Placeholder controllers created and connected to initial web routes
+Customer and admin routes split into dedicated route files with placeholder middleware
+Customer and admin route structure expanded with named placeholder pages for core product areas
+Customer and admin route structure expanded with named placeholder pages for core product areas
+Current direction keeps the existing customer/admin route split while aligning page responsibilities around dashboard, account, broker, strategy, automation, and billing concerns

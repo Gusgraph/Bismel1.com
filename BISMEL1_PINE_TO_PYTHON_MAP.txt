@@ -1,0 +1,17 @@
+Pine concept | Python equivalent | status
+Source-of-truth Pine file load | Repo-root copy of Trobot - Stocks-Swing-4.pine was used because /mnt/data was not writable in this environment | partial
+Normalized OHLCV input | python.bismel1_engine.models.NormalizedBar aligned to AlpacaBar-style closed-candle inputs | completed
+HTF EMA fast / EMA slow | python.bismel1_engine.strategy.build_indicator_history daily EMA alignment | completed
+HTF trend / regime checks | trend_base_htf, trend_ok, regime_fail, auto-paused state in strategy evaluator | completed
+HTF EMA200 slope requirement | require_ema_slow_slope_up and ema_slow_slope_lookback in config and evaluator | completed
+Execution-timeframe RSI | Wilder RSI in python.bismel1_engine.indicators.rsi | completed
+Execution-timeframe ATR | Wilder ATR in python.bismel1_engine.indicators.atr | completed
+Pullback depth logic | swing high/low range and pullback depth calculation in indicator history | completed
+Reclaim confirmation logic | Fast Reclaim and RSI Crossover modes in indicator history | completed
+Session / weekday filters | Exchange-time overlap check implemented; exact TradingView session semantics remain approximate | partial
+Closed-candle-only evaluation | Final-bar-only evaluator with no intrabar assumptions | completed
+Base entry candidate | base_entry_candidate in evaluate_bismel1_strategy | completed
+Recovery / add candidate | recovery_add_candidate with ATR spacing, drawdown, and basket-cap gates | completed
+Exit candidate | ATR trail and optional regime-fail exit logic in evaluator | completed
+Regime-fail / pause state | regime_fail_pause action plus pause_new_basket and pause_adds flags | completed
+Skip / no-action result | skip_no_action action when no closed-candle trigger fires | completed

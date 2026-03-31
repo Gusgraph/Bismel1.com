@@ -1,0 +1,14 @@
+Local auth users created
+
+Admin user:
+- email: admin.local@gusgraph.test
+- password: local-admin-password
+
+Customer user:
+- email: customer.local@gusgraph.test
+- password: local-customer-password
+
+Rules followed:
+- local development users only
+- deterministic seed data
+- no unrelated product expansion

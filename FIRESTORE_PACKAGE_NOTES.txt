@@ -1,0 +1,12 @@
+Firestore package/install pass completed
+
+Scope:
+- minimum required PHP Firestore dependency installed
+- Firestore config/env wiring completed
+- read-first service foundation verified as far as current credentials allow
+
+Rules followed:
+- no broad Firestore writes added
+- no product logic redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

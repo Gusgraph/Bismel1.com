@@ -1,0 +1,13 @@
+Bismel1 risk engine pass completed
+
+Scope:
+- risk engine layer added
+- scanner decisions now pass through practical account and automation guardrails
+- safe block/allow summaries were added
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

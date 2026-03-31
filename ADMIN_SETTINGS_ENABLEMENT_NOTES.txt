@@ -1,0 +1,13 @@
+Admin system settings schema gap resolved
+
+Scope:
+- added a minimal dedicated system settings table
+- added a minimal model only if needed
+- completed the admin system update flow with narrow safe persistence
+- kept scope limited to runtime_mode, review_channel, and status_level
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

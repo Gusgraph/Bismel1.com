@@ -1,0 +1,12 @@
+UI repair pass completed
+
+Scope:
+- investigated Phase 9 visual break
+- restored shared layout/form styling behavior
+- preserved earlier shell and dashboard polish where possible
+
+Rules followed:
+- no product logic redesign
+- no new product areas
+- no deployment/server config changes
+- repair-only pass

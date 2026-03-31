@@ -1,0 +1,43 @@
+Implementation readiness map
+
+Current implemented shell:
+- public, customer, and admin route groups are in place with named GET pages and placeholder middleware pass-through
+- each visible customer/admin page already maps to a dedicated controller and Blade view with shared shell partials
+- controllers currently compose placeholder page data from support/view-data classes rather than querying models
+- edit/update placeholder flows exist for customer settings, broker credential intake, and admin system settings through request classes only
+- safe feature tests already verify reachability for the current public, customer, and admin shell
+
+Existing data layer already designed:
+- users, sessions, cache, and jobs baseline migrations exist
+- multi-tenant account structure exists through accounts plus account_user membership pivot and matching Account/User relationships
+- billing tables and models exist for subscription_plans, subscriptions, and invoices with basic status/date/amount fields
+- broker tables and models exist for broker_connections and broker_credentials with account linkage and placeholder credential payload storage
+- license tables and models exist for api_licenses and api_keys with account/license linkage, expiry fields, and status columns
+- audit and activity log tables and models exist with account/user linkage and JSON context fields
+
+Main blockers before real implementation:
+- auth and access control: no real login, guards, policies, account scoping, admin authorization, or current-account resolution is wired
+- account membership / tenancy: no membership service, invitation flow, tenant switcher, owner enforcement, or pivot-role/status enforcement is active
+- billing and subscriptions: billing pages are not connected to SubscriptionPlan, Subscription, or Invoice queries and no payment/provider lifecycle exists
+- broker connections and credentials: broker pages and requests do not create BrokerConnection or BrokerCredential records, and credential encryption/rotation/use policy is not implemented
+- license / API key management: admin/customer license pages do not read ApiLicense or ApiKey models, and issuance/hash generation/revocation flows are missing
+- audit / logs / reporting: reporting pages use static summaries only, there is no event writer strategy, no report query layer, and no real aggregation pipeline
+- settings / onboarding / customer flows: settings, onboarding, alerts, notices, and checklists are placeholder-only with no persisted customer preferences or progress model
+- database readiness blockers: migrations exist but have not been exercised together, default users migration lacks account-facing auth extensions, and some critical secrets/auth data contracts are still undecided
+
+Recommended next build order:
+1. Implement real authentication, current-user/current-account resolution, and admin/customer access policies without expanding product scope.
+2. Wire account membership and tenancy reads first: account selection, membership listing, owner rules, and account-scoped query boundaries.
+3. Connect customer account, settings, admin accounts, and admin account-detail pages to Account, User, and account_user-backed read models.
+4. Connect billing, invoice, broker, and license pages to SubscriptionPlan, Subscription, Invoice, BrokerConnection, BrokerCredential, ApiLicense, and ApiKey reads with no write-side integrations yet.
+5. Add safe write paths for settings updates, broker connection/credential intake, and license or system administration using validated requests and audit logging.
+6. Build reporting, activity, onboarding progression, and operational summaries on top of real account-scoped audit/activity data after core auth and domain reads are stable.
+7. Introduce strategy and automation domain services so Laravel owns orchestration while Python handles strategy evaluation and runtime workers.
+8. Keep relational tables as the durable source of truth, with Firestore limited to optional runtime/live-state reads until a deliberate synchronization contract exists.
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no deployment/server config changes
+- no destructive changes made in this pass

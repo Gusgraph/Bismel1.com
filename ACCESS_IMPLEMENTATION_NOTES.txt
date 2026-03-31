@@ -1,0 +1,13 @@
+First real access implementation pass completed
+
+Scope:
+- replaced placeholder access assumptions with a more structured local-dev access layer
+- customer access now follows a cleaner user/account path
+- admin access now follows a cleaner structured rule for local development
+- no third-party auth packages added
+
+Rules followed:
+- no packages installed
+- no broad auth suite added
+- no deployment/server config changes
+- no unrelated product expansion in this pass

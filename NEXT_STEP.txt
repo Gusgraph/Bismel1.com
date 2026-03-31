@@ -1,0 +1,15 @@
+Next build step
+Create the initial Laravel product architecture for gusgraph-trading, but do not install packages yet.
+
+Target scope:
+- customer auth area
+- admin area
+- subscription/billing structure
+- tenant/account structure
+- broker connection structure
+- license/API key management structure
+- dashboard/logs structure
+
+Rule:
+Do not start implementation yet.
+Only prepare for the next architecture phase.

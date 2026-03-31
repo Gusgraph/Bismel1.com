@@ -1,0 +1,10 @@
+Initial middleware and route split created for:
+- customer area
+- admin area
+
+Rules followed:
+- placeholder middleware only
+- no auth logic yet
+- no packages installed
+- no migrations executed
+- route files split into public, customer, and admin structure

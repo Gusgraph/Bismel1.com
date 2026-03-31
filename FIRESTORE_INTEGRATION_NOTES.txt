@@ -1,0 +1,13 @@
+Firestore integration foundation pass completed
+
+Scope:
+- remaining low-risk placeholder content cleaned up where appropriate
+- Firestore integration foundation prepared
+- Laravel user/account to Firestore user mapping direction defined
+- read-first integration structure prepared for bot/executor data
+
+Rules followed:
+- no broad Firestore writes added
+- no product logic redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

@@ -1,0 +1,13 @@
+Alpaca schema and broker preparation pass completed
+
+Scope:
+- relational schema was prepared for Alpaca-first account connectivity
+- broker area was aligned to Alpaca-first configuration and readiness
+- credential handling remained masked and encrypted at rest
+- internal automation direction was preserved
+
+Rules followed:
+- no live execution engine added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

@@ -1,0 +1,14 @@
+Top bar redesign pass completed
+
+Scope:
+- top bar visual system cleaned up
+- card-like header feeling reduced
+- menu toggle integrated more naturally
+- auth/status area refined
+- current routes and shell behavior preserved
+
+Rules followed:
+- no packages installed
+- no product logic redesign
+- no deployment/server config changes
+- top-bar-only visual pass

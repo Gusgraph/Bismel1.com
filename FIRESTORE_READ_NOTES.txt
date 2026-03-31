@@ -1,0 +1,35 @@
+Firestore read retry notes
+Date: 2026-03-29 UTC
+
+Verification
+- `php -m | grep grpc` returned `grpc`.
+- Firestore credentials path is configured and readable:
+  `/home/gusgraphy/secrets/firestore-service-account.json`
+- `google/cloud-firestore` is present in `composer.json` and `composer.lock`.
+- Current Firestore env/config resolved in Laravel:
+  - `FIRESTORE_ENABLED=true`
+  - `FIRESTORE_PROJECT_ID=servgraph`
+  - `FIRESTORE_CREDENTIALS=/home/gusgraphy/secrets/firestore-service-account.json`
+  - `GOOGLE_APPLICATION_CREDENTIALS=/home/gusgraphy/secrets/firestore-service-account.json`
+- `php artisan about` shows config, routes, events, and views are not cached.
+
+Minimal Laravel user/account -> Firestore uid mapping
+- Selected Laravel user mapped successfully:
+  - `id=8`
+  - `email=admin.local@gusgraph.test`
+- Resolved current customer account:
+  - `id=7`
+  - `slug=local-admin-workspace`
+- Firestore mapping:
+  - uid: `admin.local@gusgraph.test`
+  - document path: `/users/admin.local@gusgraph.test`
+
+Read-only Firestore access attempt
+- Attempted read: `/users/admin.local@gusgraph.test`
+- Result: failed during the Firestore read call.
+- Exact blocker from the live Laravel bridge check:
+  `The database (default) does not exist for project servgraph.`
+
+Dashboard change
+- Not attempted.
+- Per instruction, stopped after the read failure and did not add any Firestore-backed dashboard summary.

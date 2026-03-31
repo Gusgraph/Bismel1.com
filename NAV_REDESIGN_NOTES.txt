@@ -1,0 +1,14 @@
+Navigation shell redesign pass completed
+
+Scope:
+- app shell moved to a sidebar-first navigation structure
+- desktop sidebar behavior improved
+- tablet/mobile menu toggle behavior added
+- top bar and content shell cleaned up
+- current routes and page structure preserved
+
+Rules followed:
+- no packages installed
+- no product logic redesign
+- no deployment/server config changes
+- navigation-first UI pass only

@@ -1,0 +1,12 @@
+Customer invoice detail pass completed
+
+Scope:
+- customer invoices page now shows cleaner real current-account invoice detail
+- defensive empty-state handling retained for missing invoice data
+- unrelated internal values remain excluded from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

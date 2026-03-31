@@ -1,0 +1,12 @@
+Audit and activity detail pass completed
+
+Scope:
+- admin audit page now shows cleaner real audit and activity records through DB-backed reads
+- defensive empty-state handling retained for missing audit/activity data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

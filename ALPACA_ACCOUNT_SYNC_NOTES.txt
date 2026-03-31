@@ -1,0 +1,13 @@
+Alpaca account sync pass completed
+
+Scope:
+- first real Alpaca account read path added
+- broker/account connection verification added
+- safe account readiness/sync state stored relationally
+- in-house automation direction preserved
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

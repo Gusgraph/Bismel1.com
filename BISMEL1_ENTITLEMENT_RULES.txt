@@ -1,0 +1,27 @@
+Base-plan capability mapping:
+- Bismel1 AI - Scanner (News catalyst): scanner access only
+- Bismel1 Bot - Overnight Equities: scanner plus stocks automation access
+- Bismel1 Bot - Options: scanner plus options access
+- Bismel1 Bot - Crypto: scanner plus crypto access
+- Bismel1 Stocks Bot - AI Prime: scanner plus stocks automation plus prime access
+- Bismel1 Stocks Bot - Execute: scanner plus stocks automation plus execute access
+
+Add-on capability mapping:
+- Bismel1 Bot - Custom Strategy: required before custom strategy runtime access is allowed
+- Bismel1 Bot - Additional Account: increases linked broker-account allowance when the base plan supports it
+- Speed Execute: only applies if the add-on is modeled and active
+
+Additional-account limit handling:
+- default linked broker-account allowance is 1
+- additional-account add-on quantity expands the allowance only for base plans that support extra accounts
+- attempts beyond the allowance are blocked with a safe summary
+
+Runtime blocked-state wording:
+- subscription inactive
+- plan does not include this automation mode
+- additional account limit reached
+- custom strategy add-on required
+
+Hidden strategy handling:
+- capability checks expose only safe product access summaries
+- no raw Pine logic, raw Python strategy logic, or exact thresholds are shown in customer or admin surfaces

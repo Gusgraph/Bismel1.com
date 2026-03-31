@@ -1,0 +1,15 @@
+Initial dashboard section and stat helper structure created
+
+Scope:
+- customer dashboard sections
+- admin dashboard sections
+- customer dashboard stats
+- admin dashboard stats
+- dashboard views updated to use reusable placeholder partials
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes

@@ -1,0 +1,13 @@
+gRPC install progress inspection completed
+
+Scope:
+- current PECL/grpc build state inspected
+- real blocker identified or build progress confirmed
+- grpc enablement status verified
+- Laravel Firestore readiness rechecked only if grpc became available
+
+Rules followed:
+- no Firestore writes added
+- no product logic redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

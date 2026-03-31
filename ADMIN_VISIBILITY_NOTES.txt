@@ -1,0 +1,18 @@
+Initial admin visibility placeholder structure expanded
+
+Scope:
+- API license inventory placeholder structure
+- API key inventory placeholder structure
+- audit log summary placeholder structure
+- activity log summary placeholder structure
+- admin license page data helper
+- admin audit page data helper
+- admin license and audit page expansion
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only admin visibility structure

@@ -1,0 +1,12 @@
+Low-risk summary logic refactor pass completed
+
+Scope:
+- obvious repeated current-account and platform-summary logic was reduced where safely possible
+- behavior was preserved while narrowing duplicated summary code paths
+- no broad architecture rewrite was performed
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

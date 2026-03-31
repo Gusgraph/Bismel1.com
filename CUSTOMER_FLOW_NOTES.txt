@@ -1,0 +1,18 @@
+Initial customer onboarding and billing-flow placeholder structure expanded
+
+Scope:
+- onboarding checklist placeholder structure
+- broker credential checklist placeholder structure
+- subscription summary placeholder structure
+- invoice summary placeholder structure
+- onboarding page data helper
+- invoice page data helper
+- onboarding and invoice page expansion
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only customer flow structure

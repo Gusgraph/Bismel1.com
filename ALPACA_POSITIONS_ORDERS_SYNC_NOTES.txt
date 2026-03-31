@@ -1,0 +1,13 @@
+Alpaca positions and orders sync pass completed
+
+Scope:
+- first real Alpaca positions sync added
+- first real Alpaca orders sync added
+- safe relational broker-state storage expanded
+- in-house automation direction preserved
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

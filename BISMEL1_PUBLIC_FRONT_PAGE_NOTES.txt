@@ -1,0 +1,15 @@
+Bismel1 public front page pass completed
+
+Scope:
+- public pre-login front page was redesigned
+- public page no longer uses the logged-in sidebar/topbar shell
+- small login and plans links were preserved
+- AI-markets visual direction was strengthened
+- a small Juha-style funny story section was added
+- a bottom market tape section was added or prepared
+
+Rules followed:
+- no auth redesign
+- no billing redesign
+- no Firestore writes added
+- no unrelated product expansion in this pass

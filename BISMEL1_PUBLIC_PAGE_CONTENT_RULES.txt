@@ -1,0 +1,19 @@
+Public vs logged-in shell separation:
+- The public pre-login front page must use a dedicated guest layout.
+- The customer and admin app shell must remain unchanged in this pass.
+
+AI-markets theme direction:
+- Keep the page premium, dark, focused, and clearly centered on AI markets and automation.
+- Use safe marketing language that does not expose proprietary strategy internals.
+
+Juha story tone/length:
+- Keep the Juha story short, tasteful, and light.
+- Let it add personality without overpowering the product message.
+
+Market tape section behavior:
+- The bottom tape should look live-style and market-oriented.
+- Use a safe placeholder or live-ready presentation path when real-time integration is not part of this pass.
+
+Minimal guest navigation:
+- Keep only clear public navigation for Login and Plans.
+- Do not reuse signed-in sidebar or topbar navigation on the public landing page.

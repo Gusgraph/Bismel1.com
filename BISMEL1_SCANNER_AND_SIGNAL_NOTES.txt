@@ -1,0 +1,14 @@
+Bismel1 scanner and signal storage pass completed
+
+Scope:
+- first small-symbol scanner flow added
+- strategy evaluation now produces relational signals and bot-run records
+- safe user-visible summaries were preserved
+- proprietary strategy internals remained hidden
+- system prepared for later scheduler and execution phases
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

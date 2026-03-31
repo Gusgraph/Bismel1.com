@@ -1,0 +1,17 @@
+Initial admin product placeholder structure expanded
+
+Scope:
+- account management summary placeholder structure
+- system health summary placeholder structure
+- audit overview placeholder structure
+- admin accounts page data helper
+- admin system page data helper
+- admin page partial expansion
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only admin structure

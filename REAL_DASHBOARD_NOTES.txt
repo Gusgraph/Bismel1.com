@@ -1,0 +1,12 @@
+First real dashboard summary pass completed
+
+Scope:
+- customer dashboard moved from mixed placeholder summaries to DB-backed summary reads
+- admin dashboard moved from mixed placeholder summaries to DB-backed summary reads
+- defensive empty-state handling retained
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

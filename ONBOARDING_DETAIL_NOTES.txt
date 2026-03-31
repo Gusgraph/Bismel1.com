@@ -1,0 +1,12 @@
+Customer onboarding detail pass completed
+
+Scope:
+- customer onboarding page now shows cleaner real current-account readiness detail
+- defensive empty-state handling retained for missing onboarding-linked data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

@@ -1,0 +1,12 @@
+Customer account and settings detail pass completed
+
+Scope:
+- customer account page now shows cleaner current-user/current-account detail through DB-backed reads
+- customer settings page now shows cleaner persisted settings/preferences detail through DB-backed reads
+- defensive empty-state handling retained for missing account/settings data
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

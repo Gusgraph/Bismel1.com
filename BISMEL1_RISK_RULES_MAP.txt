@@ -1,0 +1,31 @@
+Allow conditions
+- automation enabled and scanner enabled
+- automation status ready for internal operation
+- broker account active on IEX with synced account state
+- required bars/state present
+- supported action for current position state
+- no duplicate actionable signal for the same recent bar-close window
+
+Block conditions
+- automation disabled or not ready
+- broker/account state stale or unavailable
+- missing required bars/state
+- position already exists for open
+- position missing for add or close
+- unsupported action in current state
+- max positions guardrail reached when modeled
+
+Duplicate protection
+- duplicate actionable signals are blocked for the same account, symbol, timeframe, and recent bar-close window
+- blocked duplicate outcomes are downgraded to safe skip storage
+
+Position/account readiness checks
+- account equity and recent sync state must be present
+- broker feed must remain IEX for this phase
+- position-aware actions are validated against synced broker position state
+
+Safe summary wording
+- allow open/add: trend aligned, pullback detected, reclaim confirmed
+- allow close: AI exited on trailing protection
+- blocked due to guardrails: risk blocked
+- blocked due to missing setup/state: AI skipped setup

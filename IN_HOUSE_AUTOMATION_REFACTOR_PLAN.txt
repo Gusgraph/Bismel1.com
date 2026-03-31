@@ -1,0 +1,35 @@
+In-house automation refactor plan
+
+New product direction:
+- Move the product away from TradingView/webhook-triggered automation and toward a Laravel-controlled automation platform.
+- Keep the main customer journey centered on dashboard, account, broker, strategy, automation, and billing.
+- Treat automation as an in-house managed workflow with clear operator visibility instead of third-party alert ingestion.
+
+Laravel responsibilities:
+- Own the web product, account membership, billing, broker configuration, strategy management, automation control, and reporting surfaces.
+- Persist durable business records, execution history, audit records, and customer-facing state in the relational database.
+- Expose orchestration commands and read models for Python strategy workers without depending on webhook-first assumptions.
+
+Python responsibilities:
+- Run strategy evaluation, signal generation, automation runtime loops, and heavier quantitative processing.
+- Report runtime status back through controlled app-facing interfaces instead of becoming the primary product system of record.
+
+Alpaca responsibilities:
+- Remain the broker execution boundary for order routing, account connectivity, and brokerage-side position state.
+- Stay downstream of Laravel/Python orchestration rather than acting as the product control plane.
+
+Primary DB ownership:
+- The relational database is the source of truth for users, accounts, broker connections, subscriptions, strategy definitions, automation jobs, executions, reports, and audits.
+
+Firestore secondary/runtime role:
+- Firestore is optional and secondary.
+- Use it only for read-first live runtime state, bot linkage, and lightweight operational visibility where low latency helps.
+- Do not let Firestore become the owner of core product or commercial records.
+
+Recommended next build order:
+1. Normalize page and note language around dashboard, account, broker, strategy, automation, and billing.
+2. Add relational models and services for strategy definitions, automation jobs, runtime events, and executions.
+3. Tighten Laravel orchestration boundaries for starting, pausing, reviewing, and reporting on automation runs.
+4. Define the Python service contract for strategy evaluation and runtime worker callbacks.
+5. Add Alpaca execution adapters behind broker-domain services.
+6. Expand read-only Firestore runtime visibility only where it complements relational ownership cleanly.

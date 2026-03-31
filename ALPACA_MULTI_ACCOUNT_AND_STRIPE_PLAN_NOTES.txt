@@ -1,0 +1,14 @@
+Alpaca multi-account and Stripe package alignment pass completed
+
+Scope:
+- Alpaca account structure was aligned for multiple linked paper accounts per customer
+- billing/package structure was aligned to the current Stripe products provided by the user
+- base plans and add-ons were separated cleanly
+- internal automation product direction was preserved
+
+Rules followed:
+- no live execution engine added
+- no Firestore writes added
+- no auth redesign
+- no live Stripe checkout/webhook implementation added in this pass
+- no unrelated product expansion in this pass

@@ -1,0 +1,12 @@
+Firestore user mapping applied
+
+Scope:
+- one Laravel test user was mapped to one real Firestore user document id
+- read-only Firestore /users/{uid} access was retried
+- small customer dashboard Firestore summary was retried
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no product logic redesign
+- no unrelated product expansion in this pass

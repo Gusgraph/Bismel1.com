@@ -1,0 +1,12 @@
+Alpaca broker refactor pass completed
+
+Scope:
+- broker section aligned to Alpaca-first connection management
+- stale TradingView/webhook broker assumptions reduced
+- masked credential and account state treatment preserved
+
+Rules followed:
+- no execution engine added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

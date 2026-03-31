@@ -1,0 +1,13 @@
+Alpaca market-data bars pass completed
+
+Scope:
+- first real Alpaca bars-fetch path added
+- IEX-only market-data path prepared
+- 1H and 4H bar support prepared
+- internal automation direction preserved for later Bismel1 strategy conversion
+
+Rules followed:
+- no live execution added
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass

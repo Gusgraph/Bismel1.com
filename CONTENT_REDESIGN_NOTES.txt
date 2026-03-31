@@ -1,0 +1,13 @@
+Main content redesign pass completed
+
+Scope:
+- card-overuse in content areas reduced
+- dashboard and content section grouping improved
+- spacing-based hierarchy strengthened
+- current routes and shell behavior preserved
+
+Rules followed:
+- no packages installed
+- no product logic redesign
+- no deployment/server config changes
+- content-only visual pass

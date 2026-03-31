@@ -1,0 +1,18 @@
+Admin page polish pass completed
+
+Scope:
+- accounts page polished
+- account detail page polished
+- licenses page polished
+- audit page polished
+- system page polished
+- reports page polished
+- shared admin page rhythm and detail treatment improved
+- sidebar scrollbar refined
+- sidebar open/close control improved
+- top bar card-like feel reduced further
+
+Rules followed:
+- no product logic redesign
+- no deployment/server config changes
+- admin-page and shell-detail visual/UX pass

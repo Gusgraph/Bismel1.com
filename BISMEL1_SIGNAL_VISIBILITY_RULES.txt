@@ -1,0 +1,14 @@
+Internal-only strategy details:
+- Keep internal strategy state only inside relational JSON payloads not rendered in customer-facing pages
+- Do not expose raw Pine logic, raw Python logic, exact thresholds, or formula wording
+- Internal payloads may hold action flags, timestamps, and restricted strategy state for later operator use
+
+User-visible summary wording:
+- Use safe phrases such as trend aligned, pullback detected, reclaim confirmed
+- Use safe phrases such as risk blocked, AI skipped setup, and AI exited on trailing protection
+- Do not show exact EMA, RSI, ATR, slope, pullback-depth, or reclaim-threshold values
+
+Admin-safe visibility vs customer-safe visibility:
+- Customer views should display only safe summary wording and high-level action state
+- Admin views may display safe summary wording, run counts, and operational status without raw strategy internals
+- Raw internal strategy payloads remain restricted and should not be rendered in customer or admin summaries by default

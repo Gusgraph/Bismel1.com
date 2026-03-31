@@ -1,0 +1,7 @@
+Bismel1 customer trading visibility rules
+
+- Customer-safe positions visibility should stay account-scoped and limited to symbol, side, quantity, safe price references, and safe management summaries.
+- Customer-safe order visibility should show recent order action, status, time, and safe reason summaries without raw broker payloads.
+- Customer-safe activity wording should use summaries such as AI scanned symbol, AI skipped setup, AI opened position, AI added position, AI closed on protection, and AI reconciled broker state.
+- Blocked and empty states should remain clear and practical, using wording such as no open positions, no recent orders, no recent runtime feed items, or subscription inactive where relevant.
+- Hidden strategy handling remains mandatory: no raw Pine logic, no raw Python logic, and no exact thresholds or formulas in customer views.

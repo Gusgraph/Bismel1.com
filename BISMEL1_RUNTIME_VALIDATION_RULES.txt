@@ -1,0 +1,21 @@
+Readiness before run
+- require active Bismel1 mapping, paper Alpaca account readiness, trade-capable credentials, synced broker state, and IEX bars path before paper execution
+
+Scanner, risk, execution, and position-manager handoff
+- scanner stores safe signals and bot-run summaries only
+- risk decides allow or block with safe summaries and blocked categories only
+- execution accepts only risk-approved paper actions and writes safe order/runtime summaries
+- position manager acts only on reconciled broker and local state, then writes safe management summaries
+
+Duplicate protection
+- scheduler skips duplicate bar-close windows
+- execution skips duplicate recent broker actions and closes stale running execution rows before retry
+
+Blocked state wording
+- blocked states stay summary-first: broker not ready, strategy not mapped, execution requires review, or position management requires review
+
+Safe customer and admin visibility
+- customer and admin views show readiness, last and next run timing, latest stage, execution status, and reconciliation status with safe wording only
+
+Hidden strategy handling
+- no raw Pine logic, Python logic, formulas, thresholds, or secret values appear in runtime visibility

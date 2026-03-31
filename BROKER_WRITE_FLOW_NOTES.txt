@@ -1,0 +1,13 @@
+First real broker credential write flow completed
+
+Scope:
+- customer broker credential create/store flow moved to DB-backed persistence
+- sensitive credential values are stored with a native Laravel encrypted-at-rest approach
+- broker index display remains masked and non-sensitive
+- no live broker validation or external integration was added
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

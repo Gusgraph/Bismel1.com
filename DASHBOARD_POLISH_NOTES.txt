@@ -1,0 +1,13 @@
+Dashboard structure polish pass completed
+
+Scope:
+- customer dashboard hierarchy improved
+- admin dashboard hierarchy improved
+- summary-first grouping strengthened
+- colorful enlarged icon treatment applied where useful
+- dashboard scanability and section structure refined
+
+Rules followed:
+- no product logic redesign
+- no deployment/server config changes
+- dashboard-only visual/structure pass

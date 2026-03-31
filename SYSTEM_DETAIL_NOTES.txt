@@ -1,0 +1,12 @@
+Admin system detail visibility pass completed
+
+Scope:
+- admin system page now shows cleaner real persisted system settings and DB-backed platform state signals
+- defensive empty-state handling retained for missing system-linked data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

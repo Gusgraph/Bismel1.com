@@ -1,0 +1,16 @@
+Customer-safe runtime summaries
+- show AI active, AI stopped, waiting for next bar close, recent run completed, broker not ready, or strategy not mapped
+- show broker, strategy, run, and recent activity summaries without raw strategy payloads
+
+Blocked vs ready states
+- ready requires active strategy mapping, usable broker account state, and IEX runtime posture
+- blocked states stay summary-only and never expose formulas or internal decision thresholds
+
+Start/stop state handling
+- start turns on DB-backed AI runtime posture and scanner readiness
+- stop turns off DB-backed AI runtime posture and records a stopped runtime state
+- save preserves current runtime posture while updating configuration fields
+
+Hidden strategy handling
+- no Pine logic, Python logic, or exact thresholds appear in customer UI
+- only safe summary language is shown for runtime health and activity

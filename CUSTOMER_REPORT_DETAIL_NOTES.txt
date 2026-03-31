@@ -1,0 +1,12 @@
+Customer reports detail pass completed
+
+Scope:
+- customer reports page now shows cleaner real current-account DB-backed summary detail
+- defensive empty-state handling retained for missing report-linked data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

@@ -1,0 +1,20 @@
+Local database status review
+
+SQLite:
+- configured in app: yes
+- usable on this VM right now: no
+
+MySQL/MariaDB:
+- client present: yes
+- local server detected: yes
+- safe usable local connection confirmed: no
+
+Laravel local DB action:
+- .env changed in this chunk: no
+- migrate:status working after this chunk: no
+
+Notes:
+- no packages installed
+- no migrations executed
+- no database objects created
+- no credentials guessed

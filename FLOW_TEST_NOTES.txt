@@ -1,0 +1,15 @@
+First DB-backed flow test expansion completed
+
+Scope:
+- DB-backed customer page tests expanded
+- DB-backed admin page tests expanded
+- broker credential write flow tests added
+- license/API key write flow tests added
+- customer settings and admin system update flow tests added
+- masked/non-sensitive display behavior checked where practical
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

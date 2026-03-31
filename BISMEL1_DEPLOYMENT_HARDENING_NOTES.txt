@@ -1,0 +1,14 @@
+Bismel1 deployment hardening pass completed
+
+Scope:
+- paper-trading runtime flow was hardened
+- safer env/config/runtime guardrails were added
+- duplicate and stale-state protections were improved
+- operator recovery behavior and safe summaries were improved
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass
+- no broad UI rewrite in this pass

@@ -1,0 +1,13 @@
+Bismel1 plans page completion pass completed
+
+Scope:
+- public plans page was completed with the full current plan lineup
+- base plans, add-ons, and testing plan were separated clearly
+- payment links were wired where available
+- missing plan-link values were reported cleanly where unavailable
+
+Rules followed:
+- no auth redesign
+- no billing redesign
+- no Firestore writes added
+- no unrelated product expansion in this pass

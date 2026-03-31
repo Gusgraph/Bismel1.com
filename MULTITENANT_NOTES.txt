@@ -1,0 +1,18 @@
+Initial multi-tenant placeholder structure expanded
+
+Scope:
+- account membership summary placeholder structure
+- team member list placeholder structure
+- customer preferences placeholder structure
+- admin account detail summary placeholder structure
+- admin tenant overview placeholder structure
+- customer settings page expansion
+- admin account detail page expansion
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no database reads
+- no deployment/server config changes
+- placeholder-only multi-tenant structure

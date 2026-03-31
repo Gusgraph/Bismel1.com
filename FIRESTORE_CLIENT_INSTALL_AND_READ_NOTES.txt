@@ -1,0 +1,13 @@
+Firestore client install and read pass completed
+
+Scope:
+- official PHP Firestore client installed
+- Laravel Firestore bridge retried
+- first read-only /users/{uid} access retried
+- small Firestore-backed bot summary added only if reads succeeded
+
+Rules followed:
+- no Firestore writes added
+- no product logic redesign
+- no deployment/server config changes
+- no unrelated product expansion in this pass

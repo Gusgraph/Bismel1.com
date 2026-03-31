@@ -1,0 +1,89 @@
+Initial placeholder Blade views created for:
+- home
+- customer dashboard
+- admin dashboard
+
+Rules followed:
+- minimal placeholder UI only
+- no auth scaffolding yet
+- no packages installed
+- no migrations executed
+- no layout system added yet
+Initial route-controller-view sanity check completed
+Shared base layout created and connected to placeholder views
+Shared layout lightly improved for clearer public, customer, and admin navigation
+Customer and admin dashboards now show minimal placeholder product sections
+Customer and admin dashboards now use minimal partial-based placeholder sections
+Customer and admin placeholder pages expanded for account, billing, broker, license, accounts, and system areas
+Customer and admin placeholder pages expanded for account, billing, broker, license, accounts, and system areas
+Customer and admin placeholder pages now use cleaner shared navigation and page data patterns
+Customer and admin placeholder pages now use shared label/status helpers where practical
+Customer and admin dashboards now use reusable stats and section partials
+Customer and admin pages now use reusable page-header partials for cleaner placeholder page composition
+Broker, license, and system placeholder pages now use shared partials and view-data helpers for cleaner product-shaped presentation, with subtle hidden-symbol details added in Blade views
+Customer account, billing, broker, and license pages now use richer placeholder partials for a more complete product-shaped layout
+Admin dashboard, accounts, and system pages now use richer placeholder partials for a more complete admin-shaped layout
+Admin license and audit pages now use reusable placeholder inventory and log partials for a more complete oversight layout
+Customer onboarding and invoice pages now use reusable placeholder checklist and summary partials for a more complete SaaS-style layout
+Customer settings and admin account-detail pages now use reusable placeholder membership, preferences, and tenant partials for a more complete multi-tenant layout
+Customer and admin placeholder pages now reuse a small shared UI partial set for cleaner and less repetitive page composition
+Customer and admin placeholder pages now include basic shared form UI and placeholder create/edit flows
+Customer and admin placeholder pages now include shared alert, notice, and status badge UI patterns
+Customer and admin placeholder pages now include basic reporting pages and shared report summary UI patterns
+A full placeholder structure sanity pass was completed and obvious low-risk route/controller/view mismatches were cleaned up where needed
+Customer and admin placeholder pages now use shared breadcrumb, section-nav, and page-intro patterns for a cleaner app shell
+Placeholder page reachability was verified through safe feature tests for the current public, customer, and admin shell
+A readiness pass was completed to map current placeholder pages to future implementation layers and identify the next practical build order
+Local DB enablement was attempted to move the current placeholder shell toward real implementation readiness
+The project passed its first local migration enablement step while keeping the current placeholder shell intact
+Customer account and billing pages now support real local DB-backed reads with defensive empty states
+Customer broker and license pages now support real local DB-backed reads with defensive empty states
+An initial mobile responsive pass was completed to improve small-screen layout behavior across the shared app shell and core pages
+The app shell now operates under a more structured access layer instead of pure placeholder route access assumptions
+Core admin pages now support real local DB-backed reads with defensive empty states
+Customer settings and admin system areas were advanced toward real update flows while preserving the current shell and safe validation boundaries
+The admin system area now supports a real narrow DB-backed settings update flow with persisted runtime_mode, review_channel, and status_level values
+The customer broker area now supports a real local credential save flow while keeping credential display masked and non-sensitive
+The license area now supports a real local save flow while keeping key display masked and non-sensitive
+The real DB-backed flows now have broader test coverage, including checks for masked display and non-sensitive post-save rendering
+Onboarding and reports pages now show simple real local summary data while preserving clean empty-state behavior
+The customer and admin dashboards now show simple real local summary data while preserving clean empty-state behavior
+Customer pages now resolve DB-backed data through a cleaner current-user/current-account path while preserving empty-state behavior
+Admin account-detail pages now follow a cleaner route-driven account selection path while preserving defensive empty and missing-data behavior
+Customer billing and invoice pages now show cleaner DB-backed subscription, plan, and invoice detail while preserving defensive empty-state behavior
+The admin audit page now shows cleaner DB-backed audit and activity detail while preserving defensive empty-state and safe display behavior
+The admin license page now shows cleaner DB-backed license and API key detail while preserving defensive empty-state and safe display behavior
+Existing admin pages now show cleaner DB-backed broker connection and credential detail while preserving defensive empty-state and safe display behavior
+The admin system page now shows cleaner DB-backed system settings and platform-state detail while preserving defensive empty-state and safe display behavior
+Customer account and settings pages now show cleaner DB-backed detail while preserving defensive empty-state and safe display behavior
+The admin reports page now shows cleaner DB-backed platform summary detail while preserving defensive empty-state and safe display behavior
+The customer reports page now shows cleaner DB-backed current-account summary detail while preserving defensive empty-state and safe display behavior
+The customer onboarding page now shows cleaner DB-backed readiness detail while preserving defensive empty-state and safe display behavior
+The customer license page now shows cleaner DB-backed current-account license and API key detail while preserving defensive empty-state and safe display behavior
+The customer broker page now shows cleaner DB-backed current-account broker connection and credential detail while preserving defensive empty-state and safe display behavior
+The customer invoices page now shows cleaner DB-backed current-account invoice detail while preserving defensive empty-state and safe display behavior
+The customer billing page now shows cleaner DB-backed current-account subscription and plan detail while preserving defensive empty-state and safe display behavior
+The plans and billing area now supports real plan selection, Checkout initiation, webhook-driven subscription confirmation, and affiliate-aware attribution structure
+The admin dashboard now shows cleaner DB-backed platform detail while preserving defensive empty-state and safe display behavior
+The app’s real DB-backed pages now rely on slightly cleaner shared summary logic without changing the current shell or safe display behavior
+The app’s real DB-backed pages now rely on slightly cleaner shared data-loading paths without changing the current shell or safe display behavior
+The app’s secret-adjacent pages now rely on slightly cleaner shared masking and safe-display logic without changing the current shell or display boundaries
+The customer dashboard now shows cleaner DB-backed current-account detail while preserving defensive empty-state and safe display behavior
+The app now includes a real login/logout path and protected-route redirect behavior instead of only access middleware tests
+The app shell navigation was redesigned into a sidebar-first desktop/tablet/mobile structure inspired by modern chat-style app navigation behavior
+Remaining low-risk placeholder UI content was reduced while preparing the app for cleaner real bot-data integration
+The app was prepared for real Firestore-backed bot data integration without changing current page behavior yet
+Remaining TradingView/webhook-oriented wording was reduced where appropriate to prepare the app for an in-house automation product direction
+Customer strategy and automation pages were added and integrated into the control-room navigation structure
+The app structure was prepared for internal automation data ownership without changing the current shell direction
+The broker page now reflects Alpaca-first connection management instead of mixed legacy execution assumptions
+The strategy page now supports a real DB-backed configuration flow aligned to internal automation
+The automation page now supports a real DB-backed configuration flow aligned to internal automation control
+The app was prepared for richer internal AI activity visibility without changing the current shell direction
+Firestore-backed summaries remain narrow and supportive without changing the core control-room structure
+The broker area was aligned to Alpaca-first connection and readiness management for the in-house automation product direction
+The broker area now supports real Alpaca account verification and safe readiness state display for the in-house automation direction
+Broker and billing structure were prepared for multiple Alpaca paper accounts and the current Stripe package lineup without broad UI redesign
+The plans and billing area now supports real plan selection, Checkout initiation, webhook-driven subscription confirmation, affiliate-aware attribution, and affiliate discount pricing structure
+The app was prepared for real positions and orders visibility from Alpaca without broad UI redesign
+The app was prepared for real market-data readiness from Alpaca without broad UI redesign

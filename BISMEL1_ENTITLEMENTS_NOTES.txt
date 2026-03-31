@@ -1,0 +1,14 @@
+Bismel1 entitlements pass completed
+
+Scope:
+- plan and add-on entitlements were tied to confirmed subscription state
+- customer runtime access now respects product capabilities
+- broker account limits and strategy/automation access were aligned to paid entitlements
+- safe blocked-state summaries were added
+- proprietary strategy internals remained hidden
+
+Rules followed:
+- no Firestore writes added
+- no auth redesign
+- no unrelated product expansion in this pass
+- no broad UI rewrite in this pass

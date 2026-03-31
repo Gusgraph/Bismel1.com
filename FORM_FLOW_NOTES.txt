@@ -1,0 +1,17 @@
+Initial placeholder form flow structure created
+
+Scope:
+- customer settings edit/update placeholder flow
+- customer broker credential create/store placeholder flow
+- admin system settings edit/update placeholder flow
+- shared form-field partials
+- shared form-actions partial
+- shared flash-message partial
+
+Rules followed:
+- no packages installed
+- no migrations executed
+- no auth finalized
+- no persistence implemented
+- no deployment/server config changes
+- placeholder-only form flow structure

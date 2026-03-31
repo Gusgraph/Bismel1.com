@@ -1,0 +1,20 @@
+Initial models created for:
+- Account
+- SubscriptionPlan
+- Subscription
+- Invoice
+- BrokerConnection
+- BrokerCredential
+- ApiLicense
+- ApiKey
+- AuditLog
+- ActivityLog
+
+Rules followed:
+- no packages installed
+- no migrations executed yet
+- User model not modified yet
+- minimal first-pass relationships only
+User model updated for account membership relationships
+Minimal model cleanup completed after first database readiness review
+Models reviewed for safe minimal enum/cast alignment where clearly supported by the current migration design

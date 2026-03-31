@@ -1,0 +1,12 @@
+Admin dashboard detail pass completed
+
+Scope:
+- admin dashboard now shows cleaner real platform summary/detail
+- defensive empty-state handling retained for missing dashboard-linked data
+- sensitive and unrelated internal values remain excluded from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

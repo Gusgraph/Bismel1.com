@@ -1,0 +1,17 @@
+Stripe checkout, webhook, and affiliate tracking pass completed
+
+Scope:
+- plans page added or completed
+- Stripe Checkout Session flow added
+- webhook endpoint added for Stripe-confirmed subscription state
+- affiliate/referral tracking added from landing to subscription attribution
+- affiliate discount pricing support added
+- local access control aligned to Stripe-confirmed billing state
+- base plans and add-ons aligned to the current package lineup
+
+Rules followed:
+- no fake billing confirmation logic added
+- no auth redesign
+- no unrelated product expansion
+- no broad UI redesign in this pass
+- no commission payout engine added in this pass

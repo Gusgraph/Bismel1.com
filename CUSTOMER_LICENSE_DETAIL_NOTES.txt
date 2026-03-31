@@ -1,0 +1,12 @@
+Customer license detail pass completed
+
+Scope:
+- customer license page now shows cleaner real current-account license and API key detail
+- defensive empty-state handling retained for missing license/key data
+- sensitive values remain excluded or masked from display
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass

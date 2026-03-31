@@ -1,0 +1,13 @@
+Second DB-backed customer implementation pass completed
+
+Scope:
+- customer broker page moved from placeholder-only to DB-backed read flow
+- customer license page moved from placeholder-only to DB-backed read flow
+- defensive empty-state handling retained
+- minimal local seed data added only if needed for safe local exercise
+
+Rules followed:
+- no packages installed
+- no auth finalized
+- no external integrations added
+- no unrelated product expansion in this pass

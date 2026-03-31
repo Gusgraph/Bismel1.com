@@ -1,0 +1,12 @@
+Customer account scoping pass completed
+
+Scope:
+- customer DB-backed pages now resolve data through a cleaner current-user/current-account path where supported
+- broad first-record assumptions were reduced where safely possible
+- defensive empty-state handling retained for users without account-linked data
+
+Rules followed:
+- no packages installed
+- no auth redesign added
+- no external integrations added
+- no unrelated product expansion in this pass
