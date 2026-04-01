@@ -302,7 +302,7 @@
     </style>
 </head>
 <body class="guest-body">
-    <div class="market-bg-shell" aria-hidden="true">
+    <div class="market-bg-shell" aria-hidden="true" style="background: rgba(255, 0, 0, 0.18) !important;">
         <canvas class="market-bg-canvas" data-market-background></canvas>
     </div>
 
