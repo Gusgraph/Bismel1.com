@@ -35,7 +35,7 @@
             --guest-warning: #fbbf24;
             --guest-shadow: 0 23px 91px rgba(0, 0, 0, 0.34);
             --guest-radius: 27px;
-            --guest-width: 1179px;
+            --guest-width: 100%;
         }
 
         body.guest-body {
@@ -144,8 +144,12 @@
             width: 100%;
             padding: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(8, 16, 28, 0.84);
-            backdrop-filter: blur(10px);
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         .guest-header__inner {
@@ -153,7 +157,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            padding: 0.95rem 1.35rem;
+            padding: 0.95rem 15px;
         }
 
         .guest-brand {
@@ -250,17 +254,24 @@
 
         .guest-main {
             width: 100%;
-            padding: 0.95rem 1.35rem 3.95rem;
+            max-width: none;
+            margin: 0;
+            padding: 0.95rem 15px 3.95rem;
         }
 
         .guest-footer {
             width: 100%;
-            padding: 0 1.35rem 1.95rem;
+            max-width: none;
+            margin: 0;
+            padding: 0 15px 1.95rem;
         }
 
         .guest-footer__inner {
+            width: 100%;
+            max-width: none;
+            margin: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             gap: 0.95rem;
             padding-top: 1.11rem;
             border-top: 1px solid var(--guest-line);
@@ -286,8 +297,8 @@
             .guest-header,
             .guest-main,
             .guest-footer {
-                padding-left: 0.95rem;
-                padding-right: 0.95rem;
+                padding-left: 15px;
+                padding-right: 15px;
             }
 
             .guest-nav {
@@ -302,7 +313,7 @@
     </style>
 </head>
 <body class="guest-body">
-    <div class="market-bg-shell" aria-hidden="true" style="background: rgba(255, 0, 0, 0.18) !important;">
+    <div class="market-bg-shell" aria-hidden="true">
         <canvas class="market-bg-canvas" data-market-background></canvas>
     </div>
 
