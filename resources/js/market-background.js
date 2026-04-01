@@ -38,12 +38,18 @@ class MarketBackground {
         this.frameId = null;
         this.lastTime = 0;
         this.isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        this.pointer = {
+            x: null,
+            y: null,
+            active: false,
+        };
 
         this.gridLines = [];
         this.candles = [];
         this.particles = [];
         this.priceLines = [];
         this.pulses = [];
+        this.signalLocks = [];
 
         this.palette = {
             bgGlow: "rgba(17, 43, 73, 0.19)",
@@ -60,6 +66,8 @@ class MarketBackground {
         };
 
         this.handleResize = this.handleResize.bind(this);
+        this.handlePointerMove = this.handlePointerMove.bind(this);
+        this.handlePointerLeave = this.handlePointerLeave.bind(this);
         this.animate = this.animate.bind(this);
 
         this.init();
@@ -68,6 +76,8 @@ class MarketBackground {
     init() {
         this.handleResize();
         window.addEventListener("resize", this.handleResize);
+        window.addEventListener("pointermove", this.handlePointerMove);
+        window.addEventListener("pointerleave", this.handlePointerLeave);
 
         if (!this.isReducedMotion) {
             this.frameId = window.requestAnimationFrame(this.animate);
@@ -78,6 +88,8 @@ class MarketBackground {
 
     destroy() {
         window.removeEventListener("resize", this.handleResize);
+        window.removeEventListener("pointermove", this.handlePointerMove);
+        window.removeEventListener("pointerleave", this.handlePointerLeave);
 
         if (this.frameId) {
             window.cancelAnimationFrame(this.frameId);
@@ -99,6 +111,24 @@ class MarketBackground {
         this.renderStatic();
     }
 
+    handlePointerMove(event) {
+        const rect = this.canvas.getBoundingClientRect();
+
+        this.pointer.x = event.clientX - rect.left;
+        this.pointer.y = event.clientY - rect.top;
+        this.pointer.active =
+            this.pointer.x >= 0 &&
+            this.pointer.x <= rect.width &&
+            this.pointer.y >= 0 &&
+            this.pointer.y <= rect.height;
+    }
+
+    handlePointerLeave() {
+        this.pointer.x = null;
+        this.pointer.y = null;
+        this.pointer.active = false;
+    }
+
     buildScene() {
         const isMobile = window.innerWidth < 767;
         const scale = isMobile ? this.options.mobileScale : 1;
@@ -112,6 +142,7 @@ class MarketBackground {
         this.particles = this.createParticles(particleCount);
         this.priceLines = this.createPriceLines(lineCount);
         this.pulses = [];
+        this.signalLocks = this.createSignalLocks(Math.max(3, Math.floor(lineCount + 2)));
     }
 
     createGridLines() {
@@ -209,6 +240,24 @@ class MarketBackground {
         return lines;
     }
 
+    createSignalLocks(count) {
+        const locks = [];
+
+        for (let i = 0; i < count; i += 1) {
+            locks.push({
+                x: this.random(this.width * 0.15, this.width * 0.85),
+                y: this.random(this.height * 0.19, this.height * 0.77),
+                radius: this.random(27, 51),
+                alpha: this.random(0.43, 0.73),
+                growth: this.random(0.07, 0.23),
+                spin: this.random(-0.019, 0.019),
+                angle: this.random(0, Math.PI * 2),
+            });
+        }
+
+        return locks;
+    }
+
     random(min, max) {
         return Math.random() * (max - min) + min;
     }
@@ -237,13 +286,36 @@ class MarketBackground {
         }
 
         for (const particle of this.particles) {
-            particle.x += particle.speedX * this.options.particleSpeed * 15 * speedFactor;
-            particle.y += particle.speedY * this.options.particleSpeed * 15 * speedFactor;
+            let repelX = 0;
+            let repelY = 0;
+            let hover = 0;
 
-            if (particle.x < -11) particle.x = this.width + 11;
-            if (particle.x > this.width + 11) particle.x = -11;
-            if (particle.y < -11) {
-                particle.y = this.height + 11;
+            if (this.pointer.active && this.pointer.x !== null && this.pointer.y !== null) {
+                const dx = particle.x - this.pointer.x;
+                const dy = particle.y - this.pointer.y;
+                const distance = Math.hypot(dx, dy);
+                const influenceRadius = 127;
+
+                if (distance < influenceRadius) {
+                    hover = 1 - distance / influenceRadius;
+                    const force = hover * 2.7;
+                    repelX = (dx / Math.max(distance, 1)) * force;
+                    repelY = (dy / Math.max(distance, 1)) * force;
+                }
+            }
+
+            particle.x += particle.speedX * this.options.particleSpeed * 15 * speedFactor + repelX * speedFactor;
+            particle.y += particle.speedY * this.options.particleSpeed * 15 * speedFactor + repelY * speedFactor;
+            particle.hover = hover;
+
+            if (particle.x < -19) particle.x = this.width + 19;
+            if (particle.x > this.width + 19) particle.x = -19;
+            if (particle.y < -19) {
+                particle.y = this.height + 19;
+                particle.x = this.random(0, this.width);
+            }
+            if (particle.y > this.height + 19) {
+                particle.y = -19;
                 particle.x = this.random(0, this.width);
             }
         }
@@ -273,6 +345,36 @@ class MarketBackground {
                 alpha: pulse.alpha - 0.0037 * speedFactor,
             }))
             .filter((pulse) => pulse.alpha > 0);
+
+        this.signalLocks = this.signalLocks
+            .map((lock) => {
+                let hover = 0;
+                let offsetX = 0;
+                let offsetY = 0;
+
+                if (this.pointer.active && this.pointer.x !== null && this.pointer.y !== null) {
+                    const dx = this.pointer.x - lock.x;
+                    const dy = this.pointer.y - lock.y;
+                    const distance = Math.hypot(dx, dy);
+                    const influenceRadius = 173;
+
+                    if (distance < influenceRadius) {
+                        hover = 1 - distance / influenceRadius;
+                        const pull = hover * 11;
+                        offsetX = (dx / Math.max(distance, 1)) * pull;
+                        offsetY = (dy / Math.max(distance, 1)) * pull;
+                    }
+                }
+
+                return {
+                    ...lock,
+                    angle: lock.angle + (lock.spin + hover * 0.019) * speedFactor,
+                    hover,
+                    drawX: lock.x + offsetX,
+                    drawY: lock.y + offsetY,
+                    drawRadius: lock.radius + hover * 7,
+                };
+            });
     }
 
     renderStatic() {
@@ -292,6 +394,7 @@ class MarketBackground {
         this.drawCandles(isStatic);
         this.drawParticles();
         this.drawPulses();
+        this.drawSignalLocks();
         this.drawEdgeFade();
     }
 
@@ -408,12 +511,14 @@ class MarketBackground {
         this.ctx.save();
 
         for (const particle of this.particles) {
+            const hover = particle.hover || 0;
+
             this.ctx.beginPath();
             this.ctx.fillStyle = this.palette.particle;
-            this.ctx.globalAlpha = particle.alpha * this.options.opacity;
-            this.ctx.shadowBlur = 19;
+            this.ctx.globalAlpha = Math.min(1, (particle.alpha + hover * 0.19) * this.options.opacity);
+            this.ctx.shadowBlur = 19 + hover * 15;
             this.ctx.shadowColor = this.palette.highlight;
-            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            this.ctx.arc(particle.x, particle.y, particle.radius + hover * 0.9, 0, Math.PI * 2);
             this.ctx.fill();
         }
 
@@ -432,6 +537,58 @@ class MarketBackground {
             this.ctx.shadowColor = this.palette.pulse;
             this.ctx.arc(pulse.x, pulse.y, pulse.radius, 0, Math.PI * 2);
             this.ctx.stroke();
+        }
+
+        this.ctx.restore();
+    }
+
+    drawSignalLocks() {
+        this.ctx.save();
+
+        for (const lock of this.signalLocks) {
+            const radius = lock.drawRadius || lock.radius;
+            const hover = lock.hover || 0;
+
+            this.ctx.save();
+            this.ctx.translate(lock.drawX ?? lock.x, lock.drawY ?? lock.y);
+            this.ctx.rotate(lock.angle);
+            this.ctx.globalAlpha = Math.min(1, (lock.alpha + hover * 0.27) * this.options.opacity);
+            this.ctx.strokeStyle = "rgba(127, 225, 255, 0.73)";
+            this.ctx.shadowBlur = 39 + hover * 27;
+            this.ctx.shadowColor = "rgba(127, 225, 255, 0.73)";
+
+            this.ctx.beginPath();
+            this.ctx.lineWidth = 1.7 + hover * 0.7;
+            this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            this.ctx.stroke();
+
+            this.ctx.beginPath();
+            this.ctx.lineWidth = 1.1 + hover * 0.37;
+            this.ctx.arc(0, 0, Math.max(11, radius * 0.56), 0, Math.PI * 2);
+            this.ctx.stroke();
+
+            const tick = Math.max(11, radius * 0.35);
+            const gap = Math.max(7, radius * 0.23);
+
+            this.ctx.lineWidth = 1.3 + hover * 0.37;
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(-radius - tick, 0);
+            this.ctx.lineTo(-radius + gap, 0);
+            this.ctx.moveTo(radius - gap, 0);
+            this.ctx.lineTo(radius + tick, 0);
+            this.ctx.moveTo(0, -radius - tick);
+            this.ctx.lineTo(0, -radius + gap);
+            this.ctx.moveTo(0, radius - gap);
+            this.ctx.lineTo(0, radius + tick);
+            this.ctx.stroke();
+
+            this.ctx.beginPath();
+            this.ctx.fillStyle = "rgba(127, 225, 255, 0.88)";
+            this.ctx.arc(0, 0, 4.1 + hover * 1.9, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            this.ctx.restore();
         }
 
         this.ctx.restore();
