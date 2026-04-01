@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Bismel1')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/market-background.js'])
     <style>
         :root {
             --guest-bg: #06111f;
@@ -914,6 +914,9 @@
     </style>
 </head>
 <body class="guest-body">
+        <div class="market-bg-shell" aria-hidden="true">
+        <canvas class="market-bg-canvas" data-market-background></canvas>
+    </div>
     <div class="guest-page">
         <div class="guest-buzles" aria-hidden="true">
             <span class="guest-buzle guest-buzle--one"></span>
