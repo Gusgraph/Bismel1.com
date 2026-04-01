@@ -10,43 +10,65 @@
 // - File Path: resources/views/home.blade.php
 // ======================================================
 ?>
+
 @extends('layouts.guest')
 
-@section('title', 'Bismel1 | AI Markets')
+@section('title', 'Bismel1 | AI Trading Automation')
 
 @section('content')
     @php
-        $capabilities = [
+        $capabilityStrip = [
+            'AI signal discovery',
+            'Execution-aware automation',
+            'Orders, positions, and runtime visibility',
+            'Operator-grade control surfaces',
+        ];
+
+        $featureCards = [
             [
-                'eyebrow' => 'Market intelligence',
-                'title' => 'Signals, catalysts, and market structure in one disciplined stream.',
-                'body' => 'Bismel1 is built for traders who want sharper market context before capital moves. The product stays focused on signal quality, execution awareness, and operational clarity from the first scan forward.',
+                'eyebrow' => 'Signal Discovery',
+                'title' => 'AI market intelligence built for faster reads and cleaner trade selection.',
+                'body' => 'Bismel1 helps traders scan for momentum, catalysts, and market structure with a tighter operating view before capital is committed.',
                 'items' => [
-                    'AI-assisted scanning shaped around momentum, catalysts, and market flow.',
-                    'A cleaner path from watchlist focus into execution-aware workflows.',
-                    'A product feel designed for market operators, not generic dashboard users.',
+                    'Sharper watchlist focus with AI-assisted market context.',
+                    'Cleaner scan-to-decision flow built around actionability.',
+                    'Signal quality designed for active operators, not generic dashboards.',
                 ],
             ],
             [
-                'eyebrow' => 'Automation control',
-                'title' => 'A trading product designed to stay readable while automation is running.',
-                'body' => 'Bismel1 keeps operators close to the action with clear runtime visibility, broker readiness context, and a practical view of orders, positions, activity, and operating status.',
+                'eyebrow' => 'Automation Control',
+                'title' => 'Automated execution that stays readable while the market moves.',
+                'body' => 'The product keeps the operator close to readiness, broker state, and automation posture without turning the interface into noise.',
                 'items' => [
-                    'Runtime awareness across scanning, orders, and position flow.',
-                    'A clearer operating picture for readiness, reconciliation, and recovery.',
-                    'Visibility that stays useful when the tape gets faster.',
+                    'Clear automation posture and broker readiness context.',
+                    'Simple runtime summaries for activity, sync, and recovery.',
+                    'A cleaner operating surface when the tape gets faster.',
                 ],
             ],
             [
-                'eyebrow' => 'Product feel',
-                'title' => 'Built like an AI markets desk, not a generic SaaS dashboard.',
-                'body' => 'The product language stays concise because the idea is concise: better market context, cleaner automation posture, and a more modern operating surface for traders.',
+                'eyebrow' => 'Execution Visibility',
+                'title' => 'Orders, positions, and operating status in one disciplined view.',
+                'body' => 'Bismel1 is built to keep the full execution picture legible, from signals and handoff to position flow and runtime oversight.',
                 'items' => [
-                    'Market-native language instead of dashboard filler.',
-                    'Focused design that keeps attention on movement and decisions.',
-                    'A clean handoff into the protected workspace after login.',
+                    'Track positions, orders, and activity with less friction.',
+                    'See runtime movement without losing the higher-level picture.',
+                    'Stay closer to execution without drowning in dashboard clutter.',
                 ],
             ],
+        ];
+
+        $terminalStats = [
+            ['label' => 'Signal Score', 'value' => '91.7'],
+            ['label' => 'Runtime State', 'value' => 'Ready'],
+            ['label' => 'Broker Sync', 'value' => 'Stable'],
+            ['label' => 'Active Focus', 'value' => 'Large Cap'],
+        ];
+
+        $watchlist = [
+            ['symbol' => 'NVDA', 'price' => '$942.30', 'move' => '+2.18%', 'direction' => 'up'],
+            ['symbol' => 'MSFT', 'price' => '$428.16', 'move' => '+0.84%', 'direction' => 'up'],
+            ['symbol' => 'AAPL', 'price' => '$191.47', 'move' => '-0.26%', 'direction' => 'down'],
+            ['symbol' => 'AMD', 'price' => '$173.29', 'move' => '+1.56%', 'direction' => 'up'],
         ];
 
         $marketTape = [
@@ -61,58 +83,78 @@
         ];
     @endphp
 
-    <section class="guest-hero" aria-labelledby="bismel1-hero-title">
-        <article class="guest-panel">
-            <p class="guest-section__eyebrow">AI markets platform</p>
-            <h1 id="bismel1-hero-title" class="guest-hero__title">Trade with sharper market context and cleaner automation control.</h1>
-            <p class="guest-hero__body">
-                Bismel1 is an AI-markets product for traders who want stronger signal discovery, execution-aware workflows, and a clearer operating picture once automation is live.
+    <section class="guest-hero guest-home-hero" aria-labelledby="bismel1-hero-title">
+        <article class="guest-panel guest-home-hero__panel">
+            <p class="guest-section__eyebrow">AI Trading Automation</p>
+            <h1 id="bismel1-hero-title" class="guest-hero__title guest-home-hero__title">
+                AI-powered trading automation with real-time market intelligence.
+            </h1>
+            <p class="guest-hero__body guest-home-hero__body">
+                Bismel1 helps traders scan faster, judge market context more clearly, and manage automated
+                execution with a cleaner view of orders, positions, activity, and runtime status.
             </p>
 
-            <div class="guest-hero__split" aria-label="Bismel1 highlights">
-                <article class="guest-pill">
-                    <span class="guest-pill__label">Built for</span>
-                    <span class="guest-pill__value">AI-guided stock and market workflows</span>
-                </article>
-                <article class="guest-pill">
-                    <span class="guest-pill__label">Experience</span>
-                    <span class="guest-pill__value">Operator clarity from scan to position</span>
-                </article>
-                <article class="guest-pill">
-                    <span class="guest-pill__label">Style</span>
-                    <span class="guest-pill__value">Premium, focused, market-native design</span>
-                </article>
+            <div class="guest-hero__actions guest-home-hero__actions">
+                <a href="{{ route('plans') }}" class="guest-cta guest-cta--primary">View Plans</a>
+                <a href="{{ route('login') }}" class="guest-cta">Login</a>
             </div>
 
-            <div class="guest-hero__actions">
-                <a href="{{ route('login') }}" class="guest-cta guest-cta--primary">Login</a>
-                <a href="{{ route('plans') }}" class="guest-cta">Plans</a>
+            <div class="guest-home-strip" aria-label="Platform capabilities">
+                @foreach ($capabilityStrip as $item)
+                    <span class="guest-home-strip__item">{{ $item }}</span>
+                @endforeach
             </div>
         </article>
 
-        <article class="guest-card" style="position: relative; overflow: hidden;">
-            <span class="guest-symbol" aria-hidden="true" style="position: absolute; top: 19px; right: 19px; font-size: 11px;">﷽</span>
-            <p class="guest-card__eyebrow">Why traders look twice</p>
-            <h2 class="guest-card__title">A sharper front end for AI-assisted market operations.</h2>
-            <p class="guest-card__body">
-                Bismel1 brings market intelligence, automation visibility, and control-oriented product design into one disciplined experience built for active operators who want the whole trading chain to stay readable.
-            </p>
-            <ul class="guest-card__list">
-                <li>High-signal scanning built around actionability and speed.</li>
-                <li>Operational visibility across orders, positions, and recent activity.</li>
-                <li>Cleaner control surfaces for readiness, sync, and recovery moments.</li>
-            </ul>
-        </article>
+        <aside class="guest-card guest-home-terminal" aria-label="AI market terminal preview">
+            <span class="guest-symbol" aria-hidden="true">﷽</span>
+
+            <div class="guest-home-terminal__header">
+                <div>
+                    <p class="guest-card__eyebrow">Live AI Market Intel</p>
+                    <h2 class="guest-card__title">Signal and execution surface</h2>
+                </div>
+                <div class="guest-home-terminal__badge">Realtime</div>
+            </div>
+
+            <div class="guest-home-terminal__grid">
+                @foreach ($terminalStats as $stat)
+                    <div class="guest-home-terminal__metric">
+                        <span class="guest-home-terminal__metric-label">{{ $stat['label'] }}</span>
+                        <strong class="guest-home-terminal__metric-value">{{ $stat['value'] }}</strong>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="guest-home-terminal__chart" aria-hidden="true">
+                <span class="guest-home-terminal__chart-line guest-home-terminal__chart-line--one"></span>
+                <span class="guest-home-terminal__chart-line guest-home-terminal__chart-line--two"></span>
+                <span class="guest-home-terminal__chart-glow"></span>
+            </div>
+
+            <div class="guest-home-terminal__watchlist">
+                @foreach ($watchlist as $ticker)
+                    <article class="guest-home-terminal__ticker">
+                        <div>
+                            <strong class="guest-home-terminal__symbol">{{ $ticker['symbol'] }}</strong>
+                            <span class="guest-home-terminal__price">{{ $ticker['price'] }}</span>
+                        </div>
+                        <span class="guest-tape__move is-{{ $ticker['direction'] }}">{{ $ticker['move'] }}</span>
+                    </article>
+                @endforeach
+            </div>
+        </aside>
     </section>
 
-    <section class="guest-card-grid" aria-label="Bismel1 capability themes">
-        @foreach ($capabilities as $capability)
-            <article class="guest-card">
-                <p class="guest-card__eyebrow">{{ $capability['eyebrow'] }}</p>
-                <h2 class="guest-card__title">{{ $capability['title'] }}</h2>
-                <p class="guest-card__body">{{ $capability['body'] }}</p>
+    <section class="guest-home-feature-grid" aria-label="Core product capabilities">
+        @foreach ($featureCards as $feature)
+            <article class="guest-card guest-home-feature">
+                <p class="guest-card__eyebrow">{{ $feature['eyebrow'] }}</p>
+                <h2 class="guest-card__title">{{ $feature['title'] }}</h2>
+                <p class="guest-card__body">{{ $feature['body'] }}</p>
+
                 <ul class="guest-card__list">
-                    @foreach ($capability['items'] as $item)
+                    @foreach ($feature['items'] as $item)
                         <li>{{ $item }}</li>
                     @endforeach
                 </ul>
@@ -120,28 +162,32 @@
         @endforeach
     </section>
 
-    <section class="guest-story-wrap" aria-label="Market character and product tone">
-        <article class="guest-story">
-            <h2 class="guest-story__title">Juha glanced at the tape, nodded once, and said, “Good. If the market wants chaos, at least now it has formatting.”</h2>
+    <section class="guest-story-wrap guest-home-preview" aria-label="Product preview and conversion">
+        <article class="guest-story guest-home-preview__story">
+            <p class="guest-story__label">Product Preview</p>
+            <h2 class="guest-story__title">Built like a trading desk surface, not a generic SaaS front page.</h2>
             <p class="guest-story__body">
-                Then he went back to trading, which is exactly the point. A good product should calm the operator down before it starts trying to impress anyone.
+                The experience is designed to keep signal discovery, automation posture, and execution visibility in
+                one disciplined flow. The goal is not more dashboard noise. The goal is a cleaner operating picture.
             </p>
             <ul class="guest-story__list">
-                <li>Built for fast reads, not dramatic dashboard theater.</li>
-                <li>Clear enough for operators, sharp enough for market people.</li>
+                <li>Sharper scan-to-execution continuity.</li>
+                <li>Cleaner summaries for orders, positions, and runtime state.</li>
+                <li>Premium product feel built around market operators.</li>
             </ul>
         </article>
 
-        <article class="guest-card" style="position: relative; overflow: hidden;">
-            <span class="guest-symbol" aria-hidden="true" style="position: absolute; top: 19px; right: 19px; font-size: 11px;">ﷺ</span>
+        <article class="guest-card guest-home-preview__cta">
+            <span class="guest-symbol" aria-hidden="true">✧</span>
             <p class="guest-card__eyebrow">Bismel1</p>
-            <h2 class="guest-card__title">From signup to runtime oversight, the product stays coherent.</h2>
+            <h2 class="guest-card__title">Start with the plan that fits your trading workflow.</h2>
             <p class="guest-card__body">
-                Start with the plan that fits your trading style, connect Alpaca, set your automation posture, and let Bismel1 scan, evaluate, and act internally while you track safe summaries, positions, orders, activity, and status in one place.
+                Connect your broker, set your automation posture, and move from signal discovery to runtime oversight
+                inside one cleaner operating surface.
             </p>
             <div class="guest-login__actions">
-                <a href="{{ route('plans') }}" class="guest-story__link">View plans</a>
-                <a href="{{ route('login') }}" class="guest-story__link">Login</a>
+                <a href="{{ route('plans') }}" class="guest-story__link">Explore Plans</a>
+                <a href="{{ route('login') }}" class="guest-story__link">Access Login</a>
             </div>
         </article>
     </section>
@@ -149,9 +195,10 @@
     <section class="guest-tape" aria-labelledby="market-tape-title">
         <div class="guest-tape__header">
             <div>
-                <h2 id="market-tape-title" class="guest-card__title">Live Mark</h2>
+                <p class="guest-card__eyebrow">Market Tape</p>
+                <h2 id="market-tape-title" class="guest-card__title">Large-cap momentum snapshot</h2>
             </div>
-            <p class="guest-tape__subtle">A rolling view of large-cap momentum that keeps the page anchored in the market.</p>
+            <p class="guest-tape__subtle">A rolling view that keeps the front page anchored in live market behavior.</p>
         </div>
 
         <div class="guest-tape__track" aria-hidden="true">
