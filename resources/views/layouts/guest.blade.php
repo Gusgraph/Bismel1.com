@@ -341,11 +341,10 @@
         </main>
 
         <footer class="guest-footer">
-            <div class="guest-footer__inner">
-                <p>Bismel1 brings AI market context, disciplined automation, and operator-grade clarity into one product.</p>
-                <p>Login and plans stay simple here. The trading workspace starts after sign-in.</p>
-            </div>
-        </footer>
+    <div class="guest-footer__inner">
+        <p>Copyright © {{ date('Y') }} Bismel1. All rights reserved.</p>
+    </div>
+</footer>
     </div>
 </body>
 </html>
