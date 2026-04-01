@@ -73,6 +73,34 @@ version: x
     --guest-width: 1373px;
 }
 
+.guest-main,
+.guest-header,
+.guest-footer {
+    width: 100%;
+}
+
+.guest-main {
+    max-width: none;
+    margin: 0;
+    padding: 19px 19px 39px;
+}
+
+.guest-hero,
+.guest-card-grid,
+.guest-story-wrap,
+.guest-tape {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@media (min-width: 1100px) {
+    .guest-main {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
 *,
 *::before,
 *::after {
