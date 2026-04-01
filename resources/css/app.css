@@ -56,6 +56,43 @@ version: x
     --app-icon-slate-bg: #edf2f7;
 }
 
+
+
+.market-bg-shell {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.market-bg-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0.73;
+}
+
+.guest-body {
+    position: relative;
+    overflow-x: clip;
+}
+
+.guest-page {
+    position: relative;
+    z-index: 1;
+}
+
+.guest-buzles {
+    pointer-events: none;
+}
+
+@media (max-width: 767px) {
+    .market-bg-canvas {
+        opacity: 0.56;
+    }
+}
+
 *,
 *::before,
 *::after {
