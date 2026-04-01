@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Bismel1')</title>
-   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/market-background.js'])
+   @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
             --guest-bg: #06111f;
