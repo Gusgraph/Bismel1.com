@@ -4056,3 +4056,38 @@ body.guest-body .guest-buzles {
     color: #c9f3ff;
     text-shadow: 0 0 11px rgba(104, 213, 255, 0.08);
 }
+
+/* =====================================================
+   Bismel1 affiliate notice pink-red glow
+   ===================================================== */
+
+.guest-plans-intro-copy__affiliate {
+    display: inline-block;
+    margin: 15px auto 0;
+    padding: 11px 19px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 92, 138, 0.45);
+    background:
+        linear-gradient(135deg, rgba(255, 77, 136, 0.18), rgba(255, 68, 68, 0.14)),
+        rgba(14, 8, 16, 0.27);
+    color: #ffe8f1;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-shadow:
+        0 0 11px rgba(255, 92, 138, 0.31),
+        0 0 19px rgba(255, 68, 68, 0.19);
+    box-shadow:
+        0 0 0 1px rgba(255, 92, 138, 0.08),
+        0 0 19px rgba(255, 92, 138, 0.18),
+        0 0 37px rgba(255, 68, 68, 0.11),
+        inset 0 0 19px rgba(255, 92, 138, 0.06);
+    backdrop-filter: blur(19px);
+    -webkit-backdrop-filter: blur(19px);
+}
+
+.guest-plans-intro-copy__affiliate strong {
+    color: #fff4f8;
+    text-shadow:
+        0 0 11px rgba(255, 130, 170, 0.35),
+        0 0 23px rgba(255, 68, 68, 0.16);
+}

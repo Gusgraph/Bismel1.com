@@ -97,7 +97,7 @@
     <section class="guest-plans-intro-copy" aria-labelledby="products-title">
         <h1 id="products-title" class="guest-plans-intro-copy__title">Choose the product that fits how you want to trade.</h1>
         @if ($hasAffiliatePricing)
-            <p class="guest-plans-intro-copy__affiliate">Affiliate pricing active for <strong>{{ $activeReferralCode }}</strong>.</p>
+            <p class="guest-plans-intro-copy__affiliate">Affiliate pricing active for <strong>{{ $activeReferralCode }}</strong> — save up to 20% on eligible products.</p>
         @endif
         <p class="guest-plans-intro-copy__body">
             Bismel1 is built for traders who want live automation with stronger discipline, clearer execution, and less operational noise once money is on the line.
