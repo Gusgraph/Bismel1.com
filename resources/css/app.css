@@ -281,8 +281,8 @@ body.guest-body {
     width: 100%;
     padding: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(5, 12, 24, 0.83);
-    backdrop-filter: blur(15px);
+    background: transparent;
+    backdrop-filter: none;
 }
 
 .guest-header__inner {
@@ -371,7 +371,7 @@ body.guest-body {
     border: 1px solid var(--guest-line);
     text-decoration: none;
     color: var(--guest-text);
-    background: rgba(255, 255, 255, 0.03);
+    background: transparent;
     transition: transform 140ms ease, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
@@ -419,10 +419,10 @@ body.guest-body {
 .guest-terminal,
 .guest-strip {
     border: 1px solid var(--guest-line);
-    background: var(--guest-surface);
+    background: transparent;
     border-radius: var(--guest-radius);
     box-shadow: var(--guest-shadow);
-    backdrop-filter: blur(18px);
+    backdrop-filter: none;
 }
 
 .guest-panel,
@@ -435,8 +435,7 @@ body.guest-body {
 .guest-panel {
     position: relative;
     overflow: hidden;
-    background:
-        linear-gradient(180deg, rgba(7, 18, 35, 0.88), rgba(7, 15, 28, 0.83));
+    background: transparent;
 }
 
 .guest-panel::after {
@@ -689,8 +688,7 @@ body.guest-body {
 }
 
 .guest-card {
-    background:
-        linear-gradient(180deg, rgba(9, 18, 33, 0.84), rgba(7, 15, 28, 0.76));
+    background: transparent;
 }
 
 .guest-card__title,
@@ -739,8 +737,7 @@ body.guest-body {
 }
 
 .guest-story {
-    background:
-        linear-gradient(180deg, rgba(9, 18, 33, 0.82), rgba(7, 15, 28, 0.73));
+    background: transparent;
 }
 
 .guest-story__label {
@@ -807,6 +804,24 @@ body.guest-body {
     background: rgba(255, 255, 255, 0.03);
     color: var(--guest-text);
 }
+
+/* homepage surface transparency source-of-truth */
+body.guest-body .guest-home-hero__panel,
+body.guest-body .guest-home-terminal,
+body.guest-body .guest-home-feature,
+body.guest-body .guest-home-preview__story,
+body.guest-body .guest-home-preview__cta,
+body.guest-body .guest-home-strip__item,
+body.guest-body .guest-home-terminal__metric,
+body.guest-body .guest-home-terminal__ticker,
+body.guest-body .guest-tape__item {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
 
 .guest-tape__symbol {
     font-weight: 700;
@@ -3113,4 +3128,931 @@ small[aria-hidden='true'],
     .ui-form-section {
         padding: 0.9rem;
     }
+}
+\n\n
+/* restore wide layout + remove red debug */
+.guest-header__inner,
+.guest-main,
+.guest-footer__inner {
+    width: 100%;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.guest-main {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.guest-footer {
+    width: 100%;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.guest-footer__inner {
+    justify-content: flex-start;
+}
+
+@media (min-width: 1100px) {
+    .guest-header__inner,
+    .guest-main,
+    .guest-footer {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .guest-hero {
+        grid-template-columns: minmax(0, 1.35fr) minmax(419px, 0.65fr);
+        gap: 15px;
+    }
+}
+
+.market-bg-shell {
+    background: transparent !important;
+}
+\n
+
+
+/* neon 7px border override */
+body.guest-body .guest-panel,
+body.guest-body .guest-card,
+body.guest-body .guest-story,
+body.guest-body .guest-tape,
+body.guest-body .guest-plan,
+body.guest-body .guest-plans-intro,
+body.guest-body .guest-plan-flow,
+body.guest-body .guest-login,
+body.guest-body .guest-pill,
+body.guest-body .guest-tape__item,
+body.guest-body .guest-plan--featured,
+body.guest-body .guest-plan--addon,
+body.guest-body .guest-plan--demo,
+body.guest-body .guest-home-hero__panel,
+body.guest-body .guest-home-terminal,
+body.guest-body .guest-home-feature,
+body.guest-body .guest-home-preview__story,
+body.guest-body .guest-home-preview__cta,
+body.guest-body .guest-home-strip__item,
+body.guest-body .guest-home-terminal__metric,
+body.guest-body .guest-home-terminal__ticker {
+    border: 7px solid rgba(104, 213, 255, 0.73) !important;
+    box-shadow:
+        0 0 7px rgba(104, 213, 255, 0.55),
+        0 0 19px rgba(104, 213, 255, 0.27),
+        0 0 39px rgba(104, 213, 255, 0.13) !important;
+}
+
+body.guest-body .guest-header,
+body.guest-body .guest-footer__inner,
+body.guest-body .guest-nav__link,
+body.guest-body .guest-cta,
+body.guest-body .guest-story__link,
+body.guest-body .guest-login .ui-form-actions button {
+    border: 7px solid rgba(104, 213, 255, 0.73) !important;
+    box-shadow:
+        0 0 7px rgba(104, 213, 255, 0.55),
+        0 0 19px rgba(104, 213, 255, 0.27),
+        0 0 39px rgba(104, 213, 255, 0.13) !important;
+}
+
+
+
+
+/* neon 1px border override */ 
+body.guest-body .guest-panel,
+body.guest-body .guest-card,
+body.guest-body .guest-story,
+body.guest-body .guest-tape,
+body.guest-body .guest-plan,
+body.guest-body .guest-plans-intro,
+body.guest-body .guest-plan-flow,
+body.guest-body .guest-login,
+body.guest-body .guest-pill,
+body.guest-body .guest-tape__item,
+body.guest-body .guest-plan--featured,
+body.guest-body .guest-plan--addon,
+body.guest-body .guest-plan--demo,
+body.guest-body .guest-home-hero__panel,
+body.guest-body .guest-home-terminal,
+body.guest-body .guest-home-feature,
+body.guest-body .guest-home-preview__story,
+body.guest-body .guest-home-preview__cta,
+body.guest-body .guest-home-strip__item,
+body.guest-body .guest-home-terminal__metric,
+body.guest-body .guest-home-terminal__ticker {
+    border: 1px solid rgba(104, 213, 255, 0.73) !important; 
+    box-shadow:
+        0 0 7px rgba(104, 213, 255, 0.55),
+        0 0 19px rgba(104, 213, 255, 0.27),
+        0 0 39px rgba(104, 213, 255, 0.13) !important;
+}
+
+body.guest-body .guest-header,
+body.guest-body .guest-footer__inner,
+body.guest-body .guest-nav__link,
+body.guest-body .guest-cta,
+body.guest-body .guest-story__link,
+body.guest-body .guest-login .ui-form-actions button {
+    border: 1px solid rgba(104, 213, 255, 0.73) !important; 
+    box-shadow:
+        0 0 7px rgba(104, 213, 255, 0.55),
+        0 0 19px rgba(104, 213, 255, 0.27),
+        0 0 39px rgba(104, 213, 255, 0.13) !important;
+}
+
+
+
+
+
+/* targeted terminal/footer frame cleanup */
+body.guest-body .guest-home-terminal__metric,
+body.guest-body .guest-home-terminal__ticker,
+body.guest-body .guest-footer__inner {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+body.guest-body .guest-footer__inner {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* hero capability strip frame cleanup */
+body.guest-body .guest-home-strip,
+body.guest-body .guest-home-strip__item {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* homepage card transparency stage */
+body.guest-body .guest-home-hero__panel,
+body.guest-body .guest-home-terminal,
+body.guest-body .guest-home-feature,
+body.guest-body .guest-home-preview__story,
+body.guest-body .guest-home-preview__cta,
+body.guest-body .guest-tape,
+body.guest-body .guest-tape__item {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* header transparency cleanup */
+body.guest-body .guest-header {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* final guest header transparency */
+body.guest-body .guest-header {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* header-only transparency cleanup */
+body.guest-body .guest-header,
+body.guest-body .guest-header::before,
+body.guest-body .guest-header::after {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+body.guest-body .guest-page::before,
+body.guest-body .guest-page::after,
+body.guest-body .guest-buzles {
+    opacity: 0 !important;
+}
+
+
+/* infrastructure behind the bot */
+.guest-home-stack {
+    margin: 0 0 1.35rem;
+}
+
+.guest-home-stack__card {
+    width: 100%;
+    padding: 1.55rem;
+}
+
+.guest-home-stack__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 15px;
+    align-items: stretch;
+}
+
+.guest-home-stack__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    min-height: 127px;
+    padding: 19px 15px;
+    border-radius: 19px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    text-align: center;
+    color: var(--guest-text);
+    font-size: 0.85rem;
+    line-height: 1.35;
+}
+
+.guest-home-stack__logo {
+    width: auto;
+    max-width: 127px;
+    height: 39px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.88;
+}
+
+.guest-home-stack__logo--brand {
+    height: 51px;
+    max-width: 73px;
+    filter: none;
+    opacity: 1;
+}
+
+@media (max-width: 1100px) {
+    .guest-home-stack__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .guest-home-stack__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .guest-home-stack__item {
+        min-height: 111px;
+    }
+
+    .guest-home-stack__logo {
+        max-width: 111px;
+        height: 31px;
+    }
+}
+
+/* =====================================================
+   Bismel1 plans page
+   ===================================================== */
+
+.guest-plans-hero {
+    margin-bottom: 19px;
+}
+
+.guest-plans-hero__panel {
+    padding: 27px;
+}
+
+.guest-plans-hero__split {
+    margin-top: 19px;
+}
+
+.guest-plans-section-intro {
+    margin: 19px 0 15px;
+}
+
+.guest-plan-grid {
+    display: grid;
+    gap: 19px;
+    margin-bottom: 19px;
+}
+
+.guest-plan-grid--products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.guest-plan-grid--support,
+.guest-plan-grid--addons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.guest-plans-flagship {
+    margin-bottom: 19px;
+}
+
+.guest-plan-card {
+    position: relative;
+    padding: 23px;
+    border: 1px solid var(--guest-line);
+    border-radius: var(--guest-radius);
+    background: linear-gradient(180deg, rgba(7, 16, 30, 0.91), rgba(5, 12, 23, 0.95));
+    box-shadow: var(--guest-shadow);
+    overflow: hidden;
+}
+
+.guest-plan-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(104, 213, 255, 0.00), rgba(104, 213, 255, 0.45), rgba(140, 123, 255, 0.00));
+    pointer-events: none;
+}
+
+.guest-plan-card--flagship {
+    padding: 27px;
+    border-color: rgba(104, 213, 255, 0.31);
+    background:
+        radial-gradient(circle at top right, rgba(104, 213, 255, 0.09), transparent 27%),
+        radial-gradient(circle at top left, rgba(140, 123, 255, 0.08), transparent 23%),
+        linear-gradient(180deg, rgba(8, 18, 34, 0.96), rgba(5, 11, 21, 0.98));
+    box-shadow: 0 27px 73px rgba(0, 0, 0, 0.38);
+}
+
+.guest-plan-card--muted {
+    border-color: rgba(141, 177, 222, 0.13);
+    background: linear-gradient(180deg, rgba(7, 15, 28, 0.82), rgba(4, 10, 19, 0.9));
+}
+
+.guest-plan-card--demo {
+    background:
+        radial-gradient(circle at top right, rgba(104, 213, 255, 0.06), transparent 23%),
+        linear-gradient(180deg, rgba(7, 16, 30, 0.9), rgba(5, 11, 22, 0.95));
+}
+
+.guest-plan-card--warning {
+    border-color: rgba(251, 191, 36, 0.34);
+    background:
+        radial-gradient(circle at top right, rgba(251, 191, 36, 0.07), transparent 23%),
+        linear-gradient(180deg, rgba(28, 21, 8, 0.9), rgba(16, 13, 7, 0.94));
+}
+
+.guest-plan-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.guest-plan-card__title {
+    margin: 0 0 7px;
+    font-size: clamp(1.19rem, 2vw, 1.65rem);
+    line-height: 1.03;
+    letter-spacing: -0.04em;
+    color: var(--guest-text);
+}
+
+.guest-plan-card--flagship .guest-plan-card__title {
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    font-weight: 800;
+}
+
+.guest-plan-card__body {
+    margin: 0;
+    max-width: 73ch;
+    color: var(--guest-muted);
+}
+
+.guest-plan-card__tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 31px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--guest-line);
+    font-size: 0.73rem;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.guest-plan-card__tag--ready {
+    border-color: rgba(74, 222, 128, 0.28);
+    color: #86efac;
+    background: rgba(74, 222, 128, 0.08);
+}
+
+.guest-plan-card__tag--soon {
+    border-color: rgba(251, 191, 36, 0.24);
+    color: #fcd34d;
+    background: rgba(251, 191, 36, 0.08);
+}
+
+.guest-plan-card__price-row {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 15px;
+    align-items: end;
+    margin-bottom: 19px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.guest-plan-card__price {
+    margin: 0 0 15px;
+    font-size: clamp(1.35rem, 2.4vw, 2.11rem);
+    line-height: 0.97;
+    letter-spacing: -0.05em;
+    color: var(--guest-text);
+}
+
+.guest-plan-card--flagship .guest-plan-card__price {
+    font-size: clamp(2.11rem, 4vw, 3.35rem);
+    margin-bottom: 19px;
+}
+
+.guest-plan-card__meta {
+    margin: 0 0 19px;
+    color: var(--guest-muted);
+    text-align: right;
+}
+
+.guest-plan-card__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 19px;
+}
+
+.guest-plans__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 11px;
+}
+
+.guest-plans__list li {
+    position: relative;
+    padding-left: 19px;
+    color: var(--guest-muted);
+}
+
+.guest-plans__list li::before {
+    content: "";
+    position: absolute;
+    top: 0.53rem;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--guest-accent), var(--guest-accent-strong));
+    box-shadow: 0 0 11px rgba(104, 213, 255, 0.22);
+}
+
+.guest-cta--disabled {
+    opacity: 0.55;
+    cursor: default;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+@media (max-width: 1100px) {
+    .guest-plan-grid--products,
+    .guest-plan-grid--support,
+    .guest-plan-grid--addons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 780px) {
+    .guest-plans-hero__panel,
+    .guest-plan-card,
+    .guest-plan-card--flagship {
+        padding: 19px;
+    }
+
+    .guest-plan-grid--products,
+    .guest-plan-grid--support,
+    .guest-plan-grid--addons,
+    .guest-plan-card__price-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .guest-plan-card__meta {
+        text-align: left;
+    }
+
+    .guest-plan-card__head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =====================================================
+   Bismel1 plans page compression pass
+   ===================================================== */
+
+.guest-plans-section-intro {
+    margin: 15px 0 11px;
+    padding: 15px 19px;
+    min-height: 0;
+    box-shadow: 0 15px 37px rgba(0, 0, 0, 0.21);
+}
+
+.guest-plans-section-intro .guest-card__title {
+    margin-bottom: 7px;
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+    line-height: 1.05;
+}
+
+.guest-plans-section-intro .guest-card__body {
+    max-width: 79ch;
+    font-size: 0.94rem;
+    line-height: 1.45;
+}
+
+.guest-plan-grid {
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.guest-plan-grid--support,
+.guest-plan-grid--addons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.guest-plan-card {
+    padding: 19px;
+}
+
+.guest-plan-card--flagship {
+    padding: 23px;
+}
+
+.guest-plan-card__head {
+    margin-bottom: 11px;
+}
+
+.guest-plan-card__title {
+    margin: 0 0 5px;
+}
+
+.guest-plan-card__price {
+    margin: 0 0 11px;
+}
+
+.guest-plan-card--flagship .guest-plan-card__price {
+    margin-bottom: 15px;
+}
+
+.guest-plan-card__price-row {
+    gap: 11px;
+    margin-bottom: 15px;
+    padding-bottom: 11px;
+}
+
+.guest-plan-card__meta {
+    margin: 0 0 15px;
+    font-size: 0.9rem;
+}
+
+.guest-plans__list {
+    gap: 7px;
+}
+
+.guest-plans__list li {
+    padding-left: 15px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+.guest-login__actions {
+    margin-top: 15px;
+}
+
+@media (max-width: 1100px) {
+    .guest-plan-grid--support,
+    .guest-plan-grid--addons,
+    .guest-plan-grid--products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 780px) {
+    .guest-plan-grid--support,
+    .guest-plan-grid--addons,
+    .guest-plan-grid--products {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .guest-plans-section-intro {
+        padding: 15px;
+    }
+
+    .guest-plan-card,
+    .guest-plan-card--flagship {
+        padding: 15px;
+    }
+}
+
+/* =====================================================
+   Bismel1 plans page heading cleanup
+   ===================================================== */
+
+.guest-plans-heading {
+    position: relative;
+    margin: 15px 0 11px;
+    padding: 0 2px;
+}
+
+.guest-plans-heading .guest-card__title {
+    margin: 0 0 5px;
+    font-size: clamp(1.05rem, 1.6vw, 1.31rem);
+    line-height: 1.05;
+    color: var(--guest-text);
+}
+
+.guest-plans-heading .guest-card__body {
+    margin: 0;
+    max-width: 79ch;
+    color: var(--guest-muted);
+    font-size: 0.93rem;
+    line-height: 1.43;
+}
+
+.guest-plans-heading--warning .guest-card__title {
+    color: #fcd34d;
+}
+
+.guest-plans-heading + .guest-plan-grid {
+    margin-top: 0;
+}
+
+.guest-plan-card {
+    min-height: 0;
+}
+
+.guest-plan-card .guest-login__actions {
+    margin-top: 11px;
+}
+
+.guest-plan-card .guest-cta {
+    min-width: 0;
+}
+
+.guest-plan-grid--support {
+    align-items: start;
+}
+
+.guest-plan-grid--addons {
+    align-items: start;
+}
+
+/* =====================================================
+   Bismel1 plans intro copy
+   ===================================================== */
+
+.guest-plans-intro-copy {
+    max-width: 973px;
+    margin: 19px auto 23px;
+    padding: 11px 15px 0;
+    text-align: center;
+}
+
+.guest-plans-intro-copy__eyebrow {
+    margin: 0 0 11px;
+    font-size: 0.73rem;
+    line-height: 1.19;
+    text-transform: uppercase;
+    letter-spacing: 0.19em;
+    color: var(--guest-accent);
+    text-shadow: 0 0 19px rgba(104, 213, 255, 0.19);
+}
+
+.guest-plans-intro-copy__title {
+    margin: 0 0 15px;
+    font-size: clamp(2.11rem, 5vw, 4.35rem);
+    line-height: 0.94;
+    letter-spacing: -0.07em;
+    color: var(--guest-text);
+    text-wrap: balance;
+}
+
+.guest-plans-intro-copy__body {
+    margin: 0 auto;
+    max-width: 79ch;
+    font-size: 1.01rem;
+    line-height: 1.7;
+    color: var(--guest-muted);
+}
+
+.guest-plans-flagship {
+    margin-top: 11px;
+}
+
+.guest-plan-card--flagship .guest-card__eyebrow,
+.guest-plan-card--flagship .guest-plan-card__title {
+    text-shadow: 0 0 15px rgba(104, 213, 255, 0.14);
+}
+
+.guest-plan-card--flagship .guest-plan-card__title {
+    color: #f4fbff;
+}
+
+@media (max-width: 780px) {
+    .guest-plans-intro-copy {
+        margin: 15px auto 19px;
+        padding: 11px 0 0;
+    }
+
+    .guest-plans-intro-copy__title {
+        font-size: clamp(1.95rem, 11vw, 3.11rem);
+    }
+
+    .guest-plans-intro-copy__body {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+}
+
+/* =====================================================
+   Bismel1 flagship neon pass
+   ===================================================== */
+
+.guest-plan-card--flagship {
+    border-color: rgba(104, 213, 255, 0.55);
+    background:
+        radial-gradient(circle at top right, rgba(104, 213, 255, 0.13), transparent 27%),
+        radial-gradient(circle at top left, rgba(140, 123, 255, 0.12), transparent 23%),
+        linear-gradient(180deg, rgba(8, 18, 34, 0.97), rgba(4, 11, 22, 0.99));
+    box-shadow:
+        0 0 0 1px rgba(104, 213, 255, 0.08),
+        0 0 27px rgba(104, 213, 255, 0.16),
+        0 0 73px rgba(104, 213, 255, 0.11),
+        0 27px 73px rgba(0, 0, 0, 0.38);
+}
+
+.guest-plan-card--flagship::before {
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        rgba(104, 213, 255, 0.00),
+        rgba(104, 213, 255, 0.95),
+        rgba(140, 123, 255, 0.72),
+        rgba(104, 213, 255, 0.00)
+    );
+    box-shadow: 0 0 19px rgba(104, 213, 255, 0.34);
+}
+
+.guest-plan-card--flagship .guest-plan-card__title {
+    color: #f8fcff;
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.18),
+        0 0 27px rgba(104, 213, 255, 0.08);
+}
+
+.guest-plan-card--flagship .guest-plan-card__price {
+    color: #ffffff;
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.16),
+        0 0 19px rgba(104, 213, 255, 0.09);
+}
+
+/* =====================================================
+   Bismel1 plan card transparency alignment
+   ===================================================== */
+
+.guest-plan-card,
+.guest-plan-card--muted,
+.guest-plan-card--demo,
+.guest-plan-card--warning {
+    background: rgba(7, 16, 30, 0.19) !important;
+    backdrop-filter: blur(19px);
+    -webkit-backdrop-filter: blur(19px);
+}
+
+.guest-plan-card--flagship {
+    background:
+        radial-gradient(circle at top right, rgba(104, 213, 255, 0.08), transparent 27%),
+        radial-gradient(circle at top left, rgba(140, 123, 255, 0.07), transparent 23%),
+        rgba(7, 16, 30, 0.19) !important;
+    backdrop-filter: blur(19px);
+    -webkit-backdrop-filter: blur(19px);
+}
+
+/* =====================================================
+   Bismel1 ready card neon state
+   ===================================================== */
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) {
+    border-color: rgba(104, 213, 255, 0.34);
+    box-shadow:
+        0 0 0 1px rgba(104, 213, 255, 0.07),
+        0 0 19px rgba(104, 213, 255, 0.09),
+        0 0 37px rgba(104, 213, 255, 0.06),
+        0 19px 55px rgba(0, 0, 0, 0.27);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready)::before {
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        rgba(104, 213, 255, 0.00),
+        rgba(104, 213, 255, 0.73),
+        rgba(140, 123, 255, 0.51),
+        rgba(104, 213, 255, 0.00)
+    );
+    box-shadow: 0 0 15px rgba(104, 213, 255, 0.19);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__tag--ready {
+    border-color: rgba(104, 213, 255, 0.37);
+    background: rgba(104, 213, 255, 0.09);
+    color: #c9f3ff;
+    box-shadow:
+        0 0 11px rgba(104, 213, 255, 0.08),
+        inset 0 0 11px rgba(104, 213, 255, 0.04);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__title {
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.07),
+        0 0 19px rgba(104, 213, 255, 0.04);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__price {
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.08),
+        0 0 15px rgba(104, 213, 255, 0.04);
+}
+
+/* =====================================================
+   Bismel1 live state neon boost
+   ===================================================== */
+
+.guest-plan-card__tag--ready,
+.guest-plan-card__tag--live {
+    border-color: rgba(104, 213, 255, 0.55);
+    color: #e6fbff;
+    background:
+        linear-gradient(135deg, rgba(104, 213, 255, 0.17), rgba(140, 123, 255, 0.14));
+    box-shadow:
+        0 0 11px rgba(104, 213, 255, 0.14),
+        inset 0 0 11px rgba(104, 213, 255, 0.07);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready),
+.guest-plan-card:has(.guest-plan-card__tag--live) {
+    border-color: rgba(104, 213, 255, 0.47);
+    box-shadow:
+        0 0 0 1px rgba(104, 213, 255, 0.11),
+        0 0 19px rgba(104, 213, 255, 0.15),
+        0 0 55px rgba(104, 213, 255, 0.11),
+        0 19px 61px rgba(0, 0, 0, 0.29);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready)::before,
+.guest-plan-card:has(.guest-plan-card__tag--live)::before {
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        rgba(104, 213, 255, 0.00),
+        rgba(104, 213, 255, 0.97),
+        rgba(140, 123, 255, 0.77),
+        rgba(104, 213, 255, 0.00)
+    );
+    box-shadow:
+        0 0 15px rgba(104, 213, 255, 0.29),
+        0 0 27px rgba(104, 213, 255, 0.16);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__title,
+.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__title {
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.11),
+        0 0 23px rgba(104, 213, 255, 0.08);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__price,
+.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__price {
+    text-shadow:
+        0 0 11px rgba(104, 213, 255, 0.12),
+        0 0 19px rgba(104, 213, 255, 0.09);
+}
+
+/* affiliate price notice */
+.guest-plans-intro-copy__affiliate {
+    margin: 11px 0 0;
+    font-size: 0.91rem;
+    line-height: 1.45;
+    color: #c9f3ff;
+    text-shadow: 0 0 11px rgba(104, 213, 255, 0.08);
 }

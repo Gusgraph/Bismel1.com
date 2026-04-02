@@ -333,14 +333,14 @@
                     </span>
 
                     <span>
-                        <p class="guest-brand__eyebrow">AI markets and automation</p>
+                        <p class="guest-brand__eyebrow">AI-guided trading and execution</p>
                         <p class="guest-brand__title">Bismel1</p>
                     </span>
                 </a>
 
                 <nav class="guest-nav" aria-label="Guest navigation">
                     <p class="guest-nav__label">Trader Access</p>
-                    <a href="{{ route('plans') }}" class="guest-nav__link">Plans</a>
+                    <a href="{{ route('plans') }}" class="guest-nav__link">Products</a>
                     <a href="{{ route('login') }}" class="guest-nav__link guest-nav__link--primary">Login</a>
                 </nav>
             </div>

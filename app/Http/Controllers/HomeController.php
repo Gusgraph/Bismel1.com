@@ -13,6 +13,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubscriptionPlan;
+use App\Support\Billing\ReferralTrackingService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -22,7 +23,7 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function plans(Request $request)
+    public function plans(Request $request, ReferralTrackingService $referralTrackingService)
     {
         $signupEntry = route('signup');
         $testSpeedExecute = config('stripe.test_speed_execute');
@@ -177,7 +178,10 @@ class HomeController extends Controller
             ]);
         })->values();
 
+        $activeReferralCode = $referralTrackingService->currentCode($request);
+
         return view('plans', [
+            'activeReferralCode' => $activeReferralCode,
             'basePlans' => $catalog->where('group', 'base')->values()->all(),
             'addOnPlans' => $catalog->where('group', 'addon')->values()->all(),
             'testingPlans' => $catalog->where('group', 'testing')->values()->all(),
