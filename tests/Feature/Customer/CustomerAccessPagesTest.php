@@ -57,7 +57,7 @@ class CustomerAccessPagesTest extends TestCase
         $response->assertDontSeeText($otherAccount->name);
     }
 
-    public function test_customer_pages_remain_reachable_for_a_user_without_any_account_context(): void
+    public function test_customer_pages_are_forbidden_for_a_user_without_customer_access(): void
     {
         $user = User::factory()->create();
 
@@ -76,8 +76,8 @@ class CustomerAccessPagesTest extends TestCase
         foreach ($pages as $route => $title) {
             $response = $this->actingAs($user)->get(route($route));
 
-            $response->assertOk();
-            $response->assertSeeText($title);
+            $response->assertForbidden();
+            $response->assertSeeText('That page is outside your current access.');
         }
     }
 
@@ -87,10 +87,10 @@ class CustomerAccessPagesTest extends TestCase
 
         $expectations = [
             'customer.dashboard' => ['Billing', 'Missing', 'License'],
-            'customer.broker.index' => ['No local broker connection or credential records were found yet for this broker view.'],
-            'customer.license.index' => ['No local API license or API key records were found yet for this license view.'],
-            'customer.onboarding.index' => ['Workspace', 'Ready', 'Subscription', 'Not ready yet: no subscription record found', 'API Key', 'Not ready yet: no saved API key found'],
-            'customer.reports.index' => ['No linked plan', '0 total invoice records', 'No recent activity'],
+            'customer.broker.index' => ['Alpaca Not Connected Yet', 'No broker connection details are available yet. Connect Alpaca first, then return here to verify the linked account.', 'No saved broker access is available yet.'],
+            'customer.license.index' => ['License access has not been added yet', 'License details will appear here after access is added.', 'Use this status when a saved key is ready to use.'],
+            'customer.onboarding.index' => ['Workspace', 'Ready:', 'Subscription', 'Still needed: choose and activate a plan', 'API Key', 'Still needed: save API access'],
+            'customer.reports.index' => ['No active plan yet', '0 total invoices', 'No recent activity yet'],
         ];
 
         foreach ($expectations as $route => $messages) {
@@ -116,17 +116,30 @@ class CustomerAccessPagesTest extends TestCase
         config()->set('firestore.project_id', 'local-runtime-project');
         config()->set('firestore.credentials', '/tmp/does-not-exist-firestore-service-account.json');
 
-        foreach ([
-            'customer.dashboard' => 'Customer Dashboard',
-            'customer.onboarding.index' => 'Customer Onboarding',
-            'customer.reports.index' => 'Customer Reports',
-        ] as $route => $title) {
+        $expectations = [
+            'customer.dashboard' => [
+                'title' => 'Customer Dashboard',
+                'messages' => [],
+            ],
+            'customer.onboarding.index' => [
+                'title' => 'Customer Onboarding',
+                'messages' => ['Runtime Readiness', 'Firestore Runtime Mapping', 'Unavailable', 'The configured Firestore credentials file is missing or not readable'],
+            ],
+            'customer.reports.index' => [
+                'title' => 'Customer Reports',
+                'messages' => ['Runtime Signals', 'Firestore Runtime Mapping', 'Unavailable', 'The configured Firestore credentials file is missing or not readable'],
+            ],
+        ];
+
+        foreach ($expectations as $route => $expectation) {
             $response = $this->actingAs($user)->get(route($route));
 
             $response->assertOk();
-            $response->assertSeeText($title);
-            $response->assertSeeText('Runtime-support signals are currently unavailable.');
-            $response->assertSeeText('The configured Firestore credentials file is missing or not readable');
+            $response->assertSeeText($expectation['title']);
+
+            foreach ($expectation['messages'] as $message) {
+                $response->assertSeeText($message);
+            }
         }
     }
 
@@ -169,8 +182,8 @@ class CustomerAccessPagesTest extends TestCase
         $response = $this->actingAs($user)->get(route('customer.billing.index'));
 
         $response->assertOk();
-        $response->assertSeeText('Current Subscription Missing');
-        $response->assertSeeText('No subscription record was found yet for the current accessible account');
+        $response->assertSeeText('No active subscription is available for this workspace yet.');
+        $response->assertSeeText('Choose a package to start billing for this workspace and unlock the matching Bismel1 product access after the subscription becomes active.');
     }
 
     public function test_customer_settings_update_persists_to_the_current_user(): void
@@ -244,7 +257,7 @@ class CustomerAccessPagesTest extends TestCase
         $settingsResponse = $this->actingAs($user)->get(route('customer.settings.index'));
 
         $settingsResponse->assertOk();
-        $settingsResponse->assertSeeText('Customer settings now read from persisted user and current account records.');
+        $settingsResponse->assertSeeText('Your account settings are ready.');
         $settingsResponse->assertSeeText('Workspace Context');
         $settingsResponse->assertSeeText('Customer Detail Account');
         $settingsResponse->assertSeeText('Display Name');
@@ -310,7 +323,7 @@ class CustomerAccessPagesTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeText('No Invoices Yet');
-        $response->assertSeeText('No invoice records were found yet for the current accessible account.');
+        $response->assertSeeText('Invoices will appear here after the first billing event is recorded for this workspace.');
     }
 
     public function test_customer_invoices_page_prefers_the_current_users_accessible_account_over_a_global_first_accounts_invoice(): void

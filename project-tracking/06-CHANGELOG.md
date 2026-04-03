@@ -1,6 +1,16 @@
 # Changelog
 
 ## 2026-04-03
+- Cleaned stale customer feature coverage to match the approved current customer route gating, broker form contract, and current customer page copy without reshaping the UI
+- Polished the customer dashboard to align more closely with the intended trading-first control surface
+- Moved `Latest Activity` into the five main dashboard blocks and trimmed the sidebar down to the real desk-check rail
+- Tightened customer dashboard wording so the top strip, main blocks, and side panel read as a live trading desk instead of a generic workspace summary
+- Tightened the authenticated app shell by reducing the sidebar brand block to a compact mark and removing the sidebar helper copy/footer logout section
+- Added a minimal top-right three-dots menu in the shared shell and moved `Profile`, `Billing`, `Settings`, and `Logout` into it for customer pages
+- Kept the cleaned customer left nav unchanged while making the shared shell more compact and premium
+- Cleaned the customer left nav down to the intended final menu order: `Dashboard`, `Automation`, `Broker`, `Positions`, `Orders`, `Activity`, `Plans & Billing`, and `Settings`
+- Removed legacy customer left-nav items for `Account`, `Strategy`, `License`, `Onboarding`, `Invoices`, and `Reports` without deleting their routes or pages
+- Updated the collapsed customer rail in the shared app shell so it no longer exposes `Account` and now uses `Plans & Billing`
 - Fixed customer `Dashboard`, `Onboarding`, and `Reports` 500s by catching missing Firestore credential failures in the three customer controllers and returning an unavailable runtime-summary card instead of crashing
 - Removed the public `Home` left-nav group from the customer workspace shell so customer navigation stays inside the workspace
 - Added a focused customer regression test for the missing-Firestore-credentials failure path seen in production QA

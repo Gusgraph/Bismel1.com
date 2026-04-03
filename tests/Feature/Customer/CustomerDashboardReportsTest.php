@@ -92,16 +92,17 @@ class CustomerDashboardReportsTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeText('Customer Onboarding');
-        $response->assertSeeText('Setup progress is now driven by live local readiness signals.');
+        $response->assertSeeText('Setup progress is visible from the current workspace state.');
         $response->assertSeeText($account->name);
         $response->assertSeeText($user->email);
         $response->assertSeeText('Onboarding Plan');
-        $response->assertSeeText('Broker Connection');
+        $response->assertSeeText('Alpaca Connection');
         $response->assertSeeText('Onboarding Broker');
         $response->assertSeeText('License');
         $response->assertSeeText('Onboarding License');
         $response->assertSeeText('Invoices');
         $response->assertSeeText('INV-ONBOARD-001');
+        $response->assertSeeText('Readiness checklist');
         $response->assertSeeText('Recent Activity');
         $response->assertSeeText('onboarding_review');
         $response->assertSeeText('***7890');
@@ -184,14 +185,10 @@ class CustomerDashboardReportsTest extends TestCase
         $response->assertSeeText($account->name);
         $response->assertSeeText($account->slug);
         $response->assertSeeText('Dashboard Plan');
-        $response->assertSeeText('1 connections / 1 credentials');
-        $response->assertSeeText('1 licenses / 1 keys');
-        $response->assertSeeText('Onboarding Readiness');
+        $response->assertSeeText('Trading Readiness');
         $response->assertSeeText('Readiness Score');
-        $response->assertSeeText('5/5');
-        $response->assertSeeText('Recent Activity');
+        $response->assertSeeText('Latest Activity');
         $response->assertSeeText('dashboard_review');
-        $response->assertSeeText('Encrypted token ending in ***7890');
         $response->assertDontSeeText('token-local-7890');
     }
 
@@ -224,10 +221,12 @@ class CustomerDashboardReportsTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeText($account->name);
-        $response->assertSeeText('Billing');
+        $response->assertSeeText('Trading Readiness');
         $response->assertSeeText('Missing');
-        $response->assertSeeText('License');
-        $response->assertSeeText('No saved API key');
+        $response->assertSeeText('Readiness Score');
+        $response->assertSeeText('1/5');
+        $response->assertSeeText('Connect Alpaca');
+        $response->assertSeeText('Review automation state');
     }
 
     public function test_customer_reports_page_renders_real_db_backed_summary_reads(): void
@@ -303,16 +302,16 @@ class CustomerDashboardReportsTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeText('Customer Reports');
-        $response->assertSeeText('Customer reporting is now a readable workspace snapshot instead of a raw data dump.');
+        $response->assertSeeText('Your workspace summary is ready.');
         $response->assertSeeText($account->name);
         $response->assertSeeText('Reporting Plan');
-        $response->assertSeeText('1 total invoice records');
+        $response->assertSeeText('1 total invoices');
         $response->assertSeeText('1 paid / 0 open');
-        $response->assertSeeText('Setup Coverage');
-        $response->assertSeeText('4 of 4 ready');
-        $response->assertSeeText('Recent Signals');
+        $response->assertSeeText('Workspace coverage');
+        $response->assertSeeText('4 of 4 complete');
+        $response->assertSeeText('Status snapshot');
         $response->assertSeeText('report_review');
-        $response->assertSeeText('Saved API keys are present locally');
+        $response->assertSeeText('Saved API access is ready for this workspace');
         $response->assertDontSeeText('token-local-7890');
     }
 }

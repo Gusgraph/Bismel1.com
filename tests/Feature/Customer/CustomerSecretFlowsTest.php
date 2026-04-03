@@ -6,6 +6,8 @@ use App\Models\ApiKey;
 use App\Models\ApiLicense;
 use App\Models\BrokerConnection;
 use App\Models\BrokerCredential;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -20,21 +22,31 @@ class CustomerSecretFlowsTest extends TestCase
     public function test_customer_broker_store_persists_credentials_and_only_renders_masked_metadata(): void
     {
         [$user, $account] = $this->createAccessContext();
+        $plan = SubscriptionPlan::factory()->create(['name' => 'Broker Access Plan']);
+
+        Subscription::query()->create([
+            'account_id' => $account->id,
+            'subscription_plan_id' => $plan->id,
+            'status' => 'active',
+            'starts_at' => now()->subDay(),
+            'stripe_confirmed_at' => now()->subDay(),
+        ]);
 
         $accessKeyId = 'LOCALKEY-1234567890';
         $accessSecret = 'secret-local-XY';
 
         $response = $this->actingAs($user)->post(route('customer.broker.store'), [
-            'provider' => 'placeholder_primary',
+            'provider' => 'alpaca',
             'account_label' => 'Primary Local Broker',
             'access_mode' => 'read_only',
-            'environment' => 'sandbox',
+            'environment' => 'paper',
+            'market_data_feed' => 'iex',
             'access_key_id' => $accessKeyId,
             'access_secret' => $accessSecret,
         ]);
 
         $response->assertRedirect(route('customer.broker.index'));
-        $response->assertSessionHas('status', 'Broker access was saved locally. Secret values remain encrypted at rest and only masked broker metadata is shown.');
+        $response->assertSessionHas('status', 'Alpaca access was saved locally as a separate linked account. Secret values remain encrypted at rest, only masked connection metadata is shown, and feed plus sync-readiness metadata are ready for later automation services.');
 
         $connection = BrokerConnection::query()->where('account_id', $account->id)->first();
 
@@ -42,7 +54,7 @@ class CustomerSecretFlowsTest extends TestCase
         $this->assertDatabaseHas('broker_connections', [
             'id' => $connection->id,
             'account_id' => $account->id,
-            'broker' => 'placeholder_primary',
+            'broker' => 'alpaca',
             'name' => 'Primary Local Broker',
         ]);
 
@@ -52,7 +64,7 @@ class CustomerSecretFlowsTest extends TestCase
         $this->assertSame('saved', $credential->status);
         $this->assertSame($accessKeyId, $credential->credential_payload['access_key_id']);
         $this->assertSame($accessSecret, $credential->credential_payload['access_secret']);
-        $this->assertSame('Saved, encrypted at rest, key ***7890, secret ***XY, Sandbox, Read only', $credential->maskedSummary());
+        $this->assertSame('Alpaca Saved, encrypted at rest, key ****7890, secret ****XY, Paper, Read only', $credential->maskedSummary());
 
         $storedPayload = DB::table('broker_credentials')->where('id', $credential->id)->value('credential_payload');
 
@@ -95,8 +107,8 @@ class CustomerSecretFlowsTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeText('Customer Broker');
-        $response->assertSeeText('Connection Inventory');
-        $response->assertSeeText('Credential Detail');
+        $response->assertSeeText('Linked Account Inventory');
+        $response->assertSeeText('Masked Credential Metadata');
         $response->assertSeeText('Broker Detail Account');
         $response->assertSeeText('broker-detail-account');
         $response->assertSeeText('Customer Detail Broker');
@@ -118,12 +130,22 @@ class CustomerSecretFlowsTest extends TestCase
             'name' => 'Z Current User Account',
             'slug' => 'z-current-user-account',
         ]);
+        $plan = SubscriptionPlan::factory()->create(['name' => 'Scoped Broker Plan']);
+
+        Subscription::query()->create([
+            'account_id' => $account->id,
+            'subscription_plan_id' => $plan->id,
+            'status' => 'active',
+            'starts_at' => now()->subDay(),
+            'stripe_confirmed_at' => now()->subDay(),
+        ]);
 
         $response = $this->actingAs($user)->post(route('customer.broker.store'), [
-            'provider' => 'placeholder_primary',
+            'provider' => 'alpaca',
             'account_label' => 'Scoped Broker',
             'access_mode' => 'read_only',
-            'environment' => 'sandbox',
+            'environment' => 'paper',
+            'market_data_feed' => 'iex',
             'access_key_id' => 'LOCALKEY-1234567890',
             'access_secret' => 'secret-local-XY',
         ]);
@@ -139,42 +161,53 @@ class CustomerSecretFlowsTest extends TestCase
         ]);
     }
 
-    public function test_customer_broker_store_redirects_cleanly_when_no_current_account_is_available(): void
+    public function test_customer_broker_store_is_forbidden_when_the_user_has_no_customer_access(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('customer.broker.store'), [
-            'provider' => 'placeholder_primary',
+            'provider' => 'alpaca',
             'account_label' => 'No Account Broker',
             'access_mode' => 'read_only',
-            'environment' => 'sandbox',
+            'environment' => 'paper',
+            'market_data_feed' => 'iex',
             'access_key_id' => 'LOCALKEY-1234567890',
             'access_secret' => 'secret-local-XY',
         ]);
 
-        $response->assertRedirect(route('customer.broker.create'));
-        $response->assertSessionHas('status', 'Broker access was not saved because no current customer workspace record is available.');
+        $response->assertForbidden();
+        $response->assertSeeText('That page is outside your current access.');
         $this->assertDatabaseCount('broker_connections', 0);
         $this->assertDatabaseCount('broker_credentials', 0);
     }
 
     public function test_customer_broker_store_only_shows_masked_values_after_redirect_back_to_the_index(): void
     {
-        [$user] = $this->createAccessContext();
+        [$user, $account] = $this->createAccessContext();
+        $plan = SubscriptionPlan::factory()->create(['name' => 'Masked Broker Plan']);
+
+        Subscription::query()->create([
+            'account_id' => $account->id,
+            'subscription_plan_id' => $plan->id,
+            'status' => 'active',
+            'starts_at' => now()->subDay(),
+            'stripe_confirmed_at' => now()->subDay(),
+        ]);
 
         $response = $this->actingAs($user)
             ->followingRedirects()
             ->post(route('customer.broker.store'), [
-                'provider' => 'placeholder_primary',
+                'provider' => 'alpaca',
                 'account_label' => 'Masked Redirect Broker',
                 'access_mode' => 'read_only',
-                'environment' => 'sandbox',
+                'environment' => 'paper',
+                'market_data_feed' => 'iex',
                 'access_key_id' => 'LOCALKEY-1234567890',
                 'access_secret' => 'secret-local-XY',
             ]);
 
         $response->assertOk();
-        $response->assertSeeText('Broker access was saved locally. Secret values remain encrypted at rest and only masked broker metadata is shown.');
+        $response->assertSeeText('Alpaca access was saved locally as a separate linked account. Secret values remain encrypted at rest, only masked connection metadata is shown, and feed plus sync-readiness metadata are ready for later automation services.');
         $response->assertSeeText('Masked Redirect Broker');
         $response->assertSeeText('***7890');
         $response->assertSeeText('***XY');
@@ -265,7 +298,7 @@ class CustomerSecretFlowsTest extends TestCase
         $response->assertDontSeeText('token-local-7890');
     }
 
-    public function test_customer_license_store_redirects_cleanly_when_no_current_account_is_available(): void
+    public function test_customer_license_store_is_forbidden_when_the_user_has_no_customer_access(): void
     {
         $user = User::factory()->create();
 
@@ -276,8 +309,8 @@ class CustomerSecretFlowsTest extends TestCase
             'expires_at' => '2026-12-31 00:00:00',
         ]);
 
-        $response->assertRedirect(route('customer.license.create'));
-        $response->assertSessionHas('status', 'License access was not saved because no current customer workspace record is available.');
+        $response->assertForbidden();
+        $response->assertSeeText('That page is outside your current access.');
         $this->assertDatabaseCount('api_licenses', 0);
         $this->assertDatabaseCount('api_keys', 0);
     }
