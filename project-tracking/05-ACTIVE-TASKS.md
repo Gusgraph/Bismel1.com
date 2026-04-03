@@ -1,18 +1,17 @@
 # Active tasks
 
 ## Done
-- Inspect current customer/admin qualification rules in `User`, signup flow, and local auth seeder
-- Remove plain account ownership as implicit admin access
-- Change signup-created membership to customer-only default behavior
-- Update local auth demo seeder so customer and admin demo accounts reflect real intended roles
-- Add focused tests for ownership-only users, signup users, and local auth demo users
-- Update tracking files to follow the global access-rule fix task
+- Inspect customer routes and live 500 causes for dashboard, onboarding, and reports
+- Confirm all three customer 500s come from the same missing Firestore credentials exception path
+- Add a controller-local Firestore fallback for the three broken customer pages
+- Remove the public `Home` left-nav group from the customer workspace shell
+- Add a focused regression test for missing Firestore credentials on the broken customer pages
+- Update tracking files for the customer workspace QA task
 
 ## Current
-- Run focused auth/login/access validation after the global rule change
-- Review for any blocker in the signup-to-customer-only path
+- Run focused validation for `customer.dashboard`, `customer.onboarding.index`, and `customer.reports.index`
+- Confirm no second customer-page failure remains after the Firestore fallback
 
 ## Next
-- Verify both local demo accounts in-browser after reseeding auth fixtures
-- Review whether any older fixtures or setup docs still assume new signups are admin-capable
+- Verify customer left-menu structure in-browser after the nav cleanup
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit

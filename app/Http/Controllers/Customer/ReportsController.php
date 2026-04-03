@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Domain\Billing\Enums\SubscriptionStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Customer\Concerns\HandlesFirestoreSummary;
 use App\Support\Customer\CurrentCustomerAccountResolver;
 use App\Support\Firestore\FirestoreBridge;
 use App\Support\Navigation\CustomerNavigation;
@@ -21,6 +22,8 @@ use App\Support\ViewData\CustomerReportsPageData;
 
 class ReportsController extends Controller
 {
+    use HandlesFirestoreSummary;
+
     public function index(CurrentCustomerAccountResolver $currentCustomerAccountResolver, FirestoreBridge $firestoreBridge)
     {
         $user = request()->user();
@@ -38,9 +41,7 @@ class ReportsController extends Controller
         $activityLogs = $account?->activityLogs ?? collect();
         $paidInvoices = $invoices->filter(fn ($invoice) => $invoice->status === 'paid');
         $hasReportData = (bool) ($account || $subscription || $invoices->isNotEmpty() || $brokerConnections->isNotEmpty() || $licenses->isNotEmpty() || $activityLogs->isNotEmpty() || $signals->isNotEmpty() || $botRuns->isNotEmpty());
-        $firestoreReadSummary = $user
-            ? $firestoreBridge->readUserIntegrationSummary($user, $account)
-            : ['status' => 'not_mapped', 'headline' => 'This user is not mapped to Firestore yet.', 'details' => 'No signed-in user is available for Firestore summary.', 'items' => []];
+        $firestoreReadSummary = $this->safeFirestoreReadSummary($firestoreBridge, $user, $account);
         $data = CustomerReportsPageData::make(
             $account,
             [

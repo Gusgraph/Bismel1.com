@@ -13,6 +13,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Customer\Concerns\HandlesFirestoreSummary;
 use App\Support\Customer\CurrentCustomerAccountResolver;
 use App\Support\Firestore\FirestoreBridge;
 use App\Support\Navigation\CustomerNavigation;
@@ -21,6 +22,8 @@ use App\Support\ViewData\OnboardingPageData;
 
 class OnboardingController extends Controller
 {
+    use HandlesFirestoreSummary;
+
     public function index(CurrentCustomerAccountResolver $currentCustomerAccountResolver, FirestoreBridge $firestoreBridge)
     {
         $user = request()->user();
@@ -33,9 +36,7 @@ class OnboardingController extends Controller
         $license = $account?->apiLicenses->first();
         $apiKey = $license?->apiKeys?->sortByDesc('id')->first();
         $alertData = CustomerAlertData::make();
-        $firestoreReadSummary = $user
-            ? $firestoreBridge->readUserIntegrationSummary($user, $account)
-            : ['status' => 'not_mapped', 'headline' => 'This user is not mapped to Firestore yet.', 'details' => 'No signed-in user is available for Firestore summary.', 'items' => []];
+        $firestoreReadSummary = $this->safeFirestoreReadSummary($firestoreBridge, $user, $account);
         $data = OnboardingPageData::make($account, $user, [
             'current_subscription' => $subscription,
             'current_broker_connection' => $brokerConnection,

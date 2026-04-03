@@ -36,6 +36,9 @@
 
         $customerItems = \App\Support\Navigation\CustomerNavigation::items();
         $adminItems = \App\Support\Navigation\AdminNavigation::items();
+        $user = request()->user();
+        $canSeeCustomerWorkspace = $user?->hasCustomerAccess() ?? false;
+        $canSeeAdminWorkspace = $user?->hasAdminAccess() ?? false;
 
         if (request()->routeIs('customer.*')) {
             $currentSection = 'Customer';
@@ -50,11 +53,11 @@
             $contextDescription = 'Sign in to continue into the customer or admin workspace.';
         }
 
-        $navigationGroups = [
-            ['title' => 'General', 'items' => $publicItems],
-            ['title' => 'Customer Workspace', 'items' => $customerItems],
-            ['title' => 'Admin Workspace', 'items' => $adminItems],
-        ];
+        $navigationGroups = array_values(array_filter([
+            request()->routeIs('customer.*') ? null : ['title' => 'General', 'items' => $publicItems],
+            $canSeeCustomerWorkspace ? ['title' => 'Customer Workspace', 'items' => $customerItems] : null,
+            $canSeeAdminWorkspace ? ['title' => 'Admin Workspace', 'items' => $adminItems] : null,
+        ]));
 
         $isRouteActive = static function (?string $itemRoute) use ($routeName): bool {
             if (!$itemRoute || !$routeName) {

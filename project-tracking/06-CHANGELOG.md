@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2026-04-03
+- Fixed customer `Dashboard`, `Onboarding`, and `Reports` 500s by catching missing Firestore credential failures in the three customer controllers and returning an unavailable runtime-summary card instead of crashing
+- Removed the public `Home` left-nav group from the customer workspace shell so customer navigation stays inside the workspace
+- Added a focused customer regression test for the missing-Firestore-credentials failure path seen in production QA
 - Fixed the global access rule so plain account ownership no longer grants admin access
 - Changed signup-created users to receive customer-only membership by default while still creating their workspace
 - Updated `LocalAuthUsersSeeder` so `customer.local@gusgraph.test` is customer-only and `admin.local@gusgraph.test` is explicitly admin-capable

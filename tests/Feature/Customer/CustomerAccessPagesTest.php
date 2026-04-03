@@ -104,6 +104,32 @@ class CustomerAccessPagesTest extends TestCase
         }
     }
 
+    public function test_customer_dashboard_onboarding_and_reports_survive_missing_firestore_credentials(): void
+    {
+        [$user] = $this->createAccessContext();
+
+        $user->forceFill([
+            'firestore_uid' => 'runtime-user-local-001',
+        ])->save();
+
+        config()->set('firestore.enabled', true);
+        config()->set('firestore.project_id', 'local-runtime-project');
+        config()->set('firestore.credentials', '/tmp/does-not-exist-firestore-service-account.json');
+
+        foreach ([
+            'customer.dashboard' => 'Customer Dashboard',
+            'customer.onboarding.index' => 'Customer Onboarding',
+            'customer.reports.index' => 'Customer Reports',
+        ] as $route => $title) {
+            $response = $this->actingAs($user)->get(route($route));
+
+            $response->assertOk();
+            $response->assertSeeText($title);
+            $response->assertSeeText('Runtime-support signals are currently unavailable.');
+            $response->assertSeeText('The configured Firestore credentials file is missing or not readable');
+        }
+    }
+
     public function test_customer_billing_page_renders_real_db_backed_subscription_data(): void
     {
         [$user, $account] = $this->createAccessContext();
