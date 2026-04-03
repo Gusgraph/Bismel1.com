@@ -25,14 +25,20 @@
     @endphp
 
     @include('partials.ui.breadcrumbs', ['items' => $breadcrumbs])
-    @include('partials.ui.page-shell', ['headerPartial' => 'customer.partials.page-header', 'page' => $page])
+    @include('partials.ui.page-shell', [
+        'headerPartial' => 'customer.partials.page-header',
+        'page' => $page,
+        'summary' => [
+            'eyebrow' => 'Automation posture',
+            'title' => $summary['headline'],
+            'body' => $summary['details'],
+            'icon' => 'fa-solid fa-robot',
+            'tone' => 'amber',
+        ],
+    ])
     @include('partials.ui.section-nav', ['title' => 'Customer Section Navigation', 'items' => $sectionNavItems])
 
     <div class="customer-page customer-page--automation">
-        <section class="customer-page__hero">
-            @include('partials.ui.info-card', ['title' => $summary['headline'], 'body' => $summary['details'], 'symbol' => 'ﷺ'])
-        </section>
-
         <div class="customer-page__grid customer-page__grid--sidebar">
             <div class="customer-page__main">
                 <section class="customer-section">

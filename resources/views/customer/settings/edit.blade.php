@@ -15,13 +15,19 @@
 @section('title', 'Edit Profile Settings')
 
 @section('content')
-    @include('partials.ui.page-shell', ['headerPartial' => 'customer.partials.page-header', 'page' => $page])
+    @include('partials.ui.page-shell', [
+        'headerPartial' => 'customer.partials.page-header',
+        'page' => $page,
+        'summary' => [
+            'eyebrow' => 'Profile update',
+            'title' => 'Update your profile',
+            'body' => 'Keep the visible account details used across your workspace current. Broker access, billing, and protected credentials are not changed here.',
+            'icon' => 'fa-solid fa-id-card',
+            'tone' => 'amber',
+        ],
+    ])
 
     <div class="customer-form-page">
-        <section class="customer-page__hero">
-            @include('partials.ui.info-card', ['title' => 'Update your profile', 'body' => 'Keep the visible account details used across your workspace current. Broker access, billing, and protected credentials are not changed here.', 'symbol' => '﷽'])
-        </section>
-
         <form class="ui-card ui-form-stack customer-form-card" method="POST" action="{{ route('customer.settings.update') }}">
             @csrf
             @method('PUT')

@@ -15,13 +15,19 @@
 @section('title', 'Add Alpaca Connection')
 
 @section('content')
-    @include('partials.ui.page-shell', ['headerPartial' => 'customer.partials.page-header', 'page' => $page])
+    @include('partials.ui.page-shell', [
+        'headerPartial' => 'customer.partials.page-header',
+        'page' => $page,
+        'summary' => [
+            'eyebrow' => 'Broker setup',
+            'title' => 'Connect Alpaca',
+            'body' => 'Save the Alpaca connection for this workspace, confirm whether it is paper or live, and return to the broker page to verify readiness. Secrets stay hidden after save and only masked identifiers remain visible.',
+            'icon' => 'fa-solid fa-plug-circle-bolt',
+            'tone' => 'blue',
+        ],
+    ])
 
     <div class="customer-form-page">
-        <section class="customer-page__hero">
-            @include('partials.ui.info-card', ['title' => 'Connect Alpaca', 'body' => 'Save the Alpaca connection for this workspace, confirm whether it is paper or live, and return to the broker page to verify readiness. Secrets stay hidden after save and only masked identifiers remain visible.', 'symbol' => 'ﷺ'])
-        </section>
-
         <form class="ui-card ui-form-stack customer-form-card" method="POST" action="{{ route('customer.broker.store') }}">
             @csrf
 

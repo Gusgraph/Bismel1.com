@@ -1,6 +1,35 @@
 # Changelog
 
 ## 2026-04-03
+- Ran a final authenticated customer finishing pass across the shared shell and customer page hierarchy without changing auth, routing, controllers, or data flow
+- Moved repeated customer summary/hero copy for automation, broker, trading, billing, settings, and related customer forms into the shared page-intro surface so the top of those pages no longer stacks multiple heavy bars
+- Added a shared page-intro summary slot and responsive flagship layout so customer page intros can carry the main summary cleanly in both dark and light mode
+- Rebalanced authenticated customer visual hierarchy so shell surfaces stay strongest, page intros stay flagship, module cards sit at medium weight, and list rows/readiness items use softer supporting surfaces
+- Reduced over-framing by replacing repeated 3px inset treatment on many customer-only surfaces with lighter border, inset, and shadow combinations
+- Softened customer breadcrumbs and section navigation into support bands instead of treating them like primary cards
+- Tightened customer icon sizing, heading alignment, left-nav spacing, and topbar/menu treatment so billing and dashboard stay in the same premium operator-grade family
+- Kept the current customer sidebar nav, compact top-right menu, and `bismel1.app-theme` light/dark toggle behavior intact while refining the finish layer
+- Verified the Blade/view layer still compiles by running `php artisan view:clear` and `php artisan view:cache`
+- Ran a focused authenticated customer theme cleanup pass after the theme-toggle regression fix
+- Replaced the top-left authenticated left-rail placeholder mark with the real `images/logo.png` app logo
+- Kept the nearby hidden symbol decorative but pushed it further into the background and made it fully non-interactive
+- Fixed the customer page intro / hero header surface so light mode now uses the light flagship surface tokens instead of a hard-coded dark gradient
+- Reworked shared authenticated icon surfaces to use theme-derived foreground and background variables instead of fixed pale gradient stops that weakened dark-mode contrast
+- Normalized the remaining customer-shell glow, inset, focus-ring, and flagship shadow treatments onto dark/light customer tokens to reduce mixed-theme leftovers
+- Fixed the authenticated shell theme regression by aligning the customer dark/light token overrides with the same root `data-app-theme` selector used by the `bismel1.app-theme` toggle
+- Restored the top-right customer menu trigger and panel border/glow treatment after the recent customer visual-system pass
+- Ran one unified visual styling pass across the authenticated customer area using the existing theme-switch foundation
+- Added customer-route shell classes so premium customer styling stays scoped away from guest and admin areas
+- Reworked the customer shell, topbar, left nav, breadcrumbs, page intro, cards, forms, list rows, summary tiles, and dashboard panels into one coherent operator-grade visual system
+- Pushed dark mode toward the intended near-black/deep-navy premium AI trading feel with restrained electric-cyan glow accents and consistent 3px border treatment
+- Kept light mode functional and clean using the same customer visual system tokens instead of one-off dark-only overrides
+- Upgraded the customer dashboard top strip, main blocks, readiness side panel, and action links so the dashboard reads as the flagship operator surface
+- Brought customer automation, broker, trading pages, billing, and settings into the same visual family without changing route structure or business logic
+- Reworked the billing plan catalog away from inline styling onto reusable customer visual classes and existing button/input components
+- Added a real authenticated app-shell theme foundation with dark mode as the default premium AI trading look and a clean light fallback
+- Added a compact theme switch inside the top-right authenticated shell menu
+- Persisted the authenticated shell theme choice with `localStorage` so theme state survives refresh without changing DB direction
+- Reworked shared authenticated shell colors onto reusable theme tokens for the sidebar, topbar, cards, form surfaces, and dashboard-adjacent panels
 - Cleaned stale customer feature coverage to match the approved current customer route gating, broker form contract, and current customer page copy without reshaping the UI
 - Polished the customer dashboard to align more closely with the intended trading-first control surface
 - Moved `Latest Activity` into the five main dashboard blocks and trimmed the sidebar down to the real desk-check rail

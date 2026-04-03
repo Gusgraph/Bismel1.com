@@ -25,14 +25,20 @@
     @endphp
 
     @include('partials.ui.breadcrumbs', ['items' => $breadcrumbs])
-    @include('partials.ui.page-shell', ['headerPartial' => 'customer.partials.page-header', 'page' => $page])
+    @include('partials.ui.page-shell', [
+        'headerPartial' => 'customer.partials.page-header',
+        'page' => $page,
+        'summary' => [
+            'eyebrow' => 'Workspace settings',
+            'title' => $summary['headline'],
+            'body' => $summary['details'],
+            'icon' => 'fa-solid fa-sliders',
+            'tone' => 'violet',
+        ],
+    ])
     @include('partials.ui.section-nav', ['title' => 'Customer Section Navigation', 'items' => $sectionNavItems])
 
     <div class="customer-page customer-page--settings">
-        <section class="customer-page__hero">
-            @include('partials.ui.info-card', ['title' => $summary['headline'], 'body' => $summary['details'], 'symbol' => '﷽'])
-        </section>
-
         <div class="customer-page__grid customer-page__grid--sidebar">
             <div class="customer-page__main">
                 <section class="customer-section">

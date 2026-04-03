@@ -25,14 +25,20 @@
     @endphp
 
     @include('partials.ui.breadcrumbs', ['items' => $breadcrumbs])
-    @include('partials.ui.page-shell', ['headerPartial' => 'customer.partials.page-header', 'page' => $page])
+    @include('partials.ui.page-shell', [
+        'headerPartial' => 'customer.partials.page-header',
+        'page' => $page,
+        'summary' => [
+            'eyebrow' => 'Plans and billing',
+            'title' => $summary['headline'],
+            'body' => $summary['details'],
+            'icon' => 'fa-solid fa-wallet',
+            'tone' => 'emerald',
+        ],
+    ])
     @include('partials.ui.section-nav', ['title' => 'Customer Section Navigation', 'items' => $sectionNavItems])
 
     <div class="customer-page customer-page--billing">
-        <section class="customer-page__hero">
-            @include('partials.ui.info-card', ['title' => $summary['headline'], 'body' => $summary['details'], 'symbol' => 'ﷺ'])
-        </section>
-
         @if (!empty($checkoutBanner))
             <section class="customer-page__hero">
                 @include('partials.ui.info-card', ['title' => $checkoutBanner['title'] ?? 'Billing update', 'body' => $checkoutBanner['body'] ?? null])
