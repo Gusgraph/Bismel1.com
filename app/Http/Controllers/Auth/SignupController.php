@@ -86,7 +86,7 @@ class SignupController extends Controller
 
             $account->users()->syncWithoutDetaching([
                 $user->getKey() => [
-                    'role' => AccountRole::Owner->value,
+                    'role' => AccountRole::Member->value,
                     'status' => 'active',
                     'joined_at' => now(),
                 ],

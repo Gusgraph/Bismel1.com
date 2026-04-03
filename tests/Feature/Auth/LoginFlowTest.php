@@ -12,6 +12,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Domain\Account\Enums\AccountRole;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +32,7 @@ class LoginFlowTest extends TestCase
         $response->assertSeeText('Login');
     }
 
-    public function test_valid_customer_login_redirects_to_customer_dashboard(): void
+    public function test_valid_customer_login_redirects_to_customer_billing_when_subscription_is_not_active(): void
     {
         $user = User::factory()->create([
             'email' => 'customer@example.test',
@@ -56,7 +57,7 @@ class LoginFlowTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect(route('customer.dashboard'));
+        $response->assertRedirect(route('customer.billing.index'));
         $this->assertAuthenticatedAs($user);
     }
 
@@ -113,7 +114,7 @@ class LoginFlowTest extends TestCase
         $adminResponse->assertRedirect(route('login'));
     }
 
-    public function test_non_admin_user_requesting_an_admin_route_is_redirected_to_a_safe_area_after_login(): void
+    public function test_non_admin_user_requesting_an_admin_route_is_redirected_to_customer_billing_when_subscription_is_not_active(): void
     {
         $user = User::factory()->create([
             'email' => 'member@example.test',
@@ -140,8 +141,30 @@ class LoginFlowTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect(route('customer.dashboard'));
+        $response->assertRedirect(route('customer.billing.index'));
         $this->assertAuthenticatedAs($user);
         $this->actingAs($user)->get(route('admin.dashboard'))->assertForbidden();
+    }
+
+    public function test_new_signup_creates_a_customer_only_user_by_default(): void
+    {
+        $response = $this->post(route('signup.store'), [
+            'name' => 'New Customer',
+            'workspace_name' => 'New Customer Workspace',
+            'email' => 'new-customer@example.test',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $user = User::query()->where('email', 'new-customer@example.test')->firstOrFail();
+        $account = Account::query()->where('owner_user_id', $user->id)->firstOrFail();
+        $membership = $account->users()->where('users.id', $user->id)->first();
+
+        $response->assertRedirect(route('customer.billing.index'));
+        $this->assertAuthenticatedAs($user);
+        $this->assertNotNull($membership);
+        $this->assertSame(AccountRole::Member->value, $membership->pivot->role);
+        $this->assertTrue($user->fresh()->hasCustomerAccess());
+        $this->assertFalse($user->fresh()->hasAdminAccess());
     }
 }

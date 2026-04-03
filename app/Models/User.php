@@ -40,14 +40,13 @@ class User extends Authenticatable
 
     public function hasAdminAccess(): bool
     {
-        return $this->ownedAccounts()->exists()
-            || $this->accounts()
-                ->wherePivot('status', 'active')
-                ->wherePivotIn('role', [
-                    AccountRole::Owner->value,
-                    AccountRole::Admin->value,
-                ])
-                ->exists();
+        return $this->accounts()
+            ->wherePivot('status', 'active')
+            ->wherePivotIn('role', [
+                AccountRole::Owner->value,
+                AccountRole::Admin->value,
+            ])
+            ->exists();
     }
 
     public function accounts(): BelongsToMany

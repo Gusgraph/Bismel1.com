@@ -1,42 +1,31 @@
 # Current status
 
 ## Working
-- Homepage renders correctly with no 500 errors
-- Domain folder remains the live source repo
-- Guest homepage layout is stable again after shared CSS cleanup
-- Products page is redesigned and live
-- Public products page supports affiliate-aware display pricing when referral tracking is active
-- Prime, Execution, roadmap products, add-ons, and Demo Access are all structured on the products page
-- Affiliate notice is visible at the top only when affiliate pricing is active
-- Products page and homepage desktop widths were tightened selectively without changing the final two homepage sections
-- Header label was changed from Plans to Products
-- Git push to Bismel1.com repo works
+- Global access rule fix is now the active task
+- Customer access still comes from active account ownership or active membership
+- Admin access now needs explicit admin-capable membership instead of plain account ownership
+- New signups should enter as customer-only by default for cleaner real-user and demo-user behavior
+- Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
-- Rebuilt products page structure around real products instead of generic pricing tiers
-- Added affiliate-aware pricing notice with pink-red glow styling
-- Added discounted label and previous-price strike display for affiliate pricing state
-- Changed status language from Ready to Live
-- Added green live-state glow styling
-- Tightened products page desktop widths
-- Restored homepage shared guest styling after products-page CSS bleed
-- Adjusted homepage desktop width so main sections are tighter while Infrastructure Behind the Bot and Live Market Feed stay full width
-- Fixed mobile header nav button sizing
-- Added stronger product copy for Prime, Execution, Demo Access, and add-ons
-- Confirmed affiliate pricing works in a clean browser state
+- Removed plain account ownership as a source of admin access
+- Changed signup-created membership from admin-capable owner role to customer-only member role
+- Updated local auth demo seeder so `customer.local@gusgraph.test` is customer-only and `admin.local@gusgraph.test` is admin-capable
+- Added focused tests for ownership-only users, signup-created users, and local auth demo users
 
 ## Current truth
 - Live app path: /var/www/html/bismel1.com
 - Repo path: /var/www/html/bismel1.com
 - Remote: git@github.com:Gusgraph/Bismel1.com.git
-- Latest pushed commit should be checked with git log when needed
+- Current date for this task pass: 2026-04-03 UTC
 
 ## Important implementation note
-- Prime Stocks Bot Trader on the products page uses its own hardcoded bullet list in resources/views/plans.blade.php
-- Changes to HomeController product item arrays do not affect that flagship bullet list
+- This pass does not change auth architecture, shared models, or database direction
+- Admin access now requires an active membership role of `owner` or `admin`
+- New signups still create a workspace owned by the user, but the linked membership is customer-only by default
+- Middleware remains the enforcement layer; access maps are descriptive and inspection-oriented
 
 ## Next
-- Clean app.css further to reduce stacked products-page additions and keep shared guest rules cleaner
-- Review homepage and products page side by side for final visual polish
-- Decide whether affiliate pricing should persist from referral capture or be URL-only on the public products page
-- Clean leftover local backup files and stray working-tree changes when ready
+- Validate signup, login, and access routing after the membership-role change
+- Verify `customer.local@gusgraph.test` and `admin.local@gusgraph.test` in-browser after reseeding local auth users
+- Decide later whether newly created workspace owners should ever be elevated into explicit admin membership through a separate admin flow

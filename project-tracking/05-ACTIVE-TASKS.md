@@ -1,37 +1,18 @@
 # Active tasks
 
 ## Done
-- Fix homepage 500
-- Fix guest layout Blade syntax
-- Remove old source path
-- Create and verify new GitHub repo
-- Restore full-width homepage layout
-- Make guest header transparent
-- Make homepage cards transparent
-- Restore visible animated market background
-- Add AI signal lock markers to market background
-- Add mouse interaction to signal locks
-- Add mouse repulsion to background particles
-- Revise homepage hero/supporting copy
-- Add infrastructure section above Live Market Feed
-- Fix stack logos enough for current preview state
-- Redesign public products page
-- Replace Plans label with Products
-- Add affiliate-aware pricing display to public products page
-- Add affiliate pricing notice styling
-- Add discounted state display with prior-price strike
-- Convert Ready state to Live state
-- Add live-state green glow styling
-- Tighten homepage and products page desktop widths selectively
-- Restore homepage shared styles after products-page CSS bleed
-- Fix mobile header nav button size
+- Inspect current customer/admin qualification rules in `User`, signup flow, and local auth seeder
+- Remove plain account ownership as implicit admin access
+- Change signup-created membership to customer-only default behavior
+- Update local auth demo seeder so customer and admin demo accounts reflect real intended roles
+- Add focused tests for ownership-only users, signup users, and local auth demo users
+- Update tracking files to follow the global access-rule fix task
 
 ## Current
-- Validate final homepage and products page visual state
-- Keep tracking files current after each UI/content pass
+- Run focused auth/login/access validation after the global rule change
+- Review for any blocker in the signup-to-customer-only path
 
 ## Next
-- Clean app.css to reduce stacked products-page overrides
-- Review whether affiliate pricing on the public products page should persist by stored referral state or only appear on explicit referral URLs
-- Clean leftover local backup files and stray repo state
-- Final polish pass on homepage and products page copy and spacing
+- Verify both local demo accounts in-browser after reseeding auth fixtures
+- Review whether any older fixtures or setup docs still assume new signups are admin-capable
+- Keep unrelated dirty files and backup artifacts out of any later staging or commit

@@ -63,7 +63,7 @@ class LocalAuthUsersSeeder extends Seeder
 
         $adminAccount->users()->syncWithoutDetaching([
             $admin->id => [
-                'role' => 'owner',
+                'role' => 'admin',
                 'status' => 'active',
                 'joined_at' => now(),
             ],
