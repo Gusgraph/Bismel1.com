@@ -17,6 +17,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Laravel')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        .app-shell-mark {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 37px;
+            height: 37px;
+            border-radius: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .app-shell-mark__glyph,
+        .app-shell-mark__halo {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .app-shell-mark__glyph {
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            line-height: 1;
+            opacity: 0.84;
+        }
+
+        .app-shell-mark__halo {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 29px;
+            line-height: 1;
+            opacity: 0.045;
+            transform: translateY(-1px);
+        }
+
+        .app-topbar__menu {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .app-topbar__menu-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 37px;
+            height: 37px;
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.92);
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .app-topbar__menu-panel {
+            position: absolute;
+            top: calc(100% + 9px);
+            right: 0;
+            min-width: 191px;
+            padding: 9px;
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            border-radius: 17px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 17px 39px rgba(15, 23, 42, 0.11);
+            backdrop-filter: blur(11px);
+            z-index: 40;
+        }
+
+        .app-topbar__menu-panel[hidden] {
+            display: none;
+        }
+
+        .app-topbar__menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .app-topbar__menu-item + .app-topbar__menu-item {
+            margin-top: 5px;
+        }
+
+        .app-topbar__menu-link,
+        .app-topbar__menu-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 37px;
+            padding: 9px 11px;
+            border: 0;
+            border-radius: 11px;
+            background: transparent;
+            color: inherit;
+            text-align: left;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .app-topbar__menu-link:hover,
+        .app-topbar__menu-link:focus-visible,
+        .app-topbar__menu-button:hover,
+        .app-topbar__menu-button:focus-visible,
+        .app-topbar__menu-link.is-active {
+            background: rgba(15, 23, 42, 0.06);
+            outline: none;
+        }
+    </style>
 </head>
 <body class="app-body">
     @php
@@ -24,7 +137,6 @@
         $pageTitle = trim($__env->yieldContent('title', 'Workspace'));
         $currentSection = 'Public';
         $contextLabel = 'Public Area';
-        $contextDescription = 'Open the public landing area or continue into a workspace.';
 
         $publicItems = [
             [
@@ -43,14 +155,11 @@
         if (request()->routeIs('customer.*')) {
             $currentSection = 'Customer';
             $contextLabel = 'Customer Workspace';
-            $contextDescription = 'Account-level setup, billing, broker, reporting, and settings areas.';
         } elseif (request()->routeIs('admin.*')) {
             $currentSection = 'Admin';
             $contextLabel = 'Admin Workspace';
-            $contextDescription = 'Platform oversight, reporting, system, account, and audit areas.';
         } elseif (request()->routeIs('login*')) {
             $contextLabel = 'Session Access';
-            $contextDescription = 'Sign in to continue into the customer or admin workspace.';
         }
 
         $navigationGroups = array_values(array_filter([
@@ -96,7 +205,8 @@
         $collapsedRailLinks = match (true) {
             request()->routeIs('customer.*') => [
                 ['route' => 'customer.dashboard', 'icon' => 'fa-solid fa-chart-line', 'tooltip' => 'Dashboard'],
-                ['route' => 'customer.account.index', 'icon' => 'fa-solid fa-user', 'tooltip' => 'Account'],
+                ['route' => 'customer.automation.index', 'icon' => 'fa-solid fa-robot', 'tooltip' => 'Automation'],
+                ['route' => 'customer.billing.index', 'icon' => 'fa-solid fa-credit-card', 'tooltip' => 'Plans & Billing'],
                 ['route' => 'customer.settings.index', 'icon' => 'fa-solid fa-sliders', 'tooltip' => 'Settings'],
             ],
             request()->routeIs('admin.*') => [
@@ -108,6 +218,14 @@
                 ['route' => 'home', 'icon' => 'fa-solid fa-house', 'tooltip' => 'Home'],
             ],
         };
+
+        $shellMenuItems = array_values(array_filter([
+            $canSeeCustomerWorkspace ? ['label' => 'Profile', 'route' => 'customer.settings.edit'] : null,
+            $canSeeCustomerWorkspace ? ['label' => 'Billing', 'route' => 'customer.billing.index'] : null,
+            ($canSeeCustomerWorkspace || request()->routeIs('customer.*'))
+                ? ['label' => 'Settings', 'route' => 'customer.settings.index']
+                : ($canSeeAdminWorkspace ? ['label' => 'Settings', 'route' => 'admin.system.index'] : null),
+        ]));
     @endphp
 
     <div class="app-shell">
@@ -117,8 +235,10 @@
             <div class="app-sidebar__header">
                 <div class="app-sidebar__header-main">
                     <div class="app-sidebar__brand">
-                        <p class="app-sidebar__eyebrow">Gusgraph Trading <span aria-hidden="true" class="app-sidebar__symbol">﷽</span></p>
-                        <h1 class="app-sidebar__title">Workspace Navigation</h1>
+                        <span class="app-shell-mark" aria-label="Workspace">
+                            <span aria-hidden="true" class="app-shell-mark__halo">﷽</span>
+                            <span aria-hidden="true" class="app-shell-mark__glyph">﷽</span>
+                        </span>
                     </div>
 
                     <button
@@ -133,7 +253,6 @@
                         <i class="app-shell-control fa-regular fa-window-maximize" data-shell-toggle-icon aria-hidden="true"></i>
                     </button>
                 </div>
-                <p class="app-sidebar__body">{{ $contextDescription }}</p>
             </div>
 
             <div class="app-sidebar__rail" aria-label="Quick navigation">
@@ -184,23 +303,6 @@
                 @endforeach
             </nav>
 
-            <div class="app-sidebar__footer">
-                <div class="app-sidebar__utility">
-                    <div class="app-sidebar__utility-copy">
-                        <p class="app-sidebar__note">Current area</p>
-                        <p class="app-sidebar__context">{{ $contextLabel }} <span aria-hidden="true" class="app-sidebar__symbol app-sidebar__symbol--footer">ﷻ</span></p>
-                    </div>
-
-                    @auth
-                        <form method="POST" action="{{ route('logout') }}" class="app-sidebar__utility-action">
-                            @csrf
-                            <button type="submit" class="app-sidebar__logout">Logout</button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}" class="app-sidebar__login app-sidebar__utility-action">Login</a>
-                    @endauth
-                </div>
-            </div>
         </aside>
 
         <div class="app-shell__main">
@@ -233,7 +335,43 @@
                     @endif
 
                     @auth
-                        <span class="app-topbar__status">Signed in</span>
+                        <div class="app-topbar__menu" data-shell-menu>
+                            <button
+                                type="button"
+                                class="app-topbar__menu-trigger"
+                                data-shell-menu-trigger
+                                aria-haspopup="menu"
+                                aria-expanded="false"
+                                aria-label="Open account menu"
+                            >
+                                <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="app-topbar__menu-panel" data-shell-menu-panel hidden>
+                                <ul class="app-topbar__menu-list" role="menu" aria-label="Account menu">
+                                    @foreach ($shellMenuItems as $shellMenuItem)
+                                        @php
+                                            $isShellMenuItemActive = $isRouteActive($shellMenuItem['route'] ?? null);
+                                        @endphp
+                                        <li class="app-topbar__menu-item" role="none">
+                                            <a
+                                                href="{{ route($shellMenuItem['route']) }}"
+                                                class="app-topbar__menu-link{{ $isShellMenuItemActive ? ' is-active' : '' }}"
+                                                role="menuitem"
+                                            >
+                                                {{ $shellMenuItem['label'] }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                    <li class="app-topbar__menu-item" role="none">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="app-topbar__menu-button" role="menuitem">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     @else
                         <a href="{{ route('login') }}" class="app-topbar__status-link">Login</a>
                     @endauth
@@ -256,10 +394,25 @@
             const body = document.body;
             const toggleButtons = document.querySelectorAll('[data-shell-toggle]');
             const closeButtons = document.querySelectorAll('[data-shell-close]');
+            const shellMenus = document.querySelectorAll('[data-shell-menu]');
 
             if (!toggleButtons.length) {
                 return;
             }
+
+            const closeMenus = () => {
+                shellMenus.forEach((menu) => {
+                    const trigger = menu.querySelector('[data-shell-menu-trigger]');
+                    const panel = menu.querySelector('[data-shell-menu-panel]');
+
+                    if (!trigger || !panel) {
+                        return;
+                    }
+
+                    panel.hidden = true;
+                    trigger.setAttribute('aria-expanded', 'false');
+                });
+            };
 
             const isDesktop = () => window.innerWidth >= 1100;
 
@@ -312,8 +465,32 @@
                 });
             });
 
+            shellMenus.forEach((menu) => {
+                const trigger = menu.querySelector('[data-shell-menu-trigger]');
+                const panel = menu.querySelector('[data-shell-menu-panel]');
+
+                if (!trigger || !panel) {
+                    return;
+                }
+
+                trigger.addEventListener('click', (event) => {
+                    event.stopPropagation();
+
+                    const shouldOpen = panel.hidden;
+                    closeMenus();
+                    panel.hidden = !shouldOpen;
+                    trigger.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+                });
+
+                panel.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                });
+            });
+
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
+                    closeMenus();
+
                     if (isDesktop()) {
                         setDesktopSidebarState(false);
                         return;
@@ -321,6 +498,10 @@
 
                     setOpenState(false);
                 }
+            });
+
+            document.addEventListener('click', () => {
+                closeMenus();
             });
 
             window.addEventListener('resize', () => {

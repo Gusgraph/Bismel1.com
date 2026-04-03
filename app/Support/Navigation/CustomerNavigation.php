@@ -23,24 +23,14 @@ class CustomerNavigation
                 'description' => 'Review the current workspace overview and setup posture.',
             ],
             [
-                'label' => 'Account',
-                'route' => 'customer.account.index',
-                'description' => 'Review workspace identity, ownership, and membership context.',
+                'label' => 'Automation',
+                'route' => 'customer.automation.index',
+                'description' => 'Review AI control, automation health, scheduler posture, and runtime guardrails.',
             ],
             [
                 'label' => 'Broker',
                 'route' => 'customer.broker.index',
                 'description' => 'Review broker connections and masked credential state.',
-            ],
-            [
-                'label' => 'Strategy',
-                'route' => 'customer.strategy.index',
-                'description' => 'Shape strategy mode, timeframe coverage, watchlists, and style posture for later Python linkage.',
-            ],
-            [
-                'label' => 'Automation',
-                'route' => 'customer.automation.index',
-                'description' => 'Review AI control, automation health, scheduler posture, and runtime guardrails.',
             ],
             [
                 'label' => 'Positions',
@@ -58,29 +48,9 @@ class CustomerNavigation
                 'description' => 'Review safe scanner, risk, execution, and position-manager activity across the current workspace.',
             ],
             [
-                'label' => 'Billing',
+                'label' => 'Plans & Billing',
                 'route' => 'customer.billing.index',
                 'description' => 'Review the current subscription, plan, and billing posture.',
-            ],
-            [
-                'label' => 'License',
-                'route' => 'customer.license.index',
-                'description' => 'Review license records and masked API key detail.',
-            ],
-            [
-                'label' => 'Onboarding',
-                'route' => 'customer.onboarding.index',
-                'description' => 'Review readiness signals across the current workspace.',
-            ],
-            [
-                'label' => 'Invoices',
-                'route' => 'customer.invoices.index',
-                'description' => 'Review invoice history and current billing-linked detail.',
-            ],
-            [
-                'label' => 'Reports',
-                'route' => 'customer.reports.index',
-                'description' => 'Review account-scoped summary signals from local records.',
             ],
             [
                 'label' => 'Settings',
