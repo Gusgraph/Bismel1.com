@@ -1,58 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bismel1
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bismel1 is a premium AI-powered stock trading automation platform being built as a real product, not a mock dashboard.
 
-## About Laravel
+It is designed to give traders a cleaner product experience from landing page through broker connection, automation readiness, runtime visibility, and account management.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Product Goal
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Build a premium trading platform frontend and app layer in Laravel that:
 
-## Learning Laravel
+- presents Bismel1 as an AI-powered trading automation product
+- connects users into Alpaca-based broker workflows
+- gives clear visibility into runtime state, orders, positions, and broker readiness
+- feels like a premium AI trading terminal, not generic SaaS
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Core Product Purpose
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Bismel1 is meant to help traders:
 
-## Agentic Development
+- scan and evaluate market opportunities with clearer signal context
+- manage automation workflows with better visibility
+- monitor positions, orders, broker sync, and runtime readiness
+- operate from a cleaner AI-trading control surface
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Public-facing product language currently leans on:
+
+- AI-powered trading automation
+- real-time market intelligence
+- signal clarity
+- execution visibility
+- operator-grade control
+
+---
+
+## Current Architecture
+
+The system is intentionally split.
+
+### Laravel
+Laravel is the frontend, app, and product layer.
+
+It handles:
+
+- landing pages
+- login / signup
+- dashboard UI
+- billing and product pages
+- broker connection forms
+- user-facing runtime/account views
+- later admin views
+
+### FastAPI / Python Executor
+The execution engine is separate from Laravel.
+
+It handles:
+
+- webhook intake
+- execution logic
+- broker-aware execution workflows
+- runtime processing
+- backend service behavior
+
+### Other Services
+
+- **Alpaca**: broker, account, positions, orders, trading integration
+- **Stripe**: billing
+- **Firestore**: provisioning/runtime data for now
+
+---
+
+## Intended User Flow
+
+### Public Side
+
+- homepage / landing page
+- plans page
+- login / signup
+- product positioning around AI trading automation and market intelligence
+
+### Authenticated App Side
+
+- user dashboard
+- broker connection flow
+- Alpaca account connection and sync
+- automation readiness / runtime state
+- positions / orders / activity
+- account / billing / settings
+- later admin views
+
+---
+
+## Stock Strategy Direction
+
+Bismel1 is a stock-trading product.
+
+Current strategy direction is centered around:
+
+- stock-focused workflows
+- momentum / catalyst / market-structure aware scanning
+- execution-aware operator visibility
+- market intelligence product positioning
+- clean signal-to-action workflow
+
+This is not meant to be a generic finance UI.
+
+---
+
+## Current Repo Reality
+
+Current live working path on the VM:
+
+`/var/www/html/bismel1.com`
+
+This folder is the source of truth.
+
+Important notes:
+
+- old path `/var/www/html/gusgraph-trading` was removed
+- repo remote is GitHub
+- VM-side edits are done directly inside the domain folder
+- homepage and guest layout are under active redesign
+- Laravel guest/public product shell is being shaped first
+- market background JS is already integrated and working
+
+---
+
+## Main Tech Stack
+
+- Laravel
+- Blade
+- Vite
+- Custom CSS / JS
+- FastAPI / Python executor
+- Alpaca
+- Stripe
+- Firestore
+- GitHub
+
+---
+
+## Main Files Currently Important
+
+Frontend / landing work has been centered around:
+
+- `resources/views/layouts/guest.blade.php`
+- `resources/views/home.blade.php`
+- `resources/css/app.css`
+- `resources/js/app.js`
+- `resources/js/market-background.js`
+
+---
+
+## VM Workflow
+
+Main VM context:
+
+- GCP VM: `servgraph-vm-1`
+- VM user: `gusgraphy`
+- web root: `/var/www/html`
+- active domain repo: `/var/www/html/bismel1.com`
+
+Typical session start:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+cd /var/www/html/bismel1.com
+cat project-tracking/00-START-HERE.md
+cat project-tracking/01-CURRENT-STATUS.md
+cat project-tracking/05-ACTIVE-TASKS.md
+cat project-tracking/09-GIT-STATE.md
