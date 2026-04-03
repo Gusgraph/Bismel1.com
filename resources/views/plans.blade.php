@@ -28,21 +28,25 @@
                 'name' => 'Crypto Bot Trader',
                 'summary' => 'Built for traders who want a crypto-focused automation product with the same cleaner Bismel1 operating feel.',
                 'price' => $hasAffiliatePricing ? '$79/month' : '$97/month',
+                'standard_price' => '$97/month',
             ],
             'BISMILLAH_AI_SCANNER' => [
                 'name' => 'AI-guided Market Scanning',
                 'summary' => 'Built for traders who want earlier market context, cleaner scanning, and stronger watchlist preparation before execution.',
                 'price' => $hasAffiliatePricing ? '$79/month' : '$97/month',
+                'standard_price' => '$97/month',
             ],
             'BISMILLAH1_BOT_OVERNIGHT_EQUITIES' => [
                 'name' => 'Overnight Equities Bot',
                 'summary' => 'Built for traders who want an overnight equities product with a steadier hold-through-session workflow.',
                 'price' => $hasAffiliatePricing ? '$79/month' : '$97/month',
+                'standard_price' => '$97/month',
             ],
             'BISMILLAH1_BOT_OPTIONS' => [
                 'name' => 'Options-focused Bot',
                 'summary' => 'Built for traders who want a more structured options workflow with stronger operating clarity.',
                 'price' => $hasAffiliatePricing ? '$79/month' : '$97/month',
+                'standard_price' => '$97/month',
             ],
         ];
 
@@ -53,6 +57,7 @@
                 $plan['display_name'] = 'Prime Stocks Bot Trader';
                 $plan['display_summary'] = 'The flagship Bismel1 trading product, built around the Prime winner strategy with AI oversight, safety layers, and drawdown-margin protection for traders who want stronger control once capital is live.';
                 $plan['display_price'] = $hasAffiliatePricing ? '$79/month' : '$97/month';
+                $plan['display_standard_price'] = '$97/month';
                 $plan['display_state'] = 'Live';
                 $plan['display_action'] = 'Purchase';
                 $flagshipPlan = $plan;
@@ -61,8 +66,9 @@
 
             if ($code === 'BISMILLAH1_BOT_EXECUTE_BASIC') {
                 $plan['display_name'] = 'Execution';
-                $plan['display_summary'] = 'Execution access for traders who want a simpler live product without stepping into a not-ready bot product.';
+                $plan['display_summary'] = 'Execution access for traders who want a simpler live product before moving into the more fully developed bot and strategy products.';
                 $plan['display_price'] = $hasAffiliatePricing ? '$23.97/month' : '$29/month';
+                $plan['display_standard_price'] = '$29/month';
                 $plan['display_state'] = 'Live';
                 $plan['display_action'] = 'Purchase';
                 $executionPlan = $plan;
@@ -78,6 +84,7 @@
             $plan['display_name'] = $mapped['name'];
             $plan['display_summary'] = $mapped['summary'];
             $plan['display_price'] = $mapped['price'];
+            $plan['display_standard_price'] = $mapped['standard_price'] ?? $mapped['price'];
             $plan['display_state'] = 'Coming Soon';
             $plan['display_action'] = 'Coming Soon';
             $comingSoonProducts[] = $plan;
@@ -95,7 +102,7 @@
     @endphp
 
     <section class="guest-plans-intro-copy" aria-labelledby="products-title">
-        <h1 id="products-title" class="guest-plans-intro-copy__title">Choose the product that fits how you want to trade.</h1>
+        <h1 id="products-title" class="guest-plans-intro-copy__title">Choose the product that fits your edge.</h1>
         @if ($hasAffiliatePricing)
             <p class="guest-plans-intro-copy__affiliate">Affiliate pricing active for <strong>{{ $activeReferralCode }}</strong> — save up to 20% on eligible products.</p>
         @endif
@@ -118,15 +125,20 @@
                 </div>
 
                 <div class="guest-plan-card__price-row">
-                    <p class="guest-plan-card__price">{{ $flagshipPlan['display_price'] }}</p>
+                    <div class="guest-plan-card__price-stack">
+                        <p class="guest-plan-card__price">{{ $flagshipPlan['display_price'] }}</p>
+                        @if ($hasAffiliatePricing)
+                            <p class="guest-plan-card__discount">Discounted. <span class="guest-plan-card__discount-was">Was {{ $flagshipPlan['display_standard_price'] }}</span></p>
+                        @endif
+                    </div>
                     <p class="guest-plan-card__meta">Prime Stocks Bot Trader is built for traders who want the strongest Bismel1 stock lane first: the Prime winner strategy, AI oversight across the operating flow, built-in safety logic, and drawdown-margin protection designed to keep the bot more disciplined when pressure rises. It is built for a broad field of U.S.-listed equities and ETFs, then narrowed by the strategy’s own filters, protections, and execution rules to keep selection disciplined.</p>
                 </div>
 
                 <div class="guest-plan-card__content">
                     <ul class="guest-plans__list">
                         <li>Prime winner strategy structure built for stock-focused trading execution.</li>
+                        <li>Includes 1 paper account and 1 live account.</li>
                         <li>AI oversight across the operating flow to keep the product sharper and more readable.</li>
-                        <li>Safety features designed to reduce weak behavior when market conditions get unstable.</li>
                         <li>Drawdown-margin protection logic for stronger risk discipline once automation is live.</li>
                     </ul>
 
@@ -158,7 +170,12 @@
                         <span class="guest-plan-card__tag guest-plan-card__tag--soon">{{ $plan['display_state'] }}</span>
                     </div>
 
-                    <p class="guest-plan-card__price">{{ $plan['display_price'] }}</p>
+                    <div class="guest-plan-card__price-stack">
+                        <p class="guest-plan-card__price">{{ $plan['display_price'] }}</p>
+                        @if ($hasAffiliatePricing)
+                            <p class="guest-plan-card__discount">Discounted. <span class="guest-plan-card__discount-was">Was {{ $plan['display_standard_price'] }}</span></p>
+                        @endif
+                    </div>
 
                     <ul class="guest-plans__list">
                         @foreach ($plan['items'] as $item)
@@ -191,7 +208,12 @@
                     <span class="guest-plan-card__tag guest-plan-card__tag--live">{{ $executionPlan['display_state'] }}</span>
                 </div>
 
-                <p class="guest-plan-card__price">{{ $executionPlan['display_price'] }}</p>
+                <div class="guest-plan-card__price-stack">
+                    <p class="guest-plan-card__price">{{ $executionPlan['display_price'] }}</p>
+                    @if ($hasAffiliatePricing)
+                        <p class="guest-plan-card__discount">Discounted. <span class="guest-plan-card__discount-was">Was {{ $executionPlan['display_standard_price'] }}</span></p>
+                    @endif
+                </div>
 
                 <ul class="guest-plans__list">
                     @foreach ($executionPlan['items'] as $item)

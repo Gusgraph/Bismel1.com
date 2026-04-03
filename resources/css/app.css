@@ -2232,7 +2232,7 @@ h2,
 .admin-header-image-input__file {
     position: absolute;
     width: 1px;
-    height: 1px;
+    height: 3px;
     padding: 0;
     margin: -1px;
     overflow: hidden;
@@ -3457,7 +3457,7 @@ body.guest-body .guest-buzles {
 .guest-plan-card {
     position: relative;
     padding: 23px;
-    border: 1px solid var(--guest-line);
+    border: 3px solid var(--guest-line);
     border-radius: var(--guest-radius);
     background: linear-gradient(180deg, rgba(7, 16, 30, 0.91), rgba(5, 12, 23, 0.95));
     box-shadow: var(--guest-shadow);
@@ -3468,7 +3468,7 @@ body.guest-body .guest-buzles {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 1px;
+    height: 3px;
     background: linear-gradient(90deg, rgba(104, 213, 255, 0.00), rgba(104, 213, 255, 0.45), rgba(140, 123, 255, 0.00));
     pointer-events: none;
 }
@@ -3535,7 +3535,7 @@ body.guest-body .guest-buzles {
     min-height: 31px;
     padding: 7px 11px;
     border-radius: 999px;
-    border: 1px solid var(--guest-line);
+    border: 3px solid var(--guest-line);
     font-size: 0.73rem;
     line-height: 1;
     letter-spacing: 0.14em;
@@ -3901,7 +3901,7 @@ body.guest-body .guest-buzles {
 }
 
 .guest-plan-card--flagship::before {
-    height: 2px;
+    height: 3px;
     background: linear-gradient(
         90deg,
         rgba(104, 213, 255, 0.00),
@@ -3948,114 +3948,7 @@ body.guest-body .guest-buzles {
     -webkit-backdrop-filter: blur(19px);
 }
 
-/* =====================================================
-   Bismel1 ready card neon state
-   ===================================================== */
 
-.guest-plan-card:has(.guest-plan-card__tag--ready) {
-    border-color: rgba(104, 213, 255, 0.34);
-    box-shadow:
-        0 0 0 1px rgba(104, 213, 255, 0.07),
-        0 0 19px rgba(104, 213, 255, 0.09),
-        0 0 37px rgba(104, 213, 255, 0.06),
-        0 19px 55px rgba(0, 0, 0, 0.27);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready)::before {
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        rgba(104, 213, 255, 0.00),
-        rgba(104, 213, 255, 0.73),
-        rgba(140, 123, 255, 0.51),
-        rgba(104, 213, 255, 0.00)
-    );
-    box-shadow: 0 0 15px rgba(104, 213, 255, 0.19);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__tag--ready {
-    border-color: rgba(104, 213, 255, 0.37);
-    background: rgba(104, 213, 255, 0.09);
-    color: #c9f3ff;
-    box-shadow:
-        0 0 11px rgba(104, 213, 255, 0.08),
-        inset 0 0 11px rgba(104, 213, 255, 0.04);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__title {
-    text-shadow:
-        0 0 11px rgba(104, 213, 255, 0.07),
-        0 0 19px rgba(104, 213, 255, 0.04);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__price {
-    text-shadow:
-        0 0 11px rgba(104, 213, 255, 0.08),
-        0 0 15px rgba(104, 213, 255, 0.04);
-}
-
-/* =====================================================
-   Bismel1 live state neon boost
-   ===================================================== */
-
-.guest-plan-card__tag--ready,
-.guest-plan-card__tag--live {
-    border-color: rgba(104, 213, 255, 0.55);
-    color: #e6fbff;
-    background:
-        linear-gradient(135deg, rgba(104, 213, 255, 0.17), rgba(140, 123, 255, 0.14));
-    box-shadow:
-        0 0 11px rgba(104, 213, 255, 0.14),
-        inset 0 0 11px rgba(104, 213, 255, 0.07);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready),
-.guest-plan-card:has(.guest-plan-card__tag--live) {
-    border-color: rgba(104, 213, 255, 0.47);
-    box-shadow:
-        0 0 0 1px rgba(104, 213, 255, 0.11),
-        0 0 19px rgba(104, 213, 255, 0.15),
-        0 0 55px rgba(104, 213, 255, 0.11),
-        0 19px 61px rgba(0, 0, 0, 0.29);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready)::before,
-.guest-plan-card:has(.guest-plan-card__tag--live)::before {
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        rgba(104, 213, 255, 0.00),
-        rgba(104, 213, 255, 0.97),
-        rgba(140, 123, 255, 0.77),
-        rgba(104, 213, 255, 0.00)
-    );
-    box-shadow:
-        0 0 15px rgba(104, 213, 255, 0.29),
-        0 0 27px rgba(104, 213, 255, 0.16);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__title,
-.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__title {
-    text-shadow:
-        0 0 11px rgba(104, 213, 255, 0.11),
-        0 0 23px rgba(104, 213, 255, 0.08);
-}
-
-.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__price,
-.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__price {
-    text-shadow:
-        0 0 11px rgba(104, 213, 255, 0.12),
-        0 0 19px rgba(104, 213, 255, 0.09);
-}
-
-/* affiliate price notice */
-.guest-plans-intro-copy__affiliate {
-    margin: 11px 0 0;
-    font-size: 0.91rem;
-    line-height: 1.45;
-    color: #c9f3ff;
-    text-shadow: 0 0 11px rgba(104, 213, 255, 0.08);
-}
 
 /* =====================================================
    Bismel1 affiliate notice pink-red glow
@@ -4090,4 +3983,230 @@ body.guest-body .guest-buzles {
     text-shadow:
         0 0 11px rgba(255, 130, 170, 0.35),
         0 0 23px rgba(255, 68, 68, 0.16);
+}
+
+/* =====================================================
+   Bismel1 live state green glow boost
+   ===================================================== */
+
+.guest-plan-card__tag--live,
+.guest-plan-card__tag--ready {
+    border-color: rgba(74, 222, 128, 0.58) !important;
+    color: #ecfff3 !important;
+    background:
+        linear-gradient(135deg, rgba(74, 222, 128, 0.21), rgba(22, 163, 74, 0.18)),
+        rgba(7, 18, 11, 0.19) !important;
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.29),
+        0 0 19px rgba(34, 197, 94, 0.17);
+    box-shadow:
+        0 0 0 1px rgba(74, 222, 128, 0.11),
+        0 0 11px rgba(74, 222, 128, 0.19),
+        0 0 23px rgba(34, 197, 94, 0.13),
+        inset 0 0 11px rgba(74, 222, 128, 0.07);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--live),
+.guest-plan-card:has(.guest-plan-card__tag--ready) {
+    border-color: rgba(74, 222, 128, 0.31) !important;
+    box-shadow:
+        0 0 0 1px rgba(74, 222, 128, 0.08),
+        0 0 19px rgba(74, 222, 128, 0.09),
+        0 0 37px rgba(34, 197, 94, 0.07),
+        0 19px 61px rgba(0, 0, 0, 0.29) !important;
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--live)::before,
+.guest-plan-card:has(.guest-plan-card__tag--ready)::before {
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        rgba(74, 222, 128, 0.00),
+        rgba(74, 222, 128, 0.97),
+        rgba(34, 197, 94, 0.81),
+        rgba(74, 222, 128, 0.00)
+    ) !important;
+    box-shadow:
+        0 0 11px rgba(74, 222, 128, 0.31),
+        0 0 23px rgba(34, 197, 94, 0.19);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__title,
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__title {
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.09),
+        0 0 19px rgba(34, 197, 94, 0.06);
+}
+
+.guest-plan-card:has(.guest-plan-card__tag--live) .guest-plan-card__price,
+.guest-plan-card:has(.guest-plan-card__tag--ready) .guest-plan-card__price {
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.11),
+        0 0 15px rgba(34, 197, 94, 0.07);
+}
+
+/* =====================================================
+   Bismel1 discounted label
+   ===================================================== */
+
+.guest-plan-card__price-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.guest-plan-card__discount {
+    margin: 0;
+    font-size: 0.79rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #d9ffe6;
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.31),
+        0 0 19px rgba(34, 197, 94, 0.17);
+}
+
+.guest-plan-card__discount::before {
+    content: "●";
+    margin-right: 7px;
+    color: #86efac;
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.37),
+        0 0 19px rgba(34, 197, 94, 0.21);
+}
+
+/* =====================================================
+   Bismel1 discounted old-price strike
+   ===================================================== */
+
+.guest-plan-card__discount {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.guest-plan-card__discount-was {
+    color: #bdf5ce;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(134, 239, 172, 0.88);
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.13),
+        0 0 19px rgba(34, 197, 94, 0.08);
+    opacity: 0.95;
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Bismel1 products page desktop width
+   ===================================================== */
+
+@media (min-width: 1101px) {
+    .guest-plans-intro-copy,
+    .guest-plans-heading,
+    .guest-plans-flagship,
+    .guest-plan-grid {
+        max-width: 93% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* =====================================================
+   Bismel1 homepage desktop width tighten
+   keep stack + tape full width
+   ===================================================== */
+
+@media (min-width: 1101px) {
+    .guest-hero,
+    .guest-home-feature-grid,
+    .guest-home-preview {
+        max-width: 93% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .guest-home-stack,
+    .guest-tape {
+        max-width: var(--guest-width) !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+/* =====================================================
+   Bismel1 tablet header nav size fix
+   ===================================================== */
+
+@media (min-width: 781px) and (max-width: 1100px) {
+    .guest-nav {
+        gap: 11px;
+        flex-wrap: nowrap;
+    }
+
+    .guest-nav__link {
+        padding: 0.73rem 1.11rem;
+        min-width: 0;
+        width: auto;
+        flex: 0 0 auto;
+        font-size: 0.95rem;
+        line-height: 1;
+    }
+}
+
+/* =====================================================
+   Bismel1 products title style
+   ===================================================== */
+
+.guest-plans-intro-copy__title {
+    font-family: "Inter Tight", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    color: #f3fff7;
+    text-shadow:
+        0 0 11px rgba(74, 222, 128, 0.16),
+        0 0 23px rgba(34, 197, 94, 0.11),
+        0 0 37px rgba(16, 185, 129, 0.07);
+}
+
+/* =====================================================
+   Bismel1 mobile nav compact fix
+   ===================================================== */
+
+@media (max-width: 780px) {
+    .guest-header__inner {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .guest-nav {
+        width: auto !important;
+        margin-left: auto;
+        gap: 11px !important;
+        flex: 0 0 auto !important;
+        justify-content: flex-end !important;
+    }
+
+    .guest-nav__label {
+        display: none !important;
+    }
+
+    .guest-nav__link {
+        width: auto !important;
+        min-width: 0 !important;
+        flex: 0 0 auto !important;
+        padding: 11px 15px !important;
+        font-size: 0.91rem !important;
+        line-height: 1 !important;
+        border-width: 1px !important;
+    }
 }
