@@ -10,20 +10,22 @@
 // - File Path: resources/views/customer/partials/dashboard-stats.blade.php
 // ======================================================
 ?>
-<section class="ui-panel" aria-labelledby="customer-dashboard-stats-title">
-    <header class="ui-panel__header">
-        <div class="ui-panel__heading">
+<section class="dashboard-band dashboard-band--primary" aria-labelledby="customer-dashboard-stats-title">
+    <header class="dashboard-band__header">
+        <div class="dashboard-band__heading">
             @include('partials.ui.icon', ['icon' => 'fa-solid fa-chart-line', 'tone' => 'sky', 'size' => 'xl'])
             <div>
-                <p class="ui-panel__eyebrow">At a glance</p>
-                <h2 class="ui-panel__title" id="customer-dashboard-stats-title">Workspace highlights</h2>
+                <p class="dashboard-band__eyebrow">Top strip</p>
+                <h2 class="dashboard-band__title" id="customer-dashboard-stats-title">Equity, buying power, runtime state, broker sync, and automation state</h2>
             </div>
         </div>
-        <p class="ui-panel__body">The most important account, billing, broker, and access markers in one place.</p>
+        <p class="dashboard-band__body">These five markers stay first so you can judge account state, runtime posture, and broker freshness in one glance.</p>
     </header>
     @include('partials.ui.stat-list', ['items' => collect($page['stats'] ?? [])->map(fn ($stat) => [
         'label' => $stat['label'],
         'value' => $stat['value'],
         'context' => $stat['description'] ?? null,
+        'icon' => $stat['icon'] ?? null,
+        'tone' => $stat['tone'] ?? null,
     ])->all()])
 </section>

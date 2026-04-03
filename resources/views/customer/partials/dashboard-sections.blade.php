@@ -10,16 +10,73 @@
 // - File Path: resources/views/customer/partials/dashboard-sections.blade.php
 // ======================================================
 ?>
-<section class="ui-panel" aria-labelledby="customer-dashboard-sections-title">
-    <header class="ui-panel__header">
-        <div>
-            <p class="ui-panel__eyebrow">Workspace focus</p>
-            <h2 class="ui-panel__title" id="customer-dashboard-sections-title">Where to go next</h2>
+@php
+    $cards = $dashboardSurface['sections'] ?? ($page['sections'] ?? []);
+@endphp
+
+<section aria-labelledby="customer-dashboard-sections-title">
+    <header class="dashboard-card__header">
+        <div class="dashboard-card__heading">
+            @include('partials.ui.icon', ['icon' => 'fa-solid fa-table-cells-large', 'tone' => 'sky', 'size' => 'lg'])
+            <div>
+                <p class="dashboard-card__eyebrow">Main blocks</p>
+                <h3 class="dashboard-card__title" id="customer-dashboard-sections-title">Trading previews, desk activity, and action queue</h3>
+            </div>
         </div>
-        <p class="ui-panel__body">Each lane takes you to a key workspace area you can review or act on next.</p>
+        <p class="dashboard-card__body">Each block links into an existing customer route, so the dashboard stays operational instead of becoming a dead summary layer.</p>
     </header>
-    @include('partials.ui.link-list', ['items' => collect($page['sections'] ?? [])->map(fn ($section) => [
-        'label' => $section['title'] ?? $section['heading'],
-        'description' => $section['description'] ?? null,
-    ])->all()])
+
+    <div class="dashboard-grid dashboard-grid--primary">
+        @foreach ($cards as $card)
+            @if (($card['kind'] ?? null) === 'activity')
+                @include('customer.partials.dashboard-activity', ['card' => $card])
+            @else
+                <section class="dashboard-card">
+                    <header class="dashboard-card__header">
+                        <div class="dashboard-card__heading">
+                            @include('partials.ui.icon', [
+                                'icon' => $card['icon'] ?? 'fa-solid fa-circle-nodes',
+                                'tone' => $card['tone'] ?? 'sky',
+                                'size' => 'lg',
+                            ])
+                            <div>
+                                <p class="dashboard-card__eyebrow">Control block</p>
+                                <h3 class="dashboard-card__title">{{ $card['title'] ?? 'Dashboard Block' }}</h3>
+                            </div>
+                        </div>
+                        <p class="dashboard-card__body">{{ $card['description'] ?? '' }}</p>
+                    </header>
+
+                    <ul class="ui-list ui-record-list">
+                        @forelse (($card['items'] ?? []) as $item)
+                            <li>
+                                <div class="ui-list__stack">
+                                    <div class="ui-inline-copy">
+                                        <strong>{{ $item['title'] ?? $item['label'] ?? 'Item' }}</strong>
+                                        @if (!empty($item['status']))
+                                            <span class="ui-list__meta">{{ $item['status'] }}</span>
+                                        @endif
+                                    </div>
+                                    @if (!empty($item['summary']))
+                                        <span class="ui-list__meta">{{ $item['summary'] }}</span>
+                                    @elseif (!empty($item['context']))
+                                        <span class="ui-list__meta">{{ $item['context'] }}</span>
+                                    @endif
+                                    @if (!empty($item['meta']))
+                                        <span class="ui-list__meta">{{ $item['meta'] }}</span>
+                                    @endif
+                                </div>
+                            </li>
+                        @empty
+                            <li>{{ $card['empty'] ?? 'No items are available yet.' }}</li>
+                        @endforelse
+                    </ul>
+
+                    @if (!empty($card['route']))
+                        <p><a href="{{ route($card['route']) }}">{{ $card['routeLabel'] ?? 'Open section' }}</a></p>
+                    @endif
+                </section>
+            @endif
+        @endforeach
+    </div>
 </section>

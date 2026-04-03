@@ -93,14 +93,14 @@ class DashboardController extends Controller
             'sections' => CustomerDashboardSections::items([
                 'positions' => $positions,
                 'orders' => $orders,
+                'activityLogs' => $activityLogs,
                 'signals' => $signals,
                 'actions' => $this->actionNeededItems($subscription, $alpacaAccount, $automationSetting, $runtimeState, $signals),
             ]),
             'readinessPanel' => [
                 'title' => 'Trading Readiness',
-                'message' => 'Broker trust, billing posture, bot readiness, market timing, and sync freshness stay visible from one side rail. '
-                    .($account ? 'Current account '.$account->name.' / '.($account->slug ?? 'no-slug').'. ' : '')
-                    .'Onboarding Readiness score remains visible while the desk is being prepared.',
+                'message' => 'The key trading checks stay on the side rail so you can confirm broker, plan, bot, market window, and sync state at a glance. '
+                    .($account ? 'Current account '.$account->name.' / '.($account->slug ?? 'no-slug').'.' : ''),
                 'scoreLabel' => 'Readiness Score',
                 'scoreValue' => $readinessScore.'/5',
                 'items' => [
@@ -109,7 +109,7 @@ class DashboardController extends Controller
                         'value' => $alpacaAccount ? 'Yes' : 'No',
                         'context' => $alpacaAccount
                             ? 'Alpaca '.$this->upperOrFallback($alpacaAccount->environment, 'local').' account is linked for '.($account?->name ?? 'this customer account').' / '.($account?->slug ?? 'no-slug').'. '.$brokerConnections->count().' connections / '.$brokerCredentials->count().' credentials'
-                            : 'Connect Alpaca before opening the trading lanes.',
+                            : 'Connect Alpaca before you rely on the trading desk.',
                         'route' => 'customer.broker.index',
                     ],
                     [
@@ -117,7 +117,7 @@ class DashboardController extends Controller
                         'value' => $subscription ? SafeDisplay::status($subscription->status) : 'Missing',
                         'context' => $subscription
                             ? (($subscription->subscriptionPlan?->name ?? 'Plan recorded locally').' for '.($account?->name ?? 'this account'))
-                            : 'Activate billing before you arm runtime.',
+                            : 'Activate billing before runtime can arm.',
                         'route' => 'customer.billing.index',
                     ],
                     [
@@ -141,27 +141,6 @@ class DashboardController extends Controller
                         'route' => 'customer.broker.index',
                     ],
                 ],
-            ],
-            'activityPanel' => [
-                'title' => 'Latest Activity',
-                'message' => $activityLogs->isNotEmpty()
-                    ? 'Recent runtime, broker, and management events are grouped here without leaving the dashboard.'
-                    : 'Activity will appear here after the first local runtime or broker updates are recorded.',
-                'items' => $activityLogs
-                    ->take(5)
-                    ->map(function ($item): array {
-                        return [
-                            'title' => (string) ($item->type ?? 'activity'),
-                            'status' => SafeDisplay::status((string) ($item->level ?? 'info')),
-                            'summary' => SafeDisplay::sanitizedText((string) ($item->message ?? 'Runtime activity recorded')),
-                            'meta' => SafeDisplay::dateTime($item->created_at, 'Recorded locally'),
-                        ];
-                    })
-                    ->values()
-                    ->all(),
-                'empty' => 'No recent activity is available yet.',
-                'route' => 'customer.activity.index',
-                'routeLabel' => 'Open full activity',
             ],
         ];
 

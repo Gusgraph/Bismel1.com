@@ -1,9 +1,8 @@
 # Current status
 
 ## Working
-- Customer workspace QA fix is now the active task
-- Dashboard, Onboarding, and Reports were failing because the customer controllers hard-failed on a missing Firestore service-account file
-- Customer workspace left nav still exposed a public `Home` exit path through the shared app shell
+- Customer dashboard trading-surface polish is now the active task
+- Customer dashboard structure still needs to match the intended top strip, five main blocks, and desk-check side panel more closely
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
@@ -19,10 +18,10 @@
 
 ## Important implementation note
 - This pass does not change auth architecture, role logic, shared models, or database direction
-- The Firestore fix is isolated to the three broken customer page controllers instead of changing shared Firestore behavior globally
-- Guest/public pages remain untouched; only the customer workspace shell stops showing the public `Home` left-nav group
+- This pass keeps customer route access rules and existing customer route names intact while refitting only the dashboard surface
+- Guest/public pages and unrelated customer pages remain untouched; only dashboard composition and copy are adjusted where needed
 
 ## Next
-- Run focused customer page validation for dashboard, onboarding, and reports
-- Verify in-browser that customer left nav no longer exposes the public `Home` path
+- Verify the customer dashboard renders with the exact trading-first structure: top strip, five main blocks, and desk-check side panel
+- Confirm any remaining missing values are shown with honest real-data fallback wording
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit

@@ -9,9 +9,12 @@
 - Update tracking files for the customer workspace QA task
 
 ## Current
-- Run focused validation for `customer.dashboard`, `customer.onboarding.index`, and `customer.reports.index`
-- Confirm no second customer-page failure remains after the Firestore fallback
+- Refit the customer dashboard into the exact trading-first control-surface structure without changing architecture
+- Keep the top strip focused on `Equity`, `Buying Power`, `Runtime State`, `Broker Sync`, and `Automation State`
+- Keep the main blocks focused on `Positions Preview`, `Open Orders Preview`, `Latest Activity`, `Latest Signals`, and `Action Needed`
+- Keep the side panel focused on broker, plan, bot, market, and sync checks using real current data where available
 
 ## Next
-- Verify customer left-menu structure in-browser after the nav cleanup
+- Validate the dashboard view and focused customer dashboard tests
+- Note any data points that still fall back to honest not-yet-synced wording
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit
