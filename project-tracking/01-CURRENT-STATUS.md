@@ -3,9 +3,13 @@
 ## Working
 - Final authenticated customer finishing pass is active across the shared customer shell, page-intro treatment, dashboard bands, and billing-adjacent module surfaces
 - Customer shell theme switching remains repaired while spacing, intro hierarchy, icon consistency, and border/glow weight are being unified across the customer area
+- Prime Stocks customer-side production testing surface is now active in the customer workspace as a demo-only visual control and monitoring preview
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
+- Added a dedicated customer `Prime Stocks Test Console` page using demo/static data only for visual product review in the existing customer shell
+- Added a customer navigation link for the new Prime Stocks test surface so it can be opened directly from the workspace
+- Made the Prime Stocks customer messaging explicit that Cloud Run is the bot runtime target, the page is control/monitoring only, and trading does not require the browser to stay open
 - Aggressively neutralized all `.app-topbar` card-shaped styling for customer routes (padding, background, border, radius, shadow, and backdrop-filter) to ensure only the standalone 3-dots menu button remains visually unframed.
 - Removed the surrounding frame/container for the top-right 3-dots menu on authenticated customer pages, leaving only the standalone button.
 - Removed redundant top-left title block from authenticated customer pages, as the information was duplicated by the main page intro. This block is now conditionally hidden for customer routes using `@unless ($isCustomerRoute)` while remaining visible on public and admin pages.
@@ -28,12 +32,13 @@
 ## Important implementation note
 - This pass does not change auth architecture, role logic, shared models, or database direction
 - This pass keeps customer route access rules and existing customer route names intact while cleaning only the authenticated customer shell theme system
+- This pass adds a visual Prime Stocks customer surface only; it does not wire live Python runtime status, browser polling, or browser-run bot logic
 - Guest/public pages and admin pages remain untouched; only authenticated customer shell visuals, shared icons, and related hero/header surfaces are adjusted where needed
 
 ## Next
-- Desk-check dashboard, billing, automation, broker, positions, orders, activity, and settings in both dark and light mode after the finishing pass
+- Desk-check the `Prime Stocks Test Console` in the customer workspace in both dark and light mode
+- After visual approval, wire the Prime Stocks test console to real Cloud Run-backed runtime and strategy status data without moving runtime ownership into the browser
 - Leave any non-critical page-specific polish outside the approved customer surface family for a later targeted pass only if it survives visual review
-- Decide later whether theme preference should move from `localStorage` into a DB-backed customer preference flow
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit
 
 
@@ -66,3 +71,25 @@ Current state:
 - customer pages are now being refined one by one with bash for tighter control
 - remaining work is mostly wording polish, mobile scratches, and repo cleanup/good git hygiene
 
+
+## Session Update - 2026-04-04 - Prime Stocks visual testing phase
+
+Completed in this session:
+- inspected current customer routes, navigation, strategy surface, and tracking state before editing
+- added a customer route for `customer.strategy.prime-stocks`
+- added a customer navigation entry for `Prime Stocks`
+- added a dedicated `Prime Stocks Test Console` customer page with demo/static status values
+- made the runtime boundary explicit in visible customer copy:
+  - Cloud Run is the bot runtime target
+  - the page is control / monitoring only
+  - trading does not require the page to stay open
+- validated the new surface with PHP lint, route listing, and Blade view cache rebuild
+
+Current state:
+- the customer workspace now includes a Prime Stocks visual testing surface that can be opened from the left navigation
+- Prime Stocks defaults now read clearly in the customer area:
+  - stocks-only
+  - 1H execution
+  - 1D trend
+  - pullback window 5
+- runtime messaging remains aligned with the approved architecture: Laravel UI shell on the VM, Python runtime separate, Cloud Run server-side target

@@ -105,3 +105,33 @@ Files worked during session included:
 - app/Support/ViewData/BillingPageData.php
 - app/Support/Notifications/CustomerAlerts.php
 
+## 2026-04-04 - Prime Stocks customer testing surface
+
+- Inspected the existing customer routes, navigation, strategy page, trading pages, and tracking docs before implementation
+- Added customer route `customer.strategy.prime-stocks` at `customer/strategy/prime-stocks`
+- Added a new `Prime Stocks` item to the customer workspace navigation
+- Added `resources/views/customer/strategy/prime-stocks.blade.php` as a dedicated Prime Stocks visual testing surface
+- Used demo/static customer-facing status values only for runtime, state, timeframe, pullback, tier, action candidate, and signal timing
+- Added visible Prime Stocks concept sections for:
+  - strategy name
+  - stocks-only label
+  - 1H decides when
+  - 1D helps decide whether
+  - pullback window 5
+  - reclaim model summary
+  - FirstLot behavior summary
+  - MULTI behavior summary
+  - pauseNewBasket status concept
+  - pauseAdds status concept
+  - ATR trail exit concept
+  - regime fail behavior summary
+- Made the server-side runtime ownership explicit in customer-visible copy:
+  - `Cloud Run runs the bot while this page stays a customer control and monitoring surface.`
+  - `Prime Stocks executes on Cloud Run server-side with demo-only status values shown here. Trading does not require this page to stay open.`
+  - `Bot runtime target: Cloud Run serverless. User page role: control / monitoring only. Trading does not require the page to stay open.`
+- Validated the new surface with:
+  - `php -l app/Http/Controllers/Customer/StrategyController.php`
+  - `php -l routes/customer.php`
+  - `php artisan route:list --name=customer.strategy.prime-stocks`
+  - `php artisan view:clear`
+  - `php artisan view:cache`
