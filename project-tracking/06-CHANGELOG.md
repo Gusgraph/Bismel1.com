@@ -135,3 +135,29 @@ Files worked during session included:
   - `php artisan route:list --name=customer.strategy.prime-stocks`
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 2026-04-04 - Prime Stocks moved into Automation
+
+- Removed the standalone `customer.strategy.prime-stocks` route from the customer route file
+- Removed the standalone `Prime Stocks` customer navigation item
+- Removed the standalone Prime Stocks Blade page so no separate product page remains for this phase
+- Integrated Prime Stocks into the existing Automation controller/view/data flow only
+- Added an Automation-embedded Prime Stocks module with demo/static data for:
+  - Demo Access product framing
+  - stocks-only scope
+  - 1H decides when
+  - 1D helps decide whether
+  - pullback window 5
+  - Cloud Run runtime target
+  - control / monitoring only page role
+  - no stay-open requirement
+  - reclaim / FirstLot / MULTI / pauseNewBasket / pauseAdds / ATR trail exit / regime fail concept copy
+- Structured the Automation wording so the later subscribed/live presentation name can become `Prime Stocks Bot Trader` without changing the page structure
+- Validated the integrated Automation path with:
+  - `php -l app/Http/Controllers/Customer/AutomationController.php`
+  - `php -l app/Support/ViewData/AutomationPageData.php`
+  - `php -l app/Http/Controllers/Customer/StrategyController.php`
+  - `php -l routes/customer.php`
+  - `php artisan route:list --name=customer.strategy.prime-stocks` returning no matching route
+  - `php artisan view:clear`
+  - `php artisan view:cache`

@@ -62,7 +62,7 @@ class AutomationPageData
             : [];
         $automationEntitled = (bool) data_get($entitlements, 'capabilities.can_use_stocks_automation', false);
         $planLabel = (string) data_get($entitlements, 'base_plan.label', 'No active base plan');
-        $entitlementSummary = (string) data_get($runtimeState, 'entitlement_summary', data_get($entitlements, 'blocked_summary', 'subscription inactive'));
+        $entitlementSummary = (string) data_get($runtimeState, 'entitlement_summary', data_get($entitlements, 'blocked_summary', 'Plan required'));
         $latestStageSummary = is_string($runtimeState['last_stage_summary'] ?? null)
             ? (string) $runtimeState['last_stage_summary']
             : null;
@@ -83,19 +83,44 @@ class AutomationPageData
             ])
             ->values()
             ->all();
+        $primeStocksProduct = [
+            'label' => 'Demo Access product',
+            'title' => 'Prime Stocks',
+            'body' => 'Prime Stocks is presented here as a Demo Access product inside Automation now, with wording already shaped so the later subscribed/live name can become Prime Stocks Bot Trader without rebuilding this page.',
+            'future_label' => 'Prime Stocks Bot Trader',
+        ];
+        $primeStocksStatusItems = [
+            ['label' => 'Presentation State', 'value' => 'Demo Access product', 'context' => 'Later subscribed/live presentation state: Prime Stocks Bot Trader.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
+            ['label' => 'Asset Class', 'value' => 'Stocks Only', 'context' => 'Prime Stocks remains a stocks-only product in this phase.', 'icon' => 'fa-solid fa-chart-line', 'tone' => 'blue'],
+            ['label' => 'Execution Frame', 'value' => '1H decides when', 'context' => 'The 1H frame controls when participation is considered.', 'icon' => 'fa-solid fa-clock', 'tone' => 'violet'],
+            ['label' => 'Trend Frame', 'value' => '1D helps decide whether', 'context' => 'The 1D frame helps decide whether a setup should be taken.', 'icon' => 'fa-solid fa-chart-column', 'tone' => 'amber'],
+            ['label' => 'Pullback Window', 'value' => '5', 'context' => 'Approved current Prime Stocks pullback default.', 'icon' => 'fa-solid fa-arrow-trend-down', 'tone' => 'rose'],
+            ['label' => 'Bot Runtime', 'value' => 'Cloud Run', 'context' => 'Cloud Run runs the bot server-side for this product.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
+            ['label' => 'Page Role', 'value' => 'Control / monitoring only', 'context' => 'This Laravel page presents the product state and controls. It does not run the bot.', 'icon' => 'fa-solid fa-sliders', 'tone' => 'blue'],
+            ['label' => 'Stay-open Requirement', 'value' => 'Not required', 'context' => 'The user does not need to keep the page open for trading to continue.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
+        ];
+        $primeStocksConceptItems = [
+            ['label' => 'Reclaim model summary', 'value' => 'Prime Stocks waits for reclaim behavior after the pullback instead of treating raw weakness as the entry.', 'context' => 'This remains a visual explanation only in this phase.', 'icon' => 'fa-solid fa-rotate', 'tone' => 'sky'],
+            ['label' => 'FirstLot behavior summary', 'value' => 'FirstLot is the initial participation candidate once the reclaim setup and higher-timeframe conditions align.', 'context' => 'The customer sees the first-entry concept without live wiring here.', 'icon' => 'fa-solid fa-flag-checkered', 'tone' => 'emerald'],
+            ['label' => 'MULTI behavior summary', 'value' => 'MULTI describes controlled add behavior after the initial participation has already been established.', 'context' => 'Adds stay conceptually separate from the first entry.', 'icon' => 'fa-solid fa-layer-group', 'tone' => 'violet'],
+            ['label' => 'pauseNewBasket status concept', 'value' => 'Blocks new basket starts while the server-side bot model remains intact.', 'context' => 'Useful when fresh first-entry baskets should pause.', 'icon' => 'fa-solid fa-ban', 'tone' => 'amber'],
+            ['label' => 'pauseAdds status concept', 'value' => 'Blocks add behavior without implying the browser is managing the bot.', 'context' => 'Adds can be paused independently from new baskets.', 'icon' => 'fa-solid fa-circle-pause', 'tone' => 'amber'],
+            ['label' => 'ATR trail exit concept', 'value' => 'ATR trail exit language is reserved for the server-side exit path once protection takes over.', 'context' => 'Shown as product language only for now.', 'icon' => 'fa-solid fa-route', 'tone' => 'rose'],
+            ['label' => 'Regime fail behavior summary', 'value' => 'If regime conditions fail, the product posture shifts toward pause or exit behavior instead of normal participation.', 'context' => 'This remains a control concept inside Automation.', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'amber'],
+        ];
 
         return [
             'page' => [
                 'title' => 'Automation',
                 'intro' => 'Review automation status, readiness, timing, and recent activity for this workspace.',
                 'subtitle' => $account
-                    ? 'Automation stays readable here, with clear start and stop controls, readiness checks, and recent status summaries.'
+                    ? 'Automation controls, readiness, and recent status stay visible here.'
                     : 'No workspace is available yet, so automation will stay focused on setup until account details are ready.',
                 'sections' => [
                     ['heading' => 'AI Control', 'description' => 'Start or stop automation for this workspace from one place.'],
+                    ['heading' => 'Prime Stocks Demo Access', 'description' => 'Review Prime Stocks as a Demo Access product inside Automation without introducing a standalone page.'],
                     ['heading' => 'Runtime Status', 'description' => 'See whether automation is active, paused, waiting, or blocked.'],
                     ['heading' => 'Broker and Strategy Readiness', 'description' => 'Check whether the broker connection and strategy setup are ready to support automation.'],
-                    ['heading' => 'Run Visibility', 'description' => 'See when automation last ran and when it is expected to run again.'],
                     ['heading' => 'Recent Activity', 'description' => 'Review the latest high-level automation events without exposing internal logic.'],
                 ],
             ],
@@ -110,49 +135,39 @@ class AutomationPageData
                 'ai_enabled' => old('ai_enabled', $automationSetting?->ai_enabled ?? false),
                 'action_mode' => old('action_mode', 'save'),
             ],
+            'primeStocksProduct' => $primeStocksProduct,
+            'primeStocksStatusItems' => $primeStocksStatusItems,
+            'primeStocksConceptItems' => $primeStocksConceptItems,
             'runtimeItems' => [
-                ['label' => 'Automation Mode', 'value' => $automationEnabled ? 'Active' : 'Stopped', 'context' => $automationEnabled ? 'Automation is currently running for this workspace.' : 'Automation is currently paused for this workspace.'],
-                ['label' => 'Subscription Access', 'value' => $planLabel, 'context' => ($entitlements['subscription_active'] ?? false) ? 'Paid plan access is active' : 'subscription inactive'],
-                ['label' => 'Automation Access', 'value' => $automationEntitled ? 'Allowed' : 'Blocked', 'context' => $automationEntitled ? 'Your plan includes this automation mode.' : $entitlementSummary],
-                ['label' => 'Current Summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No status has been recorded yet'],
-                ['label' => 'Latest Stage', 'value' => $latestStage, 'context' => $latestStageSummary ?? ($latestStageResult ?? 'No stage details have been recorded yet')],
-                ['label' => 'Broker Readiness', 'value' => $brokerReady ? 'Ready' : 'Needs attention', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.')],
-                ['label' => 'Strategy Readiness', 'value' => $strategyReady ? 'Ready' : 'Needs attention', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.'],
-                ['label' => 'Recent Activity', 'value' => $recentActivityItems !== [] ? 'Available' : 'Nothing recent yet', 'context' => $recentActivityItems !== [] ? 'The latest workspace activity is shown below.' : 'Recent activity will appear here after automation begins running.'],
+                ['label' => 'Current Summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No status recorded yet'],
+                ['label' => 'Broker Readiness', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.')],
+                ['label' => 'Strategy Readiness', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.'],
+                ['label' => 'Recent Activity', 'value' => $recentActivityItems !== [] ? 'Available' : 'No recent activity', 'context' => $recentActivityItems !== [] ? 'The latest workspace activity is shown below.' : 'Recent activity will appear here after automation begins running.'],
             ],
             'automationState' => [
-                ['label' => 'AI Control', 'value' => $automationEnabled ? 'Enabled' : 'Disabled', 'context' => $automationEnabled ? 'Automation is on.' : 'Automation is off.'],
+                ['label' => 'AI Control', 'value' => $automationEnabled ? 'Enabled' : 'Disabled', 'context' => $automationEnabled ? 'Automation is on.' : 'Automation is currently off.'],
                 ['label' => 'Plan Access', 'value' => $automationEntitled ? 'Allowed' : 'Blocked', 'context' => $automationEntitled ? 'The paid plan includes this automation mode.' : $entitlementSummary],
                 ['label' => 'Automation Status', 'value' => ucfirst(str_replace('_', ' ', (string) ($automationSetting?->status ?? (($brokerReady && $strategyReady) ? 'review' : 'draft')))), 'context' => ($brokerReady && $strategyReady) ? 'This workspace is set up to run when started.' : 'Something still needs attention before automation can run smoothly.'],
                 ['label' => 'Risk Level', 'value' => ucfirst((string) ($automationSetting?->risk_level ?? (($brokerReady && $strategyReady) ? 'balanced' : 'conservative'))), 'context' => 'This is the saved operating posture for automation.'],
-                ['label' => 'Strategy', 'value' => $strategyProfile?->name ?? 'Not connected', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Choose or activate a strategy first.'],
+                ['label' => 'Strategy', 'value' => $strategyProfile?->name ?? 'Not connected', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Choose or activate a strategy.'],
                 ['label' => 'Run Health', 'value' => ucfirst(str_replace('_', ' ', (string) ($automationSetting?->run_health ?? 'idle'))), 'context' => $runtimeState['last_runtime_summary'] ?? 'Health updates appear here after automation runs.'],
-                ['label' => 'Scheduler Status', 'value' => $schedulerState['scheduler_status_summary'] ?? 'Waiting for next run window', 'context' => 'This shows when automation is waiting, running, or paused.'],
-                ['label' => 'Execution Status', 'value' => $executionState['last_execution_summary'] ?? 'No execution updates yet', 'context' => 'Execution updates stay high level here.'],
                 ['label' => 'Position Manager', 'value' => $positionManagerState['last_management_summary'] ?? 'No position updates yet', 'context' => 'Position handling updates stay high level here.'],
             ],
             'runWindow' => [
-                ['label' => 'Last Started', 'value' => $latestRun?->started_at?->toDateTimeString() ?? ($runtimeState['last_run_at'] ?? 'No run has started yet'), 'context' => $latestRun?->status ? 'Latest run status '.ucfirst((string) $latestRun->status) : 'No completed run history yet'],
-                ['label' => 'Last Stopped', 'value' => $lastStoppedRun?->finished_at?->toDateTimeString() ?? 'No run has stopped yet', 'context' => $lastStoppedRun?->run_type ? 'Latest stopped run type '.ucfirst((string) $lastStoppedRun->run_type) : 'No finished run history yet'],
                 ['label' => 'Last Scheduler Run', 'value' => $schedulerState['last_scheduler_run_at'] ?? 'No scheduler run yet', 'context' => $schedulerState['last_due_timeframe'] ?? 'No run window has been recorded yet'],
-                ['label' => 'Next Intended Run', 'value' => $schedulerState['next_intended_run'] ?? ($automationEnabled ? 'Waiting for next run window' : 'Automation is stopped'), 'context' => 'Automation runs on a scheduled closed-candle cycle.'],
                 ['label' => 'Last Execution Attempt', 'value' => $executionState['last_execution_at'] ?? 'No execution updates yet', 'context' => $executionState['last_execution_result'] ?? 'No execution result has been recorded yet'],
                 ['label' => 'Last Position Management', 'value' => $positionManagerState['last_management_at'] ?? 'No position updates yet', 'context' => $positionManagerState['last_management_result'] ?? 'No position result has been recorded yet'],
             ],
             'healthItems' => [
-                ['label' => 'Broker Support', 'value' => $brokerReady ? 'Ready' : 'Needs attention', 'context' => $brokerReady ? ($alpacaAccount?->last_synced_at ? 'Last broker update '.$alpacaAccount->last_synced_at->toDateTimeString() : 'Broker connection is available') : (string) ($brokerGuard['summary'] ?? 'No recent broker update is available')],
-                ['label' => 'Market Data Path', 'value' => $marketDataReady ? 'Ready' : 'Needs attention', 'context' => $marketDataReady ? 'Market data is available for the current automation cycle.' : 'Market-data readiness is still incomplete.'],
-                ['label' => 'Strategy Mapping', 'value' => $strategyReady ? 'Ready' : 'Needs attention', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'No active strategy is connected yet.'],
-                ['label' => 'Run Loop', 'value' => $latestRun?->status ? ucfirst((string) $latestRun->status) : 'Idle', 'context' => $latestRun?->summary['safe_summary'] ?? 'Run health updates appear here after automation runs.'],
-                ['label' => 'Open Positions', 'value' => (string) $positions->count(), 'context' => 'Current open positions in this workspace'],
-                ['label' => 'Recent Orders', 'value' => (string) $orders->count(), 'context' => 'Recent orders linked to this workspace'],
-                ['label' => 'Signals Stored', 'value' => (string) $signals->count(), 'context' => 'Recent signals linked to this workspace'],
+                ['label' => 'Broker Support', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? ($alpacaAccount?->last_synced_at ? 'Last broker update '.$alpacaAccount->last_synced_at->toDateTimeString() : 'Broker connection is available') : (string) ($brokerGuard['summary'] ?? 'No recent broker update is available')],
+                ['label' => 'Market Data Path', 'value' => $marketDataReady ? 'Ready' : 'Action needed', 'context' => $marketDataReady ? 'Market data is available for the current automation cycle.' : 'Market data is not ready yet.'],
+                ['label' => 'Strategy Mapping', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'No strategy is connected yet.'],
+                ['label' => 'Open Positions', 'value' => (string) $positions->count(), 'context' => 'Open positions in this workspace'],
+                ['label' => 'Recent Orders', 'value' => (string) $orders->count(), 'context' => 'Recent orders in this workspace'],
+                ['label' => 'Signals Stored', 'value' => (string) $signals->count(), 'context' => 'Recent signals in this workspace'],
                 ['label' => 'API Support', 'value' => (string) $licenses->count().' licenses', 'context' => (string) $apiKeys->count().' saved API keys are available'],
             ],
             'linkageItems' => [
-                ['label' => 'Control Layer', 'value' => 'Primary', 'context' => 'This workspace uses the main Bismel1 control layer for automation status and approvals.'],
-                ['label' => 'Automation Workers', 'value' => $automationEnabled ? 'Connected' : 'Waiting to start', 'context' => 'The customer view stays high level while automation handles the internal work.'],
-                ['label' => 'Broker Execution', 'value' => $executionState['last_execution_result'] ?? 'Waiting for broker action', 'context' => 'Execution updates appear here after broker activity occurs.'],
                 ['label' => 'Position Management', 'value' => $positionManagerState['last_management_result'] ?? 'Waiting for position updates', 'context' => 'Position updates appear here after trades begin moving through the workspace.'],
             ],
             'recentActivityItems' => $recentActivityItems,
@@ -168,7 +183,7 @@ class AutomationPageData
     protected static function runtimeHeadline(bool $automationEnabled, bool $brokerReady, bool $strategyReady, array $schedulerState, $latestRun): string
     {
         if (! $automationEnabled) {
-            return 'AI stopped';
+            return 'Automation off';
         }
 
         if (! $brokerReady) {
@@ -193,7 +208,7 @@ class AutomationPageData
     protected static function runtimeDetails(bool $automationEnabled, bool $brokerReady, bool $strategyReady, bool $marketDataReady, $latestRun, array $schedulerState): string
     {
         if (! $automationEnabled) {
-            return 'Automation is currently stopped for this workspace. Start AI when you are ready to resume scheduled monitoring.';
+            return 'Automation is currently off for this workspace. Start AI when you are ready to resume monitoring.';
         }
 
         if (! $brokerReady) {

@@ -24,12 +24,11 @@
         $sectionNavItems = \App\Support\ViewData\CustomerSectionNavData::make();
     @endphp
 
-    @include('partials.ui.breadcrumbs', ['items' => $breadcrumbs])
     @include('partials.ui.page-shell', [
         'headerPartial' => 'customer.partials.page-header',
         'page' => $page,
         'summary' => [
-            'eyebrow' => 'Automation posture',
+            'eyebrow' => 'Automation status',
             'title' => $summary['headline'],
             'body' => $summary['details'],
             'icon' => 'fa-solid fa-robot',
@@ -50,12 +49,12 @@
                                 <h2 class="customer-section__title">Automation state, readiness, and controls</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">This page shows whether automation is active, paused, blocked, or waiting, alongside the latest timing and activity summaries.</p>
+                        <p class="customer-section__body">This page shows whether automation is on, paused, blocked, or waiting, along with recent timing and activity.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Automation Areas'])
+                            @include('partials.ui.info-card', ['title' => 'Automation overview'])
                             @include('partials.ui.stat-list', ['items' => $page['sections'], 'labelKey' => 'heading', 'valueKey' => 'description'])
                         </div>
 
@@ -65,7 +64,6 @@
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Runtime Summary'])
                             @include('partials.ui.stat-list', ['items' => $runtimeItems ?? []])
                         </div>
                     </div>
@@ -76,7 +74,7 @@
                         <div class="customer-section__heading">
                             @include('partials.ui.icon', ['icon' => 'fa-solid fa-sliders', 'tone' => 'sky', 'size' => 'lg'])
                             <div>
-                                <p class="customer-section__eyebrow">Current-account settings</p>
+                                <p class="customer-section__eyebrow">Workspace settings</p>
                                 <h2 class="customer-section__title">Automation configuration and start/stop controls</h2>
                             </div>
                         </div>
@@ -108,7 +106,7 @@
                                     'name' => 'status',
                                     'label' => 'Automation Status',
                                     'value' => $form['status'] ?? 'draft',
-                                    'help' => 'Use draft, review, or armed to describe how close this workspace is to running.',
+                                    'help' => 'Use draft, review, or armed to show how close this workspace is to running.',
                                     'autocomplete' => 'off',
                                 ])
                                 @include('partials.ui.form-field', [
@@ -123,7 +121,7 @@
                             <div class="ui-form-field @error('ai_enabled') ui-form-field--invalid @enderror">
                                 <div class="ui-form-field__header">
                                     <label class="ui-form-field__label" for="ai_enabled">AI Enabled</label>
-                                    <p class="ui-form-field__meta">Saved workspace state</p>
+                                    <p class="ui-form-field__meta">Current workspace state</p>
                                 </div>
                                 <label class="ui-inline-copy" for="ai_enabled">
                                     <input id="ai_enabled" name="ai_enabled" type="checkbox" value="1" @checked($form['ai_enabled'] ?? false)>
@@ -136,15 +134,48 @@
                         </div>
 
                         <div class="ui-form-actions">
-                            <p class="ui-form-actions__note">Start AI turns automation on when readiness is in place. Stop AI pauses automation. Save settings keeps your current configuration without changing the current run state.</p>
+                            <p class="ui-form-actions__note">Start AI turns automation on when readiness is in place. Stop AI pauses automation. Save settings keeps your configuration without changing the current run state.</p>
                             <div class="ui-form-actions__buttons">
                                 <button class="ui-button ui-button--primary" type="submit" name="action_mode" value="start">Start AI</button>
                                 <button class="ui-button ui-button--ghost" type="submit" name="action_mode" value="stop">Stop AI</button>
                                 <button class="ui-button ui-button--secondary" type="submit" name="action_mode" value="save">Save settings</button>
-                                <a class="ui-button ui-button--ghost" href="{{ route('customer.automation.index') }}">Refresh status</a>
+                                <a class="ui-button ui-button--ghost" href="{{ route('customer.automation.index') }}">Refresh</a>
                             </div>
                         </div>
                     </form>
+                </section>
+
+                <section class="customer-section">
+                    <header class="customer-section__header">
+                        <div class="customer-section__heading">
+                            @include('partials.ui.icon', ['icon' => 'fa-solid fa-chart-line', 'tone' => 'emerald', 'size' => 'lg'])
+                            <div>
+                                <p class="customer-section__eyebrow">Integrated product module</p>
+                                <h2 class="customer-section__title">{{ $primeStocksProduct['title'] ?? 'Prime Stocks' }}</h2>
+                            </div>
+                        </div>
+                        <p class="customer-section__body">Prime Stocks now lives inside the existing Automation area as an integrated module, using demo/static data only during this phase.</p>
+                    </header>
+
+                    <div class="customer-page__detail-grid">
+                        <div class="customer-card-group">
+                            @include('partials.ui.info-card', [
+                                'title' => $primeStocksProduct['label'] ?? 'Demo Access product',
+                                'body' => $primeStocksProduct['body'] ?? null,
+                                'icon' => 'fa-solid fa-tag',
+                                'tone' => 'amber',
+                            ])
+                            @include('partials.ui.stat-list', ['items' => $primeStocksStatusItems ?? []])
+                        </div>
+
+                        <div class="customer-card-group">
+                            @include('partials.ui.info-card', [
+                                'title' => 'Prime Stocks operating concepts',
+                                'body' => 'This section keeps the current product language visible without creating a standalone page or live backend dependency.',
+                            ])
+                            @include('partials.ui.stat-list', ['items' => $primeStocksConceptItems ?? []])
+                        </div>
+                    </div>
                 </section>
 
                 <section class="customer-section">
@@ -166,17 +197,16 @@
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Health Signals'])
                             @include('partials.ui.stat-list', ['items' => $healthItems])
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Recent Safe Activity'])
+                            @include('partials.ui.info-card', ['title' => 'Recent Activity'])
                             @include('partials.ui.stat-list', ['items' => $recentActivityItems ?? []])
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Linkage Plan'])
+                            @include('partials.ui.info-card', ['title' => 'System linkage'])
                             @include('partials.ui.stat-list', ['items' => $linkageItems])
                         </div>
                     </div>
@@ -198,7 +228,6 @@
                 </div>
 
                 <div class="customer-card-group">
-                    @include('partials.ui.info-card', ['title' => 'Related Pages', 'symbol' => 'ﷻ'])
                     @include('partials.ui.link-list', ['items' => $relatedLinks ?? []])
                 </div>
             </aside>

@@ -1,6 +1,9 @@
 # Active tasks
 
 ## Done
+- Undo the standalone Prime Stocks page approach and integrate Prime Stocks into the existing Automation page/module using demo/static data only
+- Remove the standalone Prime Stocks route/nav path and keep Prime Stocks presentation inside Automation
+- Frame Prime Stocks inside Automation as a `Demo Access product` now, ready for later subscribed/live naming as `Prime Stocks Bot Trader`
 - Inspect current customer pages/nav and add a Prime Stocks customer-side visual testing surface for production review using demo/static data only
 - Link the Prime Stocks testing surface into the customer workspace navigation
 - Make the customer-facing runtime boundary explicit: Cloud Run server-side runtime, control/monitoring page only, browser does not need to stay open
@@ -23,26 +26,26 @@
 - Soften customer rows, module cards, and nav support bands without changing route structure or business logic
 
 ## Current
-- Desk-check the new `Prime Stocks Test Console` in the customer workspace in both dark and light mode
+- Desk-check the integrated Prime Stocks module on the existing Automation page in both dark and light mode
 - Keep the current customer shell, compact top-right menu, sidebar nav, and theme toggle behavior intact
 - Do not wire live Python runtime, browser polling, or browser-run bot logic in this phase
 - Avoid unrelated repo cleanup and do not touch guest or admin areas
 
 ## Next
-- Wire the Prime Stocks customer test console to real Cloud Run-backed runtime and strategy status data after the visual surface is approved
-- Review whether the Prime Stocks surface needs only targeted polish after live desk-check
+- Wire the Prime Stocks Automation module to real Cloud Run-backed runtime and strategy status data after the visual surface is approved
+- Review whether the Automation-embedded Prime Stocks section needs only targeted polish after live desk-check
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit
 
 
 ## Active Follow-up - 2026-04-04
 
 Current next tasks:
-1. desk-check Prime Stocks Test Console in dark and light
+1. desk-check the Prime Stocks section on the Automation page in dark and light
 2. collect visual review feedback only
-3. wire real Cloud Run-backed runtime/status data later after approval
+3. wire real Cloud Run-backed runtime/status data later inside Automation after approval
 4. keep unrelated dirty files and `.bak` artifacts out of staging
 
 Working rule:
-- work only inside the approved customer Prime Stocks testing surface for this phase
+- work only inside the approved Automation surface for Prime Stocks in this phase
 - keep the architecture unchanged: Laravel shell on VM, Python runtime separate, Cloud Run server-side
 - use demo/static data until the later backend hookup pass

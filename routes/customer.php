@@ -31,7 +31,6 @@ Route::get('/broker', [BrokerController::class, 'index'])->name('broker.index');
 Route::get('/broker/create', [BrokerController::class, 'create'])->name('broker.create');
 Route::post('/broker', [BrokerController::class, 'store'])->name('broker.store');
 Route::get('/strategy', [StrategyController::class, 'index'])->name('strategy.index');
-Route::get('/strategy/prime-stocks', [StrategyController::class, 'primeStocks'])->name('strategy.prime-stocks');
 Route::put('/strategy', [StrategyController::class, 'update'])->name('strategy.update');
 Route::get('/automation', [AutomationController::class, 'index'])->name('automation.index');
 Route::put('/automation', [AutomationController::class, 'update'])->name('automation.update');

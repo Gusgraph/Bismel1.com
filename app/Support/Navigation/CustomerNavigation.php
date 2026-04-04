@@ -28,11 +28,6 @@ class CustomerNavigation
                 'description' => 'Review AI control, automation health, scheduler posture, and runtime guardrails.',
             ],
             [
-                'label' => 'Prime Stocks',
-                'route' => 'customer.strategy.prime-stocks',
-                'description' => 'Review the Prime Stocks strategy frame, demo runtime posture, and server-side control model.',
-            ],
-            [
                 'label' => 'Broker',
                 'route' => 'customer.broker.index',
                 'description' => 'Review broker connections and masked credential state.',
