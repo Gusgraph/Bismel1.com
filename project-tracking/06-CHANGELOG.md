@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2026-04-03
+- Aggressively neutralized all `.app-topbar` card-shaped styling for customer routes (padding, background, border, radius, shadow, and backdrop-filter), ensuring only the standalone 3-dots menu button remains visually unframed.
+- Removed the top-right topbar frame/container on customer pages, leaving only the standalone 3-dots menu button.
+- Removed redundant top-left title block from authenticated customer pages, conditionally hidden on customer routes using `@unless ($isCustomerRoute)`.
 - Ran a final authenticated customer finishing pass across the shared shell and customer page hierarchy without changing auth, routing, controllers, or data flow
 - Moved repeated customer summary/hero copy for automation, broker, trading, billing, settings, and related customer forms into the shared page-intro surface so the top of those pages no longer stacks multiple heavy bars
 - Added a shared page-intro summary slot and responsive flagship layout so customer page intros can carry the main summary cleanly in both dark and light mode
@@ -72,3 +75,33 @@
 - Restored homepage shared styles after products-page CSS bleed from broad guest CSS changes
 - Fixed mobile header nav button sizing
 - Noted that the Prime Stocks Bot Trader flagship bullet list is hardcoded in resources/views/plans.blade.php and does not use HomeController item arrays
+
+
+## 2026-04-04 - Customer area polish session
+
+Added / fixed:
+- customer shell refinement continued
+- duplicate customer top shell title copy removed
+- customer top header card wrapper removed
+- dashboard clutter reduced by removing notices, runtime/review strips, breadcrumbs, side-panel label, and redundant main-block intro layer
+- automation wording and structure reduced
+- broker wording and structure reduced
+- activity wording and structure reduced
+- billing wording and structure reduced
+- customer alerts placeholder notes removed from billing
+- CSS build issue fixed by removing a bad duplicate customer topbar block from resources/css/app.css
+
+Files worked during session included:
+- resources/views/layouts/app.blade.php
+- resources/css/app.css
+- resources/views/customer/dashboard.blade.php
+- resources/views/customer/automation/index.blade.php
+- resources/views/customer/broker/index.blade.php
+- resources/views/customer/trading/index.blade.php
+- resources/views/customer/billing/index.blade.php
+- app/Support/ViewData/AutomationPageData.php
+- app/Support/ViewData/BrokerPageData.php
+- app/Support/ViewData/Bismel1CustomerTradingPageData.php
+- app/Support/ViewData/BillingPageData.php
+- app/Support/Notifications/CustomerAlerts.php
+
