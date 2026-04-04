@@ -3,10 +3,18 @@
 ## Working
 - Final authenticated customer finishing pass is active across the shared customer shell, page-intro treatment, dashboard bands, and billing-adjacent module surfaces
 - Customer shell theme switching remains repaired while spacing, intro hierarchy, icon consistency, and border/glow weight are being unified across the customer area
-- Prime Stocks now appears inside the existing Automation area as a demo-only integrated product module instead of a standalone page
+- Automation now renders as a product/subscription-driven surface centered on real access states instead of generic placeholder-heavy sections
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
+- Converted the existing Automation page away from generic placeholder overview/readiness cards and toward actual product/subscription access rendering
+- Centered Automation on three visible access states:
+  - no active product
+  - Demo Access product
+  - active subscribed product
+- Integrated Prime Stocks in the existing Automation surface so subscribed/live naming reads `Prime Stocks Bot Trader` while demo/local fallback state reads `Demo Access product`
+- Added explicit Serverless Bot, control / monitoring zone, and no stay-open requirement wording directly into the product-driven Automation UI
+- Added a local full-access rendering rule in the Automation page for `customer.local@gusgraph.test` and `admin.local@gusgraph.test` until Stripe-backed subscriptions are built later
 - Removed the wrong standalone `Prime Stocks Test Console` route and nav entry so Prime Stocks no longer lives on a separate customer page
 - Integrated Prime Stocks into the existing Automation page/module using demo/static data only for this phase
 - Framed Prime Stocks inside Automation as a `Demo Access product` now, while keeping the wording ready for the later subscribed/live name `Prime Stocks Bot Trader`
@@ -34,11 +42,12 @@
 - This pass does not change auth architecture, role logic, shared models, or database direction
 - This pass keeps customer route access rules and existing customer route names intact while cleaning only the authenticated customer shell theme system
 - This pass keeps Prime Stocks inside the existing Automation module only; it does not wire live Python runtime status, browser polling, or browser-run bot logic
+- This pass keeps billing/subscription behavior visually product-driven in Automation without rewriting the billing system or Stripe flow
 - Guest/public pages and admin pages remain untouched; only authenticated customer shell visuals, shared icons, and related hero/header surfaces are adjusted where needed
 
 ## Next
-- Desk-check the integrated Prime Stocks module on the existing Automation page in both dark and light mode
-- After visual approval, wire the Automation-embedded Prime Stocks module to real Cloud Run-backed runtime and strategy status data without moving runtime ownership into the browser
+- Desk-check the product/subscription-driven Automation page in both dark and light mode
+- After visual approval, wire the Automation product access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data without moving runtime ownership into the browser
 - Leave any non-critical page-specific polish outside the approved customer surface family for a later targeted pass only if it survives visual review
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit
 
@@ -94,3 +103,29 @@ Current state:
   - 1D trend
   - pullback window 5
 - runtime messaging remains aligned with the approved architecture: Laravel UI shell on the VM, Python runtime separate, Cloud Run server-side target
+
+
+## Session Update - 2026-04-04 - Automation product/subscription UI cleanup
+
+Completed in this session:
+- inspected the existing Automation controller/view/data flow before making any edits
+- removed or reduced generic placeholder-heavy Automation sections that did not map well to real access state
+- converted Automation into a product/subscription-driven page centered on:
+  - no active product
+  - Demo Access product
+  - active subscribed product
+- kept Prime Stocks inside Automation and switched subscribed/live naming to `Prime Stocks Bot Trader`
+- added explicit visible copy for:
+  - Serverless Bot
+  - control / monitoring zone
+  - trading does not require the page to stay open
+- added local product-access rendering for:
+  - `customer.local@gusgraph.test`
+  - `admin.local@gusgraph.test`
+  until Stripe-backed subscriptions are built later
+- validated the updated Automation surface with PHP lint and Blade view cache rebuild
+
+Current state:
+- the Automation page is now product-first instead of placeholder-first
+- the main visible fields now describe access, product state, Prime Stocks defaults, runtime target, browser requirement, and upgrade/manage posture
+- live Python runtime wiring is still intentionally deferred; demo/static product values remain where backend data is not ready yet

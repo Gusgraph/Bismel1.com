@@ -15,6 +15,7 @@ namespace App\Support\ViewData;
 use App\Models\Account;
 use App\Models\AlpacaAccount;
 use App\Models\AutomationSetting;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class AutomationPageData
 {
@@ -32,11 +33,11 @@ class AutomationPageData
         $licenses = $state['licenses'] ?? collect();
         $apiKeys = $state['api_keys'] ?? collect();
         $activityLogs = $state['activity_logs'] ?? collect();
+        $currentUser = $state['user'] instanceof Authenticatable ? $state['user'] : null;
         $entitlements = is_array($state['entitlements'] ?? null) ? $state['entitlements'] : [];
         $brokerGuard = is_array($state['broker_guard'] ?? null) ? $state['broker_guard'] : ['allowed' => false, 'summary' => 'broker not ready'];
         $hasAutomationData = (bool) ($account || $automationSetting);
         $latestRun = $botRuns->first();
-        $lastStoppedRun = $botRuns->first(fn ($item) => $item->finished_at !== null);
         $strategyReady = $strategyProfile && (bool) ($strategyProfile->is_active ?? false);
         $brokerReady = $brokerConnections->isNotEmpty()
             && $brokerCredentials->isNotEmpty()
@@ -61,19 +62,39 @@ class AutomationPageData
             ? $automationSetting->settings['bismel1_runtime']
             : [];
         $automationEntitled = (bool) data_get($entitlements, 'capabilities.can_use_stocks_automation', false);
-        $planLabel = (string) data_get($entitlements, 'base_plan.label', 'No active base plan');
+        $subscriptionActive = (bool) data_get($entitlements, 'subscription_active', false);
+        $basePlanLabel = (string) data_get($entitlements, 'base_plan.label', 'No active base plan');
+        $basePlanCode = (string) data_get($entitlements, 'base_plan.code', '');
         $entitlementSummary = (string) data_get($runtimeState, 'entitlement_summary', data_get($entitlements, 'blocked_summary', 'Plan required'));
-        $latestStageSummary = is_string($runtimeState['last_stage_summary'] ?? null)
-            ? (string) $runtimeState['last_stage_summary']
-            : null;
-        $latestStageResult = is_string($runtimeState['last_stage_result'] ?? null)
-            ? (string) $runtimeState['last_stage_result']
-            : null;
-        $latestStage = is_string($runtimeState['last_stage'] ?? null)
-            ? ucfirst(str_replace('_', ' ', (string) $runtimeState['last_stage']))
-            : 'No stage recorded yet';
-        $runtimeHeadline = self::runtimeHeadline($automationEnabled, $brokerReady, $strategyReady, $schedulerState, $latestRun);
-        $runtimeDetails = self::runtimeDetails($automationEnabled, $brokerReady, $strategyReady, $marketDataReady, $latestRun, $schedulerState);
+        $localFullAccessOverride = self::hasLocalFullAccessOverride($currentUser?->email);
+        $demoAccessProduct = self::isDemoAccessProduct($entitlements);
+        $accessState = self::accessState($subscriptionActive, $automationEntitled, $localFullAccessOverride, $demoAccessProduct);
+        $productLabel = $accessState === 'active_subscribed_product' ? 'Prime Stocks Bot Trader' : ($accessState === 'demo_access_product' ? 'Demo Access product' : 'No active product');
+        $productStatus = match ($accessState) {
+            'active_subscribed_product' => 'Active subscribed product',
+            'demo_access_product' => 'Demo Access product',
+            default => 'No active product',
+        };
+        $accessAction = match ($accessState) {
+            'active_subscribed_product' => 'Manage in this control / monitoring zone',
+            'demo_access_product' => 'Demo access active now; subscribed/live rollout comes later',
+            default => 'Upgrade / subscribe later when Stripe-backed subscriptions are introduced',
+        };
+        $accessActionContext = match ($accessState) {
+            'active_subscribed_product' => $localFullAccessOverride
+                ? 'customer.local@gusgraph.test and admin.local@gusgraph.test currently render as full-access local product users until Stripe subscriptions are wired later.'
+                : 'The current paid access posture allows this product inside Automation.',
+            'demo_access_product' => 'This workspace can review the product shape now without live subscribed runtime access yet.',
+            default => 'No active automation product is attached to this workspace yet.',
+        };
+        $latestSignal = $signals->first();
+        $lastSignalValue = $latestSignal
+            ? strtoupper((string) ($latestSignal->signal_type ?? $latestSignal->direction ?? 'signal'))
+            : ($accessState === 'active_subscribed_product' ? 'FirstLot demo' : 'No live signal yet');
+        $lastSignalTime = $latestSignal?->generated_at?->format('Y-m-d H:i').' UTC'
+            ?? ($accessState === 'no_active_product' ? 'No signal yet' : '2026-04-04 15:19 UTC demo');
+        $runtimeHeadline = self::accessHeadline($accessState, $productLabel);
+        $runtimeDetails = self::accessDetails($accessState, $localFullAccessOverride);
         $recentActivityItems = $activityLogs
             ->take(5)
             ->map(fn ($item) => [
@@ -83,45 +104,64 @@ class AutomationPageData
             ])
             ->values()
             ->all();
-        $primeStocksProduct = [
-            'label' => 'Demo Access product',
-            'title' => 'Prime Stocks',
-            'body' => 'Prime Stocks is presented here as a Demo Access product inside Automation now, with wording already shaped so the later subscribed/live name can become Prime Stocks Bot Trader without rebuilding this page.',
-            'future_label' => 'Prime Stocks Bot Trader',
+        $accessItems = [
+            ['label' => 'Current automation access', 'value' => $productStatus, 'context' => $accessActionContext, 'icon' => 'fa-solid fa-wallet', 'tone' => $accessState === 'active_subscribed_product' ? 'emerald' : ($accessState === 'demo_access_product' ? 'amber' : 'rose')],
+            ['label' => 'Product name', 'value' => $productLabel, 'context' => 'Prime Stocks is the current automation product family inside this page.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
+            ['label' => 'Product state / status', 'value' => $productStatus, 'context' => $subscriptionActive ? 'Base plan: '.$basePlanLabel : 'No Stripe-confirmed subscription is active yet.', 'icon' => 'fa-solid fa-signal', 'tone' => $accessState === 'active_subscribed_product' ? 'emerald' : ($accessState === 'demo_access_product' ? 'amber' : 'rose')],
+            ['label' => 'Upgrade / subscribe / manage state', 'value' => $accessAction, 'context' => $accessActionContext, 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
         ];
-        $primeStocksStatusItems = [
-            ['label' => 'Presentation State', 'value' => 'Demo Access product', 'context' => 'Later subscribed/live presentation state: Prime Stocks Bot Trader.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
-            ['label' => 'Asset Class', 'value' => 'Stocks Only', 'context' => 'Prime Stocks remains a stocks-only product in this phase.', 'icon' => 'fa-solid fa-chart-line', 'tone' => 'blue'],
-            ['label' => 'Execution Frame', 'value' => '1H decides when', 'context' => 'The 1H frame controls when participation is considered.', 'icon' => 'fa-solid fa-clock', 'tone' => 'violet'],
-            ['label' => 'Trend Frame', 'value' => '1D helps decide whether', 'context' => 'The 1D frame helps decide whether a setup should be taken.', 'icon' => 'fa-solid fa-chart-column', 'tone' => 'amber'],
-            ['label' => 'Pullback Window', 'value' => '5', 'context' => 'Approved current Prime Stocks pullback default.', 'icon' => 'fa-solid fa-arrow-trend-down', 'tone' => 'rose'],
-            ['label' => 'Bot Runtime', 'value' => 'Cloud Run', 'context' => 'Cloud Run runs the bot server-side for this product.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
-            ['label' => 'Page Role', 'value' => 'Control / monitoring only', 'context' => 'This Laravel page presents the product state and controls. It does not run the bot.', 'icon' => 'fa-solid fa-sliders', 'tone' => 'blue'],
-            ['label' => 'Stay-open Requirement', 'value' => 'Not required', 'context' => 'The user does not need to keep the page open for trading to continue.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
+        $productItems = [
+            ['label' => 'Asset class', 'value' => 'Stocks Only', 'context' => 'Prime Stocks remains stocks-only in this product phase.', 'icon' => 'fa-solid fa-chart-line', 'tone' => 'blue'],
+            ['label' => 'Execution timeframe', 'value' => '1H', 'context' => '1H decides when.', 'icon' => 'fa-solid fa-clock', 'tone' => 'violet'],
+            ['label' => 'Trend timeframe', 'value' => '1D', 'context' => '1D helps decide whether.', 'icon' => 'fa-solid fa-chart-column', 'tone' => 'amber'],
+            ['label' => 'Pullback window', 'value' => '5', 'context' => 'Approved current Prime Stocks pullback default.', 'icon' => 'fa-solid fa-arrow-trend-down', 'tone' => 'rose'],
+            ['label' => 'Runtime target', 'value' => 'Cloud Run Serverless Bot', 'context' => 'Cloud Run runs the Serverless Bot server-side.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
+            ['label' => 'Browser stay-open requirement', 'value' => 'Not required', 'context' => 'Trading does not require the page to stay open.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
         ];
-        $primeStocksConceptItems = [
-            ['label' => 'Reclaim model summary', 'value' => 'Prime Stocks waits for reclaim behavior after the pullback instead of treating raw weakness as the entry.', 'context' => 'This remains a visual explanation only in this phase.', 'icon' => 'fa-solid fa-rotate', 'tone' => 'sky'],
-            ['label' => 'FirstLot behavior summary', 'value' => 'FirstLot is the initial participation candidate once the reclaim setup and higher-timeframe conditions align.', 'context' => 'The customer sees the first-entry concept without live wiring here.', 'icon' => 'fa-solid fa-flag-checkered', 'tone' => 'emerald'],
-            ['label' => 'MULTI behavior summary', 'value' => 'MULTI describes controlled add behavior after the initial participation has already been established.', 'context' => 'Adds stay conceptually separate from the first entry.', 'icon' => 'fa-solid fa-layer-group', 'tone' => 'violet'],
-            ['label' => 'pauseNewBasket status concept', 'value' => 'Blocks new basket starts while the server-side bot model remains intact.', 'context' => 'Useful when fresh first-entry baskets should pause.', 'icon' => 'fa-solid fa-ban', 'tone' => 'amber'],
-            ['label' => 'pauseAdds status concept', 'value' => 'Blocks add behavior without implying the browser is managing the bot.', 'context' => 'Adds can be paused independently from new baskets.', 'icon' => 'fa-solid fa-circle-pause', 'tone' => 'amber'],
-            ['label' => 'ATR trail exit concept', 'value' => 'ATR trail exit language is reserved for the server-side exit path once protection takes over.', 'context' => 'Shown as product language only for now.', 'icon' => 'fa-solid fa-route', 'tone' => 'rose'],
-            ['label' => 'Regime fail behavior summary', 'value' => 'If regime conditions fail, the product posture shifts toward pause or exit behavior instead of normal participation.', 'context' => 'This remains a control concept inside Automation.', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'amber'],
+        $signalItems = [
+            ['label' => 'Last action candidate or demo signal state', 'value' => $lastSignalValue, 'context' => $accessState === 'no_active_product' ? 'A signal will appear here after the product becomes active.' : 'Demo/static signal state is shown until live runtime wiring is ready.', 'icon' => 'fa-solid fa-bolt', 'tone' => 'violet'],
+            ['label' => 'Last signal time', 'value' => $lastSignalTime, 'context' => $latestSignal ? 'Most recent stored signal time from the workspace.' : 'Static placeholder time is used when live signal data is not ready.', 'icon' => 'fa-solid fa-calendar-check', 'tone' => 'sky'],
+            ['label' => 'Runtime summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No runtime status recorded yet', 'icon' => 'fa-solid fa-wave-square', 'tone' => 'sky'],
+            ['label' => 'Recent activity', 'value' => $recentActivityItems[0]['value'] ?? 'No recent activity', 'context' => $recentActivityItems[0]['context'] ?? 'Recent automation activity will appear here when available.', 'icon' => 'fa-solid fa-list-check', 'tone' => 'amber'],
         ];
+        $controlZoneItems = [
+            ['label' => 'Control zone', 'value' => 'Control / monitoring zone', 'context' => 'This Laravel page is the control / monitoring zone for the automation product.', 'icon' => 'fa-solid fa-sliders', 'tone' => 'blue'],
+            ['label' => 'Serverless Bot', 'value' => 'Cloud Run runs the Serverless Bot server-side', 'context' => 'The browser does not own runtime continuity.', 'icon' => 'fa-solid fa-cloud', 'tone' => 'sky'],
+            ['label' => 'AI control state', 'value' => $automationEnabled ? 'Enabled' : 'Disabled', 'context' => $automationEnabled ? 'Automation is currently enabled for this workspace.' : 'Automation is currently disabled for this workspace.', 'icon' => 'fa-solid fa-toggle-on', 'tone' => $automationEnabled ? 'emerald' : 'rose'],
+            ['label' => 'Saved risk posture', 'value' => ucfirst((string) ($automationSetting?->risk_level ?? (($brokerReady && $strategyReady) ? 'balanced' : 'conservative'))), 'context' => 'This remains the saved operating posture for the current automation configuration.', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'amber'],
+        ];
+        $supportItems = [
+            ['label' => 'Plan access', 'value' => $subscriptionActive ? $basePlanLabel : 'No active plan', 'context' => $subscriptionActive ? ($basePlanCode !== '' ? 'Current base plan code: '.$basePlanCode : 'Current subscription is active.') : 'Subscriptions will be built with Stripe later.', 'icon' => 'fa-solid fa-wallet', 'tone' => 'emerald'],
+            ['label' => 'Broker readiness', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.'), 'icon' => 'fa-solid fa-plug-circle-bolt', 'tone' => $brokerReady ? 'emerald' : 'amber'],
+            ['label' => 'Strategy readiness', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.', 'icon' => 'fa-solid fa-compass-drafting', 'tone' => $strategyReady ? 'emerald' : 'amber'],
+            ['label' => 'Subscription build stage', 'value' => 'Stripe later stage', 'context' => 'Billing and subscriptions will be built with Stripe later; this page uses current entitlement/demo state now.', 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
+        ];
+        $productNotes = [
+            ['label' => 'Product naming', 'value' => $accessState === 'active_subscribed_product' ? 'Prime Stocks Bot Trader' : 'Demo Access product', 'context' => 'The page is structured so later subscribed/live naming becomes Prime Stocks Bot Trader without a layout rewrite.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
+            ['label' => 'Runtime ownership', 'value' => 'Cloud Run server-side', 'context' => 'The product runs as a Serverless Bot on Cloud Run, separate from the Laravel app shell.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
+            ['label' => 'Browser role', 'value' => 'Control / monitoring only', 'context' => 'Users do not need to keep this page open for trading to continue.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
+        ];
+        if ($localFullAccessOverride) {
+            $productNotes[] = [
+                'label' => 'Local full access',
+                'value' => 'Enabled for local auth users',
+                'context' => 'customer.local@gusgraph.test and admin.local@gusgraph.test currently render as full-access local product users across all product/plan states until Stripe-backed subscriptions are implemented.',
+                'icon' => 'fa-solid fa-user-group',
+                'tone' => 'emerald',
+            ];
+        }
 
         return [
             'page' => [
                 'title' => 'Automation',
-                'intro' => 'Review automation status, readiness, timing, and recent activity for this workspace.',
+                'intro' => 'Review actual automation product access for this workspace, then manage the active control / monitoring zone from the same page.',
                 'subtitle' => $account
-                    ? 'Automation controls, readiness, and recent status stay visible here.'
+                    ? 'Automation now renders around real access state: no active product, Demo Access product, or active subscribed product.'
                     : 'No workspace is available yet, so automation will stay focused on setup until account details are ready.',
                 'sections' => [
-                    ['heading' => 'AI Control', 'description' => 'Start or stop automation for this workspace from one place.'],
-                    ['heading' => 'Prime Stocks Demo Access', 'description' => 'Review Prime Stocks as a Demo Access product inside Automation without introducing a standalone page.'],
-                    ['heading' => 'Runtime Status', 'description' => 'See whether automation is active, paused, waiting, or blocked.'],
-                    ['heading' => 'Broker and Strategy Readiness', 'description' => 'Check whether the broker connection and strategy setup are ready to support automation.'],
-                    ['heading' => 'Recent Activity', 'description' => 'Review the latest high-level automation events without exposing internal logic.'],
+                    ['heading' => 'Current automation access', 'description' => 'Show whether this workspace currently has no active product, Demo Access product, or active subscribed product access.'],
+                    ['heading' => 'Prime Stocks product state', 'description' => 'Render Prime Stocks as Demo Access product now or Prime Stocks Bot Trader when subscribed/live access is active.'],
+                    ['heading' => 'Control / monitoring zone', 'description' => 'Keep configuration and runtime oversight in this Laravel page while Cloud Run stays the Serverless Bot runtime target.'],
                 ],
             ],
             'summary' => [
@@ -135,102 +175,66 @@ class AutomationPageData
                 'ai_enabled' => old('ai_enabled', $automationSetting?->ai_enabled ?? false),
                 'action_mode' => old('action_mode', 'save'),
             ],
-            'primeStocksProduct' => $primeStocksProduct,
-            'primeStocksStatusItems' => $primeStocksStatusItems,
-            'primeStocksConceptItems' => $primeStocksConceptItems,
-            'runtimeItems' => [
-                ['label' => 'Current Summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No status recorded yet'],
-                ['label' => 'Broker Readiness', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.')],
-                ['label' => 'Strategy Readiness', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.'],
-                ['label' => 'Recent Activity', 'value' => $recentActivityItems !== [] ? 'Available' : 'No recent activity', 'context' => $recentActivityItems !== [] ? 'The latest workspace activity is shown below.' : 'Recent activity will appear here after automation begins running.'],
-            ],
-            'automationState' => [
-                ['label' => 'AI Control', 'value' => $automationEnabled ? 'Enabled' : 'Disabled', 'context' => $automationEnabled ? 'Automation is on.' : 'Automation is currently off.'],
-                ['label' => 'Plan Access', 'value' => $automationEntitled ? 'Allowed' : 'Blocked', 'context' => $automationEntitled ? 'The paid plan includes this automation mode.' : $entitlementSummary],
-                ['label' => 'Automation Status', 'value' => ucfirst(str_replace('_', ' ', (string) ($automationSetting?->status ?? (($brokerReady && $strategyReady) ? 'review' : 'draft')))), 'context' => ($brokerReady && $strategyReady) ? 'This workspace is set up to run when started.' : 'Something still needs attention before automation can run smoothly.'],
-                ['label' => 'Risk Level', 'value' => ucfirst((string) ($automationSetting?->risk_level ?? (($brokerReady && $strategyReady) ? 'balanced' : 'conservative'))), 'context' => 'This is the saved operating posture for automation.'],
-                ['label' => 'Strategy', 'value' => $strategyProfile?->name ?? 'Not connected', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Choose or activate a strategy.'],
-                ['label' => 'Run Health', 'value' => ucfirst(str_replace('_', ' ', (string) ($automationSetting?->run_health ?? 'idle'))), 'context' => $runtimeState['last_runtime_summary'] ?? 'Health updates appear here after automation runs.'],
-                ['label' => 'Position Manager', 'value' => $positionManagerState['last_management_summary'] ?? 'No position updates yet', 'context' => 'Position handling updates stay high level here.'],
-            ],
-            'runWindow' => [
-                ['label' => 'Last Scheduler Run', 'value' => $schedulerState['last_scheduler_run_at'] ?? 'No scheduler run yet', 'context' => $schedulerState['last_due_timeframe'] ?? 'No run window has been recorded yet'],
-                ['label' => 'Last Execution Attempt', 'value' => $executionState['last_execution_at'] ?? 'No execution updates yet', 'context' => $executionState['last_execution_result'] ?? 'No execution result has been recorded yet'],
-                ['label' => 'Last Position Management', 'value' => $positionManagerState['last_management_at'] ?? 'No position updates yet', 'context' => $positionManagerState['last_management_result'] ?? 'No position result has been recorded yet'],
-            ],
-            'healthItems' => [
-                ['label' => 'Broker Support', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? ($alpacaAccount?->last_synced_at ? 'Last broker update '.$alpacaAccount->last_synced_at->toDateTimeString() : 'Broker connection is available') : (string) ($brokerGuard['summary'] ?? 'No recent broker update is available')],
-                ['label' => 'Market Data Path', 'value' => $marketDataReady ? 'Ready' : 'Action needed', 'context' => $marketDataReady ? 'Market data is available for the current automation cycle.' : 'Market data is not ready yet.'],
-                ['label' => 'Strategy Mapping', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'No strategy is connected yet.'],
-                ['label' => 'Open Positions', 'value' => (string) $positions->count(), 'context' => 'Open positions in this workspace'],
-                ['label' => 'Recent Orders', 'value' => (string) $orders->count(), 'context' => 'Recent orders in this workspace'],
-                ['label' => 'Signals Stored', 'value' => (string) $signals->count(), 'context' => 'Recent signals in this workspace'],
-                ['label' => 'API Support', 'value' => (string) $licenses->count().' licenses', 'context' => (string) $apiKeys->count().' saved API keys are available'],
-            ],
-            'linkageItems' => [
-                ['label' => 'Position Management', 'value' => $positionManagerState['last_management_result'] ?? 'Waiting for position updates', 'context' => 'Position updates appear here after trades begin moving through the workspace.'],
-            ],
-            'recentActivityItems' => $recentActivityItems,
+            'accessItems' => $accessItems,
+            'productItems' => $productItems,
+            'signalItems' => $signalItems,
+            'controlZoneItems' => $controlZoneItems,
+            'supportItems' => $supportItems,
+            'productNotes' => $productNotes,
             'relatedLinks' => [
-                ['route' => 'customer.strategy.index', 'label' => 'Strategy', 'description' => 'Refine strategy intent before expanding runtime automation.'],
-                ['route' => 'customer.broker.index', 'label' => 'Broker', 'description' => 'Confirm broker connectivity and masked credential posture.'],
-                ['route' => 'customer.onboarding.index', 'label' => 'Onboarding', 'description' => 'Review readiness gaps that still block a controlled automation rollout.'],
+                ['route' => 'customer.billing.index', 'label' => 'Plans & Billing', 'description' => $accessState === 'no_active_product' ? 'Review billing posture before subscribed automation access is introduced later.' : 'Review the billing surface that will own subscription management later.'],
+                ['route' => 'customer.broker.index', 'label' => 'Broker', 'description' => 'Confirm broker connectivity and masked credential posture for the current product state.'],
+                ['route' => 'customer.strategy.index', 'label' => 'Strategy', 'description' => 'Review strategy mapping before deeper runtime wiring is added.'],
             ],
             'hasAutomationData' => $hasAutomationData,
         ];
     }
 
-    protected static function runtimeHeadline(bool $automationEnabled, bool $brokerReady, bool $strategyReady, array $schedulerState, $latestRun): string
+    protected static function accessState(bool $subscriptionActive, bool $automationEntitled, bool $localFullAccessOverride, bool $demoAccessProduct): string
     {
-        if (! $automationEnabled) {
-            return 'Automation off';
+        if ($localFullAccessOverride || ($subscriptionActive && $automationEntitled)) {
+            return 'active_subscribed_product';
         }
 
-        if (! $brokerReady) {
-            return 'broker not ready';
+        if ($demoAccessProduct) {
+            return 'demo_access_product';
         }
 
-        if (! $strategyReady) {
-            return 'strategy not mapped';
-        }
-
-        if (is_string($schedulerState['next_intended_run'] ?? null) && trim((string) $schedulerState['next_intended_run']) !== '') {
-            return 'waiting for next bar close';
-        }
-
-        if (($latestRun?->status ?? null) === 'completed') {
-            return 'recent run completed';
-        }
-
-        return 'AI active';
+        return 'no_active_product';
     }
 
-    protected static function runtimeDetails(bool $automationEnabled, bool $brokerReady, bool $strategyReady, bool $marketDataReady, $latestRun, array $schedulerState): string
+    protected static function accessHeadline(string $accessState, string $productLabel): string
     {
-        if (! $automationEnabled) {
-            return 'Automation is currently off for this workspace. Start AI when you are ready to resume monitoring.';
-        }
+        return match ($accessState) {
+            'active_subscribed_product' => $productLabel.' access active',
+            'demo_access_product' => 'Demo Access product visible in Automation',
+            default => 'No active automation product',
+        };
+    }
 
-        if (! $brokerReady) {
-            return 'Automation is on, but the broker connection still needs attention before the next run can proceed.';
-        }
+    protected static function accessDetails(string $accessState, bool $localFullAccessOverride): string
+    {
+        return match ($accessState) {
+            'active_subscribed_product' => $localFullAccessOverride
+                ? 'Local full-access users currently see Prime Stocks Bot Trader as active here while Stripe-backed subscriptions are still a later-stage build. Cloud Run remains the Serverless Bot runtime, and trading does not require this page to stay open.'
+                : 'This workspace currently renders an active subscribed automation product here. Cloud Run remains the Serverless Bot runtime, and trading does not require this page to stay open.',
+            'demo_access_product' => 'This workspace currently renders Prime Stocks as a Demo Access product inside Automation. Cloud Run remains the Serverless Bot runtime target, and this page stays a control / monitoring zone only.',
+            default => 'No active automation product is attached to this workspace yet. This page still acts as the control / monitoring zone, and Cloud Run remains the intended Serverless Bot runtime once subscribed access is available.',
+        };
+    }
 
-        if (! $strategyReady) {
-            return 'Automation is on, but a strategy still needs to be connected before the next run can proceed.';
-        }
+    protected static function hasLocalFullAccessOverride(?string $email): bool
+    {
+        return in_array(strtolower(trim((string) $email)), [
+            'customer.local@gusgraph.test',
+            'admin.local@gusgraph.test',
+        ], true);
+    }
 
-        if (! $marketDataReady) {
-            return 'Automation is on, but market data is not ready yet for the current workspace.';
-        }
-
-        if (($latestRun?->status ?? null) === 'completed') {
-            return 'The most recent automation cycle finished cleanly and the workspace is waiting for the next scheduled run.';
-        }
-
-        if (is_string($schedulerState['next_intended_run'] ?? null) && trim((string) $schedulerState['next_intended_run']) !== '') {
-            return 'Automation is ready and waiting for the next scheduled run window.';
-        }
-
-        return 'Automation is active and the workspace is aligned for the next run.';
+    protected static function isDemoAccessProduct(array $entitlements): bool
+    {
+        return (bool) data_get($entitlements, 'capabilities.can_use_speed_execute', false)
+            || str_contains(strtolower((string) data_get($entitlements, 'blocked_summary', '')), 'demo plan')
+            || str_contains(strtolower((string) data_get($entitlements, 'mismatch_summary', '')), 'demo access');
     }
 }

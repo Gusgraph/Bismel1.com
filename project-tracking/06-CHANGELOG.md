@@ -161,3 +161,47 @@ Files worked during session included:
   - `php artisan route:list --name=customer.strategy.prime-stocks` returning no matching route
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 2026-04-04 - Automation page made product/subscription-driven
+
+- Refocused the existing Automation page away from generic placeholder overview/readiness sections and toward real product/subscription access state
+- Removed or reduced placeholder-heavy visible sections including:
+  - generic `Automation overview`
+  - generic `Current Automation State`
+  - generic `Run Window`
+  - generic `Recent Activity` support card
+  - generic `System linkage`
+  - generic sidebar `Automation Notes` placeholder feed
+- Added product-driven Automation rendering for three states:
+  - `No active product`
+  - `Demo Access product`
+  - `Active subscribed product`
+- Added Prime Stocks product presentation rules inside Automation:
+  - subscribed/live naming: `Prime Stocks Bot Trader`
+  - demo/local fallback naming: `Demo Access product`
+- Added visible product-driven fields for:
+  - current automation access
+  - product name
+  - product state / status
+  - upgrade / subscribe / manage state
+  - asset class
+  - execution timeframe
+  - trend timeframe
+  - pullback window
+  - runtime target
+  - browser stay-open requirement
+  - last action candidate or demo signal state
+- Added explicit visible runtime wording:
+  - `Cloud Run Serverless Bot`
+  - `Cloud Run runs the Serverless Bot server-side`
+  - `Control / monitoring zone`
+  - `Trading does not require the page to stay open`
+- Added local full-access Automation rendering for:
+  - `customer.local@gusgraph.test`
+  - `admin.local@gusgraph.test`
+  until Stripe-backed subscriptions are built later
+- Validated the updated Automation page with:
+  - `php -l app/Http/Controllers/Customer/AutomationController.php`
+  - `php -l app/Support/ViewData/AutomationPageData.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`

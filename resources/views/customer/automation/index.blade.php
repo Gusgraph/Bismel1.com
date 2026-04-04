@@ -43,28 +43,29 @@
                 <section class="customer-section">
                     <header class="customer-section__header">
                         <div class="customer-section__heading">
-                            @include('partials.ui.icon', ['icon' => 'fa-solid fa-robot', 'tone' => 'amber', 'size' => 'lg'])
+                            @include('partials.ui.icon', ['icon' => 'fa-solid fa-wallet', 'tone' => 'amber', 'size' => 'lg'])
                             <div>
-                                <p class="customer-section__eyebrow">Automation controls</p>
-                                <h2 class="customer-section__title">Automation state, readiness, and controls</h2>
+                                <p class="customer-section__eyebrow">Product access</p>
+                                <h2 class="customer-section__title">Automation products available to this workspace</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">This page shows whether automation is on, paused, blocked, or waiting, along with recent timing and activity.</p>
+                        <p class="customer-section__body">This page now renders around real product access state: no active product, Demo Access product, or active subscribed product.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Automation overview'])
-                            @include('partials.ui.stat-list', ['items' => $page['sections'], 'labelKey' => 'heading', 'valueKey' => 'description'])
+                            @include('partials.ui.info-card', ['title' => 'Current automation access'])
+                            @include('partials.ui.stat-list', ['items' => $accessItems ?? []])
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Current Automation State'])
-                            @include('partials.ui.stat-list', ['items' => $automationState])
+                            @include('partials.ui.info-card', ['title' => 'Current product details'])
+                            @include('partials.ui.stat-list', ['items' => $productItems ?? []])
                         </div>
 
                         <div class="customer-card-group">
-                            @include('partials.ui.stat-list', ['items' => $runtimeItems ?? []])
+                            @include('partials.ui.info-card', ['title' => 'Last signal state'])
+                            @include('partials.ui.stat-list', ['items' => $signalItems ?? []])
                         </div>
                     </div>
                 </section>
@@ -74,106 +75,83 @@
                         <div class="customer-section__heading">
                             @include('partials.ui.icon', ['icon' => 'fa-solid fa-sliders', 'tone' => 'sky', 'size' => 'lg'])
                             <div>
-                                <p class="customer-section__eyebrow">Workspace settings</p>
-                                <h2 class="customer-section__title">Automation configuration and start/stop controls</h2>
+                                <p class="customer-section__eyebrow">Control zone</p>
+                                <h2 class="customer-section__title">Control / monitoring zone for the current automation product</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">Set the automation posture for this workspace, then start or stop AI with clear status and readiness context.</p>
-                    </header>
-
-                    <form class="ui-card ui-form-stack customer-form-card" method="POST" action="{{ route('customer.automation.update') }}">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="ui-form-section">
-                            <div class="ui-form-section__header">
-                                <div>
-                                    <p class="ui-form-section__eyebrow">Control setup</p>
-                                    <h3 class="ui-form-section__title">Automation settings and controls</h3>
-                                </div>
-                                <p class="ui-form-section__body">Use these controls to save your preferred posture, then start or stop automation with a clear operating view.</p>
-                            </div>
-
-                            <div class="ui-form-grid">
-                                @include('partials.ui.form-field', [
-                                    'name' => 'name',
-                                    'label' => 'Configuration Name',
-                                    'value' => $form['name'] ?? '',
-                                    'help' => 'Saved as the current workspace automation configuration name.',
-                                    'autocomplete' => 'off',
-                                ])
-                                @include('partials.ui.form-field', [
-                                    'name' => 'status',
-                                    'label' => 'Automation Status',
-                                    'value' => $form['status'] ?? 'draft',
-                                    'help' => 'Use draft, review, or armed to show how close this workspace is to running.',
-                                    'autocomplete' => 'off',
-                                ])
-                                @include('partials.ui.form-field', [
-                                    'name' => 'risk_level',
-                                    'label' => 'Risk Level',
-                                    'value' => $form['risk_level'] ?? 'conservative',
-                                    'help' => 'Use conservative, balanced, or aggressive.',
-                                    'autocomplete' => 'off',
-                                ])
-                            </div>
-
-                            <div class="ui-form-field @error('ai_enabled') ui-form-field--invalid @enderror">
-                                <div class="ui-form-field__header">
-                                    <label class="ui-form-field__label" for="ai_enabled">AI Enabled</label>
-                                    <p class="ui-form-field__meta">Current workspace state</p>
-                                </div>
-                                <label class="ui-inline-copy" for="ai_enabled">
-                                    <input id="ai_enabled" name="ai_enabled" type="checkbox" value="1" @checked($form['ai_enabled'] ?? false)>
-                                    <span>Allow AI assistance in this workspace. The start and stop actions below still control when automation actually runs.</span>
-                                </label>
-                                @error('ai_enabled')
-                                    <small class="ui-field-error">{{ $message }}</small>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="ui-form-actions">
-                            <p class="ui-form-actions__note">Start AI turns automation on when readiness is in place. Stop AI pauses automation. Save settings keeps your configuration without changing the current run state.</p>
-                            <div class="ui-form-actions__buttons">
-                                <button class="ui-button ui-button--primary" type="submit" name="action_mode" value="start">Start AI</button>
-                                <button class="ui-button ui-button--ghost" type="submit" name="action_mode" value="stop">Stop AI</button>
-                                <button class="ui-button ui-button--secondary" type="submit" name="action_mode" value="save">Save settings</button>
-                                <a class="ui-button ui-button--ghost" href="{{ route('customer.automation.index') }}">Refresh</a>
-                            </div>
-                        </div>
-                    </form>
-                </section>
-
-                <section class="customer-section">
-                    <header class="customer-section__header">
-                        <div class="customer-section__heading">
-                            @include('partials.ui.icon', ['icon' => 'fa-solid fa-chart-line', 'tone' => 'emerald', 'size' => 'lg'])
-                            <div>
-                                <p class="customer-section__eyebrow">Integrated product module</p>
-                                <h2 class="customer-section__title">{{ $primeStocksProduct['title'] ?? 'Prime Stocks' }}</h2>
-                            </div>
-                        </div>
-                        <p class="customer-section__body">Prime Stocks now lives inside the existing Automation area as an integrated module, using demo/static data only during this phase.</p>
+                        <p class="customer-section__body">This Laravel page stays the control / monitoring zone while Cloud Run remains the Serverless Bot runtime target. Trading does not require the page to stay open.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
-                        <div class="customer-card-group">
-                            @include('partials.ui.info-card', [
-                                'title' => $primeStocksProduct['label'] ?? 'Demo Access product',
-                                'body' => $primeStocksProduct['body'] ?? null,
-                                'icon' => 'fa-solid fa-tag',
-                                'tone' => 'amber',
-                            ])
-                            @include('partials.ui.stat-list', ['items' => $primeStocksStatusItems ?? []])
-                        </div>
+                        <form class="ui-card ui-form-stack customer-form-card" method="POST" action="{{ route('customer.automation.update') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="ui-form-section">
+                                <div class="ui-form-section__header">
+                                    <div>
+                                        <p class="ui-form-section__eyebrow">Control setup</p>
+                                        <h3 class="ui-form-section__title">Automation settings and controls</h3>
+                                    </div>
+                                    <p class="ui-form-section__body">Use these controls to save the current product posture, then start or stop automation with clear access context.</p>
+                                </div>
+
+                                <div class="ui-form-grid">
+                                    @include('partials.ui.form-field', [
+                                        'name' => 'name',
+                                        'label' => 'Configuration Name',
+                                        'value' => $form['name'] ?? '',
+                                        'help' => 'Saved as the current workspace automation configuration name.',
+                                        'autocomplete' => 'off',
+                                    ])
+                                    @include('partials.ui.form-field', [
+                                        'name' => 'status',
+                                        'label' => 'Automation Status',
+                                        'value' => $form['status'] ?? 'draft',
+                                        'help' => 'Use draft, review, or armed to show how close this workspace is to running.',
+                                        'autocomplete' => 'off',
+                                    ])
+                                    @include('partials.ui.form-field', [
+                                        'name' => 'risk_level',
+                                        'label' => 'Risk Level',
+                                        'value' => $form['risk_level'] ?? 'conservative',
+                                        'help' => 'Use conservative, balanced, or aggressive.',
+                                        'autocomplete' => 'off',
+                                    ])
+                                </div>
+
+                                <div class="ui-form-field @error('ai_enabled') ui-form-field--invalid @enderror">
+                                    <div class="ui-form-field__header">
+                                        <label class="ui-form-field__label" for="ai_enabled">AI Enabled</label>
+                                        <p class="ui-form-field__meta">Current workspace state</p>
+                                    </div>
+                                    <label class="ui-inline-copy" for="ai_enabled">
+                                        <input id="ai_enabled" name="ai_enabled" type="checkbox" value="1" @checked($form['ai_enabled'] ?? false)>
+                                        <span>Allow AI assistance in this workspace. The start and stop actions below still control when automation actually runs.</span>
+                                    </label>
+                                    @error('ai_enabled')
+                                        <small class="ui-field-error">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="ui-form-actions">
+                                <p class="ui-form-actions__note">Start AI turns automation on when access and readiness are in place. Stop AI pauses automation. Save settings keeps the current configuration without changing runtime state.</p>
+                                <div class="ui-form-actions__buttons">
+                                    <button class="ui-button ui-button--primary" type="submit" name="action_mode" value="start">Start AI</button>
+                                    <button class="ui-button ui-button--ghost" type="submit" name="action_mode" value="stop">Stop AI</button>
+                                    <button class="ui-button ui-button--secondary" type="submit" name="action_mode" value="save">Save settings</button>
+                                    <a class="ui-button ui-button--ghost" href="{{ route('customer.automation.index') }}">Refresh</a>
+                                </div>
+                            </div>
+                        </form>
 
                         <div class="customer-card-group">
                             @include('partials.ui.info-card', [
-                                'title' => 'Prime Stocks operating concepts',
-                                'body' => 'This section keeps the current product language visible without creating a standalone page or live backend dependency.',
+                                'title' => 'Current control / monitoring zone',
+                                'body' => 'Cloud Run runs the Serverless Bot server-side. This page remains the customer control / monitoring zone only.',
                             ])
-                            @include('partials.ui.stat-list', ['items' => $primeStocksConceptItems ?? []])
+                            @include('partials.ui.stat-list', ['items' => $controlZoneItems ?? []])
                         </div>
                     </div>
                 </section>
@@ -183,31 +161,20 @@
                         <div class="customer-section__heading">
                             @include('partials.ui.icon', ['icon' => 'fa-solid fa-wave-square', 'tone' => 'violet', 'size' => 'lg'])
                             <div>
-                                <p class="customer-section__eyebrow">Runtime readiness</p>
-                                <h2 class="customer-section__title">Health, timing, and recent activity</h2>
+                                <p class="customer-section__eyebrow">Access support</p>
+                                <h2 class="customer-section__title">Subscription, readiness, and rollout posture</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">These blocks explain whether the workspace is ready, when automation last ran, and what happened most recently.</p>
+                        <p class="customer-section__body">The supporting details below are reduced to what maps to real access and rollout state for this workspace.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
                         <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Run Window'])
-                            @include('partials.ui.stat-list', ['items' => $runWindow ?? []])
-                        </div>
-
-                        <div class="customer-card-group">
-                            @include('partials.ui.stat-list', ['items' => $healthItems])
-                        </div>
-
-                        <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'Recent Activity'])
-                            @include('partials.ui.stat-list', ['items' => $recentActivityItems ?? []])
-                        </div>
-
-                        <div class="customer-card-group">
-                            @include('partials.ui.info-card', ['title' => 'System linkage'])
-                            @include('partials.ui.stat-list', ['items' => $linkageItems])
+                            @include('partials.ui.info-card', [
+                                'title' => 'Access support',
+                                'body' => 'These items explain whether the workspace is ready for the current product state without falling back to generic placeholder bands.',
+                            ])
+                            @include('partials.ui.stat-list', ['items' => $supportItems ?? []])
                         </div>
                     </div>
                     <p><small aria-hidden="true">﷽</small></p>
@@ -217,17 +184,18 @@
             <aside class="customer-page__side">
                 @unless ($hasAutomationData ?? false)
                     @include('partials.ui.empty-state', [
-                        'title' => 'Automation is not ready yet',
-                        'message' => 'Complete workspace setup first, then return here to review readiness and turn automation on.',
+                        'title' => 'No active automation product yet',
+                        'message' => 'This page will still show product access posture, but the workspace does not have a live automation product attached yet.',
                     ])
                 @endunless
 
                 <div class="customer-card-group">
-                    @include('partials.ui.info-card', ['title' => 'Automation Notes'])
-                    @include('customer.partials.customer-alerts')
+                    @include('partials.ui.info-card', ['title' => 'Product access notes'])
+                    @include('partials.ui.stat-list', ['items' => $productNotes ?? []])
                 </div>
 
                 <div class="customer-card-group">
+                    @include('partials.ui.info-card', ['title' => 'Related Pages'])
                     @include('partials.ui.link-list', ['items' => $relatedLinks ?? []])
                 </div>
             </aside>

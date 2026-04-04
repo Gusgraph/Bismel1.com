@@ -1,6 +1,14 @@
 # Active tasks
 
 ## Done
+- Clean the existing Automation page and convert it from placeholder-driven UI into product/subscription-driven UI inside the existing Automation system
+- Remove or reduce placeholder-heavy Automation sections that do not map to real product or subscription access state
+- Center Automation on real access outcomes:
+  - no active product
+  - Demo Access product
+  - active subscribed product
+- Keep Prime Stocks inside Automation and render subscribed/live naming as `Prime Stocks Bot Trader`
+- Add explicit Serverless Bot, control / monitoring zone, and no stay-open requirement wording inside Automation
 - Undo the standalone Prime Stocks page approach and integrate Prime Stocks into the existing Automation page/module using demo/static data only
 - Remove the standalone Prime Stocks route/nav path and keep Prime Stocks presentation inside Automation
 - Frame Prime Stocks inside Automation as a `Demo Access product` now, ready for later subscribed/live naming as `Prime Stocks Bot Trader`
@@ -26,26 +34,26 @@
 - Soften customer rows, module cards, and nav support bands without changing route structure or business logic
 
 ## Current
-- Desk-check the integrated Prime Stocks module on the existing Automation page in both dark and light mode
+- Desk-check the product/subscription-driven Automation page in both dark and light mode
 - Keep the current customer shell, compact top-right menu, sidebar nav, and theme toggle behavior intact
 - Do not wire live Python runtime, browser polling, or browser-run bot logic in this phase
 - Avoid unrelated repo cleanup and do not touch guest or admin areas
 
 ## Next
-- Wire the Prime Stocks Automation module to real Cloud Run-backed runtime and strategy status data after the visual surface is approved
-- Review whether the Automation-embedded Prime Stocks section needs only targeted polish after live desk-check
+- Wire the Automation product-access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data after the visual surface is approved
+- Review whether the cleaned Automation page needs only targeted polish after live desk-check
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit
 
 
 ## Active Follow-up - 2026-04-04
 
 Current next tasks:
-1. desk-check the Prime Stocks section on the Automation page in dark and light
+1. desk-check the product/subscription-driven Automation page in dark and light
 2. collect visual review feedback only
-3. wire real Cloud Run-backed runtime/status data later inside Automation after approval
+3. wire real Cloud Run-backed entitlement/subscription/runtime data later inside Automation after approval
 4. keep unrelated dirty files and `.bak` artifacts out of staging
 
 Working rule:
-- work only inside the approved Automation surface for Prime Stocks in this phase
+- work only inside the approved Automation surface in this phase
 - keep the architecture unchanged: Laravel shell on VM, Python runtime separate, Cloud Run server-side
 - use demo/static data until the later backend hookup pass
