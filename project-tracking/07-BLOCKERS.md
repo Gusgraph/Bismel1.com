@@ -13,6 +13,7 @@
 ## Open
 - Infrastructure/logo section may still need final visual polish and better approved brand assets
 - Homepage marketing copy may still need another tightening pass after live review
+- **Prime Stocks Bot Trader:** Scheduled runtime still returns Internal Server Error after Firestore bootstrap; next debugging step is to inspect Cloud Run logs and fix the next real execution failure in the runtime path after config load.
 
 
 ## 2026-04-04

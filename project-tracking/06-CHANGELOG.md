@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-04-05 - Prime Stocks Cloud Run and Firestore Bootstrap
+- Cloud Run service 'bismel1-prime-stocks' for Prime Stocks deployed and healthy.
+- Firestore runtime bootstrap script created and available in Python repo.
+- Firestore runtime documents successfully seeded into database 'bismel1-1'.
+- Confirmed seeded runtime paths: runtime_products/prime_stocks/config/current, state/current, snapshots/latest, signals/latest, execution/current, actions/latest.
+- Scheduled endpoint now reaches runtime without missing-runtime-doc blocking.
+- Identified current blocker: Scheduled runtime returns Internal Server Error after Firestore bootstrap, indicating an issue in the execution path after runtime config load.
+- Next step: inspect Cloud Run logs for execution failure.
+
 ## 2026-04-05 - Automation Firestore runtime read integration
 - Added read-only Prime Stocks runtime document reads through the existing Laravel `FirestoreBridge`
 - Added Automation runtime document support for:

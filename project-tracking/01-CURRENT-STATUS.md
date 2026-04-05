@@ -6,6 +6,7 @@
 - Automation now renders as a product/subscription-driven surface centered on real access states instead of generic placeholder-heavy sections
 - Prime Stocks now reads as one coherent active-plan local testing product surface inside the existing Automation page
 - Prime Stocks Automation now reads Firestore-backed runtime state documents in read-only mode for live runtime status, latest action, execution, and bar-processing values where records exist
+- **Prime Stocks Bot Trader Status:** Cloud Run service deployed and healthy; Firestore runtime initialized and seeded with control documents; scheduled endpoint reaches runtime; execution path still under debugging. Bot is not yet fully operational.
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes

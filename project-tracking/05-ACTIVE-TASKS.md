@@ -9,6 +9,10 @@
 - Clean the Automation page wording/state model so Prime Stocks reads as the active plan product for local testing instead of a demo product
 - Remove mixed Demo Access vs subscribed wording from the active Prime Stocks Automation surface
 - Present Prime Stocks as `Prime Stocks Bot Trader` with active plan access in a local full-access test state until Stripe subscription wiring is completed
+- Cloud Run service 'bismel1-prime-stocks' for Prime Stocks deployed and healthy.
+- Firestore runtime bootstrap script created and available in Python repo.
+- Firestore runtime documents successfully seeded into database 'bismel1-1'.
+- Scheduled endpoint now reaches runtime without missing-runtime-doc blocking.
 - Clean the existing Automation page and convert it from placeholder-driven UI into product/subscription-driven UI inside the existing Automation system
 - Remove or reduce placeholder-heavy Automation sections that do not map to real product or subscription access state
 - Center Automation on real access outcomes:

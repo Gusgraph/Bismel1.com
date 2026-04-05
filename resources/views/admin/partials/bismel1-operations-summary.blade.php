@@ -20,6 +20,29 @@
 
 @include('partials.ui.summary-grid', ['items' => $summaryItems])
 
+<div class="admin-card-group">
+    @include('partials.ui.info-card', ['title' => 'Prime Stocks Bot Trader Status'])
+    <ul class="ui-stat-list">
+        <li class="ui-stat-list__item">
+            <span class="ui-stat-list__label">Cloud Run Service:</span>
+            <span class="ui-stat-list__value">Deployed and Healthy</span>
+        </li>
+        <li class="ui-stat-list__item">
+            <span class="ui-stat-list__label">Firestore Runtime:</span>
+            <span class="ui-stat-list__value">Initialized and Seeded</span>
+        </li>
+        <li class="ui-stat-list__item">
+            <span class="ui-stat-list__label">Scheduler Endpoint:</span>
+            <span class="ui-stat-list__value">Reaches Runtime</span>
+        </li>
+        <li class="ui-stat-list__item">
+            <span class="ui-stat-list__label">Execution Path:</span>
+            <span class="ui-stat-list__value">Still Under Debugging</span>
+        </li>
+    </ul>
+    <p class="ui-list__meta">Bot is not yet fully operational or live-ready.</p>
+</div>
+
 <div class="admin-page__detail-grid">
     <div class="admin-card-group">
         @include('partials.ui.info-card', ['title' => 'Blocked Reason Categories'])
