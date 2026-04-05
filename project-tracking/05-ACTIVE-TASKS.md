@@ -1,6 +1,7 @@
 # Active tasks
 
 ## Done
+- Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - Clean the Automation page wording/state model so Prime Stocks reads as the active plan product for local testing instead of a demo product
 - Remove mixed Demo Access vs subscribed wording from the active Prime Stocks Automation surface
 - Present Prime Stocks as `Prime Stocks Bot Trader` with active plan access in a local full-access test state until Stripe subscription wiring is completed
@@ -37,7 +38,6 @@
 - Soften customer rows, module cards, and nav support bands without changing route structure or business logic
 
 ## Current
-- Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - Keep the current customer shell, compact top-right menu, sidebar nav, and theme toggle behavior intact
 - Do not wire live Python runtime, browser polling, or browser-run bot logic in this phase
 - Avoid unrelated repo cleanup and do not touch guest or admin areas
@@ -51,10 +51,9 @@
 ## Active Follow-up - 2026-04-04
 
 Current next tasks:
-1. desk-check the active-plan Prime Stocks Automation page in dark and light
-2. collect visual review feedback only
-3. wire real Cloud Run-backed entitlement/subscription/runtime data later inside Automation after approval
-4. keep unrelated dirty files and `.bak` artifacts out of staging
+1. collect visual review feedback only
+2. wire real Cloud Run-backed entitlement/subscription/runtime data later inside Automation after approval
+3. keep unrelated dirty files and `.bak` artifacts out of staging
 
 Working rule:
 - work only inside the approved Automation surface in this phase

@@ -4,10 +4,12 @@
 - Final authenticated customer finishing pass is active across the shared customer shell, page-intro treatment, dashboard bands, and billing-adjacent module surfaces
 - Customer shell theme switching remains repaired while spacing, intro hierarchy, icon consistency, and border/glow weight are being unified across the customer area
 - Automation now renders as a product/subscription-driven surface centered on real access states instead of generic placeholder-heavy sections
-- Automation wording is being tightened so Prime Stocks reads as one coherent active-plan local testing product surface without demo/subscribed contradictions
+- Prime Stocks now reads as one coherent active-plan local testing product surface inside the existing Automation page
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
+- Desk-checked the active-plan Prime Stocks Automation page source and confirmed the active visible product path no longer uses Demo Access wording
+- Confirmed the active Automation wording now consistently presents `Prime Stocks Bot Trader` with active plan access in local full-access testing while keeping Stripe subscription wiring honestly described as a later stage
 - Removed Demo Access wording from the active Prime Stocks Automation surface so the page now reads as local active-plan testing for `Prime Stocks Bot Trader`
 - Simplified the Automation state model from three mixed product states down to an honest active-plan local testing state plus a no-active-product fallback
 - Kept the wording honest by explicitly saying Stripe subscription wiring is still a later stage while local full-access testing remains active for `customer.local@gusgraph.test` and `admin.local@gusgraph.test`
@@ -40,7 +42,7 @@
 - Live app path: /var/www/html/bismel1.com
 - Repo path: /var/www/html/bismel1.com
 - Remote: git@github.com:Gusgraph/Bismel1.com.git
-- Current date for this task pass: 2026-04-03 UTC
+- Current date for this task pass: 2026-04-05 UTC
 
 ## Important implementation note
 - This pass does not change auth architecture, role logic, shared models, or database direction
@@ -50,7 +52,6 @@
 - Guest/public pages and admin pages remain untouched; only authenticated customer shell visuals, shared icons, and related hero/header surfaces are adjusted where needed
 
 ## Next
-- Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - After visual approval, wire the Automation product access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data without moving runtime ownership into the browser
 - Leave any non-critical page-specific polish outside the approved customer surface family for a later targeted pass only if it survives visual review
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit
@@ -152,3 +153,24 @@ Current state:
 - the active Prime Stocks Automation page now reads as one coherent local active-plan test surface
 - contradictory demo-vs-subscribed wording has been removed from the active visible product path
 - live runtime and Stripe subscription wiring are still deferred to a later implementation step
+
+
+## Session Update - 2026-04-05 - Automation desk-check
+
+Completed in this session:
+- reread the tracking files and confirmed the active task had shifted to desk-checking the active-plan Prime Stocks Automation page
+- inspected the current Automation controller/view/data flow again
+- verified the active visible product path still reads as:
+  - `Prime Stocks Bot Trader`
+  - `Active plan access`
+  - local full-access testing until Stripe subscription wiring is completed
+- confirmed the active page path keeps Cloud Run and browser-role wording explicit:
+  - Cloud Run runs the bot server-side
+  - this page is control / monitoring only
+  - trading does not require the page to stay open
+- revalidated the current Automation view layer with PHP lint and Blade view cache rebuild
+
+Current state:
+- the active-plan Prime Stocks Automation page has been desk-checked and the wording/state model remains coherent
+- no new blocker was introduced during the desk-check
+- the next implementation step is now only the real entitlement/subscription/runtime hookup inside the same Automation page
