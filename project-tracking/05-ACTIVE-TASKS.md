@@ -1,6 +1,10 @@
 # Active tasks
 
 ## Done
+- Integrate real Prime Stocks runtime read data into the existing Automation page from Firestore-backed runtime state
+- Read the existing Prime Stocks Firestore/runtime paths from Laravel in read-only mode only
+- Replace current static/demo Prime Stocks runtime fields in Automation with real runtime values where records exist
+- Keep graceful Automation fallback messaging when Firestore runtime data is missing or unavailable
 - Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - Clean the Automation page wording/state model so Prime Stocks reads as the active plan product for local testing instead of a demo product
 - Remove mixed Demo Access vs subscribed wording from the active Prime Stocks Automation surface
@@ -43,7 +47,7 @@
 - Avoid unrelated repo cleanup and do not touch guest or admin areas
 
 ## Next
-- Wire the active-plan Prime Stocks Automation state and runtime fields to real entitlement/subscription/runtime data after the visual surface is approved
+- Wire the active-plan Prime Stocks Automation product access state to real entitlement/subscription data after the runtime read integration
 - Review whether the cleaned active-plan Automation page needs only targeted polish after live desk-check
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit
 
@@ -52,7 +56,7 @@
 
 Current next tasks:
 1. collect visual review feedback only
-2. wire real Cloud Run-backed entitlement/subscription/runtime data later inside Automation after approval
+2. wire real Cloud Run-backed entitlement/subscription data later inside Automation after approval
 3. keep unrelated dirty files and `.bak` artifacts out of staging
 
 Working rule:

@@ -19,8 +19,10 @@ use App\Models\AutomationSetting;
 use App\Support\Automation\Bismel1RuntimeGuardrails;
 use App\Support\Billing\Bismel1EntitlementService;
 use App\Support\Customer\CurrentCustomerAccountResolver;
+use App\Support\Firestore\FirestoreBridge;
 use App\Support\Navigation\CustomerNavigation;
 use App\Support\ViewData\AutomationPageData;
+use Throwable;
 
 class AutomationController extends Controller
 {
@@ -28,6 +30,7 @@ class AutomationController extends Controller
         CurrentCustomerAccountResolver $currentCustomerAccountResolver,
         Bismel1EntitlementService $bismel1EntitlementService,
         Bismel1RuntimeGuardrails $bismel1RuntimeGuardrails,
+        FirestoreBridge $firestoreBridge,
     )
     {
         $account = $currentCustomerAccountResolver->resolveForPreset(request()->user(), 'automation');
@@ -60,6 +63,7 @@ class AutomationController extends Controller
 
         $entitlements = $bismel1EntitlementService->resolve($account);
         $brokerGuard = $bismel1RuntimeGuardrails->runtimeAccountGuard($alpacaAccount);
+        $primeStocksRuntime = $this->safePrimeStocksRuntimeRead($firestoreBridge);
         $data = AutomationPageData::make($account, [
             'automation_setting' => $automationSetting,
             'strategy_profile' => $strategyProfile,
@@ -77,6 +81,7 @@ class AutomationController extends Controller
             'user' => request()->user(),
             'entitlements' => $entitlements,
             'broker_guard' => $brokerGuard,
+            'prime_stocks_runtime' => $primeStocksRuntime,
         ]);
 
         return view('customer.automation.index', [
@@ -230,5 +235,28 @@ class AutomationController extends Controller
                 : ($actionMode === 'stop'
                     ? 'Automation runtime was stopped for the current workspace.'
                     : 'Automation settings were saved to the current workspace configuration.'));
+    }
+
+    protected function safePrimeStocksRuntimeRead(FirestoreBridge $firestoreBridge): array
+    {
+        try {
+            return $firestoreBridge->readPrimeStocksRuntimeDocuments();
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return [
+                'status' => 'error',
+                'headline' => 'Prime Stocks runtime read is unavailable.',
+                'details' => $exception->getMessage(),
+                'paths' => [
+                    'state' => 'runtime_products/prime_stocks/state/current',
+                    'snapshot' => 'runtime_products/prime_stocks/snapshots/latest',
+                    'signal' => 'runtime_products/prime_stocks/signals/latest',
+                    'execution' => 'runtime_products/prime_stocks/execution/current',
+                    'action' => 'runtime_products/prime_stocks/actions/latest',
+                ],
+                'documents' => [],
+            ];
+        }
     }
 }

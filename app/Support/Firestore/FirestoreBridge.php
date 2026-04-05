@@ -24,6 +24,14 @@ use Throwable;
 
 class FirestoreBridge
 {
+    protected const PRIME_STOCKS_RUNTIME_PATHS = [
+        'state' => 'runtime_products/prime_stocks/state/current',
+        'snapshot' => 'runtime_products/prime_stocks/snapshots/latest',
+        'signal' => 'runtime_products/prime_stocks/signals/latest',
+        'execution' => 'runtime_products/prime_stocks/execution/current',
+        'action' => 'runtime_products/prime_stocks/actions/latest',
+    ];
+
     public function __construct(
         protected ?FirestoreUserMapper $userMapper = null,
     ) {
@@ -237,6 +245,72 @@ class FirestoreBridge
         ];
     }
 
+    public function readPrimeStocksRuntimeDocuments(): array
+    {
+        $status = $this->status();
+        $paths = self::PRIME_STOCKS_RUNTIME_PATHS;
+
+        if (! $status['enabled']) {
+            return [
+                'status' => 'disabled',
+                'headline' => 'Prime Stocks runtime read is disabled.',
+                'details' => 'Firestore integration is disabled in configuration for this Laravel surface.',
+                'paths' => $paths,
+                'documents' => [],
+            ];
+        }
+
+        if (! $status['client_available']) {
+            return [
+                'status' => 'missing_client',
+                'headline' => 'Prime Stocks runtime read is unavailable.',
+                'details' => 'The Google Cloud Firestore PHP client package is not installed.',
+                'paths' => $paths,
+                'documents' => [],
+            ];
+        }
+
+        if (! $status['project_id_configured']) {
+            return [
+                'status' => 'misconfigured',
+                'headline' => 'Prime Stocks runtime read is unavailable.',
+                'details' => 'Firestore project configuration is incomplete.',
+                'paths' => $paths,
+                'documents' => [],
+            ];
+        }
+
+        try {
+            $documents = [];
+
+            foreach ($paths as $key => $path) {
+                $documents[$key] = $this->readDocumentByPath($path);
+            }
+
+            $availableCount = collect($documents)->filter(fn ($item) => is_array($item))->count();
+
+            return [
+                'status' => $availableCount > 0 ? 'ok' : 'not_found',
+                'headline' => $availableCount > 0
+                    ? 'Prime Stocks runtime records are available.'
+                    : 'Prime Stocks runtime records are not available yet.',
+                'details' => $availableCount > 0
+                    ? 'Automation is reading the current Prime Stocks runtime documents from Firestore in read-only mode.'
+                    : 'The Prime Stocks runtime paths exist as the read target, but no runtime documents have been written yet.',
+                'paths' => $paths,
+                'documents' => $documents,
+            ];
+        } catch (Throwable $exception) {
+            return [
+                'status' => 'error',
+                'headline' => 'Prime Stocks runtime read is unavailable.',
+                'details' => $exception->getMessage(),
+                'paths' => $paths,
+                'documents' => [],
+            ];
+        }
+    }
+
     protected function newClient(): object
     {
         if (! class_exists(GapicFirestoreClient::class)) {
@@ -442,5 +516,25 @@ class FirestoreBridge
             'not_found' => 'Missing',
             default => 'Unavailable',
         };
+    }
+
+    protected function readDocumentByPath(string $documentPath): ?array
+    {
+        try {
+            $document = $this->newClient()->getDocument(
+                (new GetDocumentRequest())
+                    ->setName($this->documentName($documentPath))
+            );
+
+            return $this->decodeDocumentFields(
+                iterator_to_array($document->getFields()->getIterator())
+            );
+        } catch (ApiException $exception) {
+            if ($this->isDocumentNotFound($exception)) {
+                return null;
+            }
+
+            throw $exception;
+        }
     }
 }

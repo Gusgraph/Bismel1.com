@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-04-05 - Automation Firestore runtime read integration
+- Added read-only Prime Stocks runtime document reads through the existing Laravel `FirestoreBridge`
+- Added Automation runtime document support for:
+  - `runtime_products/prime_stocks/state/current`
+  - `runtime_products/prime_stocks/snapshots/latest`
+  - `runtime_products/prime_stocks/signals/latest`
+  - `runtime_products/prime_stocks/execution/current`
+  - `runtime_products/prime_stocks/actions/latest`
+- Passed the Firestore-backed Prime Stocks runtime payload through the existing `AutomationController` into the existing `AutomationPageData` flow
+- Replaced static Automation runtime-facing Prime Stocks values with live read values where available for:
+  - product runtime status
+  - latest candidate action
+  - latest execution decision
+  - last processed bar time
+  - last signal time
+  - trigger type / source
+  - last action / order result
+- Added graceful fallback messaging when Firestore runtime records are missing, disabled, misconfigured, or unreadable
+- Updated visible Automation copy to keep the runtime boundary explicit while reflecting Firestore-backed read-only runtime state
+- Validated the updated Automation runtime-read path with:
+  - `php -l app/Support/Firestore/FirestoreBridge.php`
+  - `php -l app/Http/Controllers/Customer/AutomationController.php`
+  - `php -l app/Support/ViewData/AutomationPageData.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`
+
 ## 2026-04-03
 - Aggressively neutralized all `.app-topbar` card-shaped styling for customer routes (padding, background, border, radius, shadow, and backdrop-filter), ensuring only the standalone 3-dots menu button remains visually unframed.
 - Removed the top-right topbar frame/container on customer pages, leaving only the standalone 3-dots menu button.

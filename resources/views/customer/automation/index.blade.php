@@ -49,7 +49,7 @@
                                 <h2 class="customer-section__title">Automation products available to this workspace</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">This page now reads as one honest active-plan local test surface for Prime Stocks Bot Trader, with a clean no-active-product fallback when access is unavailable.</p>
+                        <p class="customer-section__body">This page now reads as one honest active-plan surface for Prime Stocks Bot Trader, with read-only Firestore runtime values shown where server-side records exist and a clean fallback when they do not.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
@@ -165,7 +165,7 @@
                                 <h2 class="customer-section__title">Subscription, readiness, and rollout posture</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">The supporting details below stay aligned with active plan testing, local full-access posture, and the later Stripe wiring stage.</p>
+                        <p class="customer-section__body">The supporting details below stay aligned with active plan access, Firestore-backed runtime read status, and the later Stripe wiring stage.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">

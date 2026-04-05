@@ -5,9 +5,31 @@
 - Customer shell theme switching remains repaired while spacing, intro hierarchy, icon consistency, and border/glow weight are being unified across the customer area
 - Automation now renders as a product/subscription-driven surface centered on real access states instead of generic placeholder-heavy sections
 - Prime Stocks now reads as one coherent active-plan local testing product surface inside the existing Automation page
+- Prime Stocks Automation now reads Firestore-backed runtime state documents in read-only mode for live runtime status, latest action, execution, and bar-processing values where records exist
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
+- Added a read-only Firestore bridge path for Prime Stocks runtime documents at:
+  - `runtime_products/prime_stocks/state/current`
+  - `runtime_products/prime_stocks/snapshots/latest`
+  - `runtime_products/prime_stocks/signals/latest`
+  - `runtime_products/prime_stocks/execution/current`
+  - `runtime_products/prime_stocks/actions/latest`
+- Integrated the existing Automation controller/view-data flow with those Firestore-backed Prime Stocks runtime documents without creating a new page or changing the Firestore schema
+- Replaced static/demo Prime Stocks runtime fields in Automation with live read values where available for:
+  - product runtime status
+  - latest candidate action
+  - latest execution decision
+  - last processed bar time
+  - last signal time
+  - trigger type / source
+  - last action / order result
+- Added graceful Automation fallback messaging when Firestore runtime records are missing, disabled, misconfigured, or unreadable
+- Kept the runtime boundary explicit in visible Automation copy:
+  - Cloud Run runs the bot server-side
+  - this page is control / monitoring only
+  - trading does not require the page to stay open
+- Validated the updated Automation runtime-read path with PHP lint plus Blade view clear/cache
 - Desk-checked the active-plan Prime Stocks Automation page source and confirmed the active visible product path no longer uses Demo Access wording
 - Confirmed the active Automation wording now consistently presents `Prime Stocks Bot Trader` with active plan access in local full-access testing while keeping Stripe subscription wiring honestly described as a later stage
 - Removed Demo Access wording from the active Prime Stocks Automation surface so the page now reads as local active-plan testing for `Prime Stocks Bot Trader`
@@ -47,14 +69,45 @@
 ## Important implementation note
 - This pass does not change auth architecture, role logic, shared models, or database direction
 - This pass keeps customer route access rules and existing customer route names intact while cleaning only the authenticated customer shell theme system
-- This pass keeps Prime Stocks inside the existing Automation module only; it does not wire live Python runtime status, browser polling, or browser-run bot logic
+- This pass keeps Prime Stocks inside the existing Automation module only; it reads live Firestore runtime state in read-only mode and does not add browser polling or browser-run bot logic
 - This pass keeps billing/subscription behavior visually product-driven in Automation without rewriting the billing system or Stripe flow
 - Guest/public pages and admin pages remain untouched; only authenticated customer shell visuals, shared icons, and related hero/header surfaces are adjusted where needed
 
 ## Next
-- After visual approval, wire the Automation product access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data without moving runtime ownership into the browser
+- After this runtime-read phase, wire the Automation product access state to real entitlement/subscription data without moving runtime ownership into the browser
 - Leave any non-critical page-specific polish outside the approved customer surface family for a later targeted pass only if it survives visual review
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit
+
+## Session Update - 2026-04-05 - Automation Firestore runtime read integration
+
+Completed in this session:
+- reread the project tracking files and confirmed the current task had shifted from static Automation runtime placeholders to Firestore-backed runtime reads
+- inspected the existing Automation controller/view/view-data flow before making changes
+- reused the existing Laravel Firestore bridge and added a read-only Prime Stocks runtime document reader for:
+  - `runtime_products/prime_stocks/state/current`
+  - `runtime_products/prime_stocks/snapshots/latest`
+  - `runtime_products/prime_stocks/signals/latest`
+  - `runtime_products/prime_stocks/execution/current`
+  - `runtime_products/prime_stocks/actions/latest`
+- passed the Firestore-backed runtime data into the existing Automation controller/view-data flow only
+- replaced the current static runtime-facing Prime Stocks fields in Automation with live read values where records exist
+- added graceful fallback messaging for:
+  - missing runtime records
+  - disabled Firestore integration
+  - missing client/config
+  - read errors
+- kept Prime Stocks presented as the active plan product and kept Cloud Run/control-zone/no-stay-open wording explicit
+- validated the updated Automation page with:
+  - `php -l app/Support/Firestore/FirestoreBridge.php`
+  - `php -l app/Http/Controllers/Customer/AutomationController.php`
+  - `php -l app/Support/ViewData/AutomationPageData.php`
+  - `php artisan view:clear`
+  - `php artisan view:cache`
+
+Current state:
+- the existing Automation page now reads Prime Stocks runtime status from Firestore-backed runtime documents in read-only form
+- static runtime placeholders have been replaced where practical by live values from the current Python runtime document paths
+- Laravel remains the product shell and control / monitoring surface only; runtime ownership stays server-side on Cloud Run
 
 
 ## Session Update - 2026-04-04

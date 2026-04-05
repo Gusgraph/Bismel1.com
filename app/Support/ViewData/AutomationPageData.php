@@ -36,6 +36,15 @@ class AutomationPageData
         $currentUser = $state['user'] instanceof Authenticatable ? $state['user'] : null;
         $entitlements = is_array($state['entitlements'] ?? null) ? $state['entitlements'] : [];
         $brokerGuard = is_array($state['broker_guard'] ?? null) ? $state['broker_guard'] : ['allowed' => false, 'summary' => 'broker not ready'];
+        $primeStocksRuntime = is_array($state['prime_stocks_runtime'] ?? null) ? $state['prime_stocks_runtime'] : [];
+        $primeStocksRuntimeStatus = (string) ($primeStocksRuntime['status'] ?? 'not_found');
+        $primeStocksRuntimeDetails = (string) ($primeStocksRuntime['details'] ?? 'Prime Stocks runtime documents are not available yet.');
+        $primeStocksRuntimeDocuments = is_array($primeStocksRuntime['documents'] ?? null) ? $primeStocksRuntime['documents'] : [];
+        $primeStocksStateDocument = is_array($primeStocksRuntimeDocuments['state'] ?? null) ? $primeStocksRuntimeDocuments['state'] : [];
+        $primeStocksSnapshotDocument = is_array($primeStocksRuntimeDocuments['snapshot'] ?? null) ? $primeStocksRuntimeDocuments['snapshot'] : [];
+        $primeStocksSignalDocument = is_array($primeStocksRuntimeDocuments['signal'] ?? null) ? $primeStocksRuntimeDocuments['signal'] : [];
+        $primeStocksExecutionDocument = is_array($primeStocksRuntimeDocuments['execution'] ?? null) ? $primeStocksRuntimeDocuments['execution'] : [];
+        $primeStocksActionDocument = is_array($primeStocksRuntimeDocuments['action'] ?? null) ? $primeStocksRuntimeDocuments['action'] : [];
         $hasAutomationData = (bool) ($account || $automationSetting);
         $latestRun = $botRuns->first();
         $strategyReady = $strategyProfile && (bool) ($strategyProfile->is_active ?? false);
@@ -73,6 +82,58 @@ class AutomationPageData
             'active_plan_access' => 'Active plan access',
             default => 'No active product',
         };
+        $runtimeStatusValue = self::runtimeValue(
+            $primeStocksStateDocument['latest_status'] ?? null,
+            $primeStocksSnapshotDocument['status'] ?? null,
+            $accessState === 'active_plan_access' ? 'No runtime record yet' : 'No runtime product',
+        );
+        $latestCandidateAction = self::runtimeValue(
+            $primeStocksStateDocument['latest_candidate_action'] ?? null,
+            $primeStocksSignalDocument['candidate_action'] ?? null,
+            $primeStocksSnapshotDocument['candidate_action'] ?? null,
+            'No runtime record yet',
+        );
+        $latestExecutionDecision = self::runtimeValue(
+            $primeStocksStateDocument['latest_execution_decision'] ?? null,
+            $primeStocksExecutionDocument['execution_decision'] ?? null,
+            $primeStocksActionDocument['execution_decision'] ?? null,
+            'No runtime record yet',
+        );
+        $lastProcessedBarTime = self::formatRuntimeTimestamp(
+            self::runtimeValue($primeStocksStateDocument['last_processed_bar_time'] ?? null, null)
+        );
+        $lastSignalTime = self::formatRuntimeTimestamp(
+            self::runtimeValue(
+                $primeStocksSignalDocument['latest_signal_time'] ?? null,
+                $primeStocksSnapshotDocument['latest_signal_time'] ?? null,
+                null
+            )
+        );
+        $triggerType = self::runtimeValue(
+            $primeStocksExecutionDocument['trigger_type'] ?? null,
+            $primeStocksActionDocument['trigger_type'] ?? null,
+            $primeStocksStateDocument['trigger_type'] ?? null,
+            'Not recorded',
+        );
+        $triggerSource = self::runtimeValue(
+            $primeStocksExecutionDocument['trigger_source'] ?? null,
+            $primeStocksActionDocument['trigger_source'] ?? null,
+            $primeStocksStateDocument['trigger_source'] ?? null,
+            'Not recorded',
+        );
+        $lastActionOrderResult = self::buildLastActionOrderResult(
+            $primeStocksExecutionDocument,
+            $primeStocksActionDocument,
+            $primeStocksRuntimeStatus
+        );
+        $runtimeAvailabilityValue = match ($primeStocksRuntimeStatus) {
+            'ok' => 'Live runtime linked',
+            'not_found' => 'No runtime records yet',
+            'disabled' => 'Firestore runtime read disabled',
+            'missing_client' => 'Firestore client missing',
+            'misconfigured' => 'Firestore config incomplete',
+            default => 'Runtime read unavailable',
+        };
         $accessAction = match ($accessState) {
             'active_plan_access' => 'Manage in this control / monitoring zone',
             default => 'Upgrade / subscribe later when Stripe-backed subscriptions are introduced',
@@ -83,12 +144,6 @@ class AutomationPageData
                 : 'The current paid plan posture allows this product inside Automation.',
             default => 'No active automation product is attached to this workspace yet.',
         };
-        $latestSignal = $signals->first();
-        $lastSignalValue = $latestSignal
-            ? strtoupper((string) ($latestSignal->signal_type ?? $latestSignal->direction ?? 'signal'))
-            : ($accessState === 'active_plan_access' ? 'FirstLot local test state' : 'No signal yet');
-        $lastSignalTime = $latestSignal?->generated_at?->format('Y-m-d H:i').' UTC'
-            ?? ($accessState === 'no_active_product' ? 'No signal yet' : '2026-04-04 15:19 UTC local test');
         $runtimeHeadline = self::accessHeadline($accessState, $productLabel);
         $runtimeDetails = self::accessDetails($accessState, $localFullAccessOverride);
         $recentActivityItems = $activityLogs
@@ -111,31 +166,33 @@ class AutomationPageData
             ['label' => 'Execution timeframe', 'value' => '1H', 'context' => '1H decides when.', 'icon' => 'fa-solid fa-clock', 'tone' => 'violet'],
             ['label' => 'Trend timeframe', 'value' => '1D', 'context' => '1D helps decide whether.', 'icon' => 'fa-solid fa-chart-column', 'tone' => 'amber'],
             ['label' => 'Pullback window', 'value' => '5', 'context' => 'Approved current Prime Stocks pullback default.', 'icon' => 'fa-solid fa-arrow-trend-down', 'tone' => 'rose'],
+            ['label' => 'Product runtime status', 'value' => $runtimeStatusValue, 'context' => $primeStocksRuntimeDetails, 'icon' => 'fa-solid fa-wave-square', 'tone' => $primeStocksRuntimeStatus === 'ok' ? 'emerald' : 'amber'],
             ['label' => 'Runtime target', 'value' => 'Cloud Run Serverless Bot', 'context' => 'Cloud Run runs the Serverless Bot server-side.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
             ['label' => 'Browser stay-open requirement', 'value' => 'Not required', 'context' => 'Trading does not require the page to stay open.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
         ];
         $signalItems = [
-            ['label' => 'Last action candidate or signal state', 'value' => $lastSignalValue, 'context' => $accessState === 'no_active_product' ? 'A signal will appear here after the product becomes active.' : 'Local static signal state is shown until live runtime wiring is ready.', 'icon' => 'fa-solid fa-bolt', 'tone' => 'violet'],
-            ['label' => 'Last signal time', 'value' => $lastSignalTime, 'context' => $latestSignal ? 'Most recent stored signal time from the workspace.' : 'Static local test time is used until live signal data is ready.', 'icon' => 'fa-solid fa-calendar-check', 'tone' => 'sky'],
-            ['label' => 'Runtime summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No runtime status recorded yet', 'icon' => 'fa-solid fa-wave-square', 'tone' => 'sky'],
-            ['label' => 'Recent activity', 'value' => $recentActivityItems[0]['value'] ?? 'No recent activity', 'context' => $recentActivityItems[0]['context'] ?? 'Recent automation activity will appear here when available.', 'icon' => 'fa-solid fa-list-check', 'tone' => 'amber'],
+            ['label' => 'Latest candidate action', 'value' => $latestCandidateAction, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Read-only candidate action from the Firestore-backed Prime Stocks runtime signal path.' : $primeStocksRuntimeDetails, 'icon' => 'fa-solid fa-bolt', 'tone' => 'violet'],
+            ['label' => 'Last signal time', 'value' => $lastSignalTime, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Most recent runtime signal time from Firestore.' : 'No runtime signal record has been written yet.', 'icon' => 'fa-solid fa-calendar-check', 'tone' => 'sky'],
+            ['label' => 'Last processed bar time', 'value' => $lastProcessedBarTime, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Latest closed execution bar time recorded by the server-side runtime.' : 'This will appear after the runtime processes its first closed bar.', 'icon' => 'fa-solid fa-clock-rotate-left', 'tone' => 'amber'],
+            ['label' => 'Runtime feed', 'value' => $runtimeAvailabilityValue, 'context' => $primeStocksRuntimeDetails, 'icon' => 'fa-solid fa-database', 'tone' => $primeStocksRuntimeStatus === 'ok' ? 'emerald' : 'amber'],
         ];
         $controlZoneItems = [
             ['label' => 'Control zone', 'value' => 'Control / monitoring zone', 'context' => 'This Laravel page is the control / monitoring zone for the automation product.', 'icon' => 'fa-solid fa-sliders', 'tone' => 'blue'],
             ['label' => 'Serverless Bot', 'value' => 'Cloud Run runs the Serverless Bot server-side', 'context' => 'The browser does not own runtime continuity.', 'icon' => 'fa-solid fa-cloud', 'tone' => 'sky'],
-            ['label' => 'AI control state', 'value' => $automationEnabled ? 'Enabled' : 'Disabled', 'context' => $automationEnabled ? 'Automation is currently enabled for this workspace.' : 'Automation is currently disabled for this workspace.', 'icon' => 'fa-solid fa-toggle-on', 'tone' => $automationEnabled ? 'emerald' : 'rose'],
-            ['label' => 'Saved risk posture', 'value' => ucfirst((string) ($automationSetting?->risk_level ?? (($brokerReady && $strategyReady) ? 'balanced' : 'conservative'))), 'context' => 'This remains the saved operating posture for the current automation configuration.', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'amber'],
+            ['label' => 'Latest execution decision', 'value' => $latestExecutionDecision, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Latest execution decision from the Firestore-backed runtime execution path.' : $primeStocksRuntimeDetails, 'icon' => 'fa-solid fa-toggle-on', 'tone' => $primeStocksRuntimeStatus === 'ok' ? 'emerald' : 'amber'],
+            ['label' => 'Last action / order result', 'value' => $lastActionOrderResult['value'], 'context' => $lastActionOrderResult['context'], 'icon' => 'fa-solid fa-shield-halved', 'tone' => $lastActionOrderResult['tone']],
         ];
         $supportItems = [
             ['label' => 'Plan access', 'value' => $accessState === 'active_plan_access' ? 'Active plan access' : 'No active plan', 'context' => $localFullAccessOverride ? 'Local full-access test state stands in for active plan access until Stripe subscription wiring is completed.' : ($subscriptionActive ? ($basePlanCode !== '' ? 'Current base plan code: '.$basePlanCode : 'Current subscription is active.') : 'Subscriptions will be built with Stripe later.'), 'icon' => 'fa-solid fa-wallet', 'tone' => $accessState === 'active_plan_access' ? 'emerald' : 'amber'],
             ['label' => 'Broker readiness', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.'), 'icon' => 'fa-solid fa-plug-circle-bolt', 'tone' => $brokerReady ? 'emerald' : 'amber'],
-            ['label' => 'Strategy readiness', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.', 'icon' => 'fa-solid fa-compass-drafting', 'tone' => $strategyReady ? 'emerald' : 'amber'],
-            ['label' => 'Subscription build stage', 'value' => 'Stripe later stage', 'context' => 'Billing and subscriptions will be built with Stripe later; this page currently uses a local active-plan test state where needed.', 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
+            ['label' => 'Trigger type / source', 'value' => $triggerType.' / '.$triggerSource, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Latest runtime trigger metadata from Firestore.' : 'Trigger metadata will appear after runtime records exist.', 'icon' => 'fa-solid fa-compass-drafting', 'tone' => $primeStocksRuntimeStatus === 'ok' ? 'emerald' : 'amber'],
+            ['label' => 'Runtime fallback', 'value' => $runtimeAvailabilityValue, 'context' => $primeStocksRuntimeStatus === 'ok' ? 'Live read-only runtime values are shown where Firestore records exist.' : 'Automation falls back gracefully when Firestore runtime records are missing or unreadable.', 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
         ];
         $productNotes = [
             ['label' => 'Product naming', 'value' => $accessState === 'active_plan_access' ? 'Prime Stocks Bot Trader' : 'No active product', 'context' => 'Prime Stocks Bot Trader is the active-plan product name for local testing on this page.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
             ['label' => 'Runtime ownership', 'value' => 'Cloud Run server-side', 'context' => 'The product runs as a Serverless Bot on Cloud Run, separate from the Laravel app shell.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
             ['label' => 'Browser role', 'value' => 'Control / monitoring only', 'context' => 'Users do not need to keep this page open for trading to continue.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
+            ['label' => 'Runtime records', 'value' => $runtimeAvailabilityValue, 'context' => $primeStocksRuntimeDetails, 'icon' => 'fa-solid fa-database', 'tone' => $primeStocksRuntimeStatus === 'ok' ? 'emerald' : 'amber'],
         ];
         if ($localFullAccessOverride) {
             $productNotes[] = [
@@ -152,7 +209,10 @@ class AutomationPageData
                 'title' => 'Automation',
                 'intro' => 'Review actual automation product access for this workspace, then manage the active control / monitoring zone from the same page.',
                 'subtitle' => $account
-                    ? 'Automation now renders around an honest active-plan test state for Prime Stocks Bot Trader or a clean no-active-product fallback.'
+                    ? ('Automation now renders around an honest active-plan test state for Prime Stocks Bot Trader or a clean no-active-product fallback.'
+                        .($primeStocksRuntimeStatus === 'ok'
+                            ? ' Firestore-backed Prime Stocks runtime values now appear here in read-only form where records exist.'
+                            : ' Firestore-backed runtime values will appear here once the server-side runtime writes its first records.'))
                     : 'No workspace is available yet, so automation will stay focused on setup until account details are ready.',
                 'sections' => [
                     ['heading' => 'Current automation access', 'description' => 'Show whether this workspace currently has active plan access or no active product.'],
@@ -219,6 +279,84 @@ class AutomationPageData
             'customer.local@gusgraph.test',
             'admin.local@gusgraph.test',
         ], true);
+    }
+
+    protected static function runtimeValue(mixed ...$values): string
+    {
+        $fallback = 'Unknown';
+
+        if ($values !== []) {
+            $fallback = (string) array_pop($values);
+        }
+
+        foreach ($values as $value) {
+            if (is_string($value) && trim($value) !== '') {
+                return trim($value);
+            }
+
+            if (is_numeric($value)) {
+                return (string) $value;
+            }
+
+            if (is_bool($value)) {
+                return $value ? 'Yes' : 'No';
+            }
+        }
+
+        return $fallback;
+    }
+
+    protected static function formatRuntimeTimestamp(?string $value): string
+    {
+        if (! is_string($value) || trim($value) === '') {
+            return 'No runtime record yet';
+        }
+
+        $timestamp = strtotime($value);
+
+        if ($timestamp === false) {
+            return $value;
+        }
+
+        return gmdate('Y-m-d H:i', $timestamp).' UTC';
+    }
+
+    protected static function buildLastActionOrderResult(array $executionDocument, array $actionDocument, string $runtimeStatus): array
+    {
+        $orderStatus = self::runtimeValue(
+            $executionDocument['order_status'] ?? null,
+            $actionDocument['execution']['order_status'] ?? null,
+            'No runtime record yet',
+        );
+        $skippedReason = self::runtimeValue(
+            $executionDocument['skipped_reason'] ?? null,
+            $actionDocument['execution']['skipped_reason'] ?? null,
+            ''
+        );
+        $orderId = self::runtimeValue(
+            $executionDocument['order_id'] ?? null,
+            $actionDocument['execution']['order_id'] ?? null,
+            ''
+        );
+
+        if ($runtimeStatus !== 'ok') {
+            return [
+                'value' => 'No runtime record yet',
+                'context' => 'No execution or action document has been read from Firestore yet.',
+                'tone' => 'amber',
+            ];
+        }
+
+        $context = collect([
+            $skippedReason !== '' ? 'Reason: '.$skippedReason : null,
+            $orderId !== '' ? 'Order ID: '.$orderId : null,
+        ])->filter()->implode(' · ');
+
+        return [
+            'value' => $orderStatus,
+            'context' => $context !== '' ? $context : 'Latest execution result from the Firestore-backed Prime Stocks runtime.',
+            'tone' => in_array(strtolower($orderStatus), ['accepted', 'submitted', 'filled', 'new', 'partially_filled'], true) ? 'emerald' : 'amber',
+        ];
     }
 
 }
