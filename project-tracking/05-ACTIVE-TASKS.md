@@ -1,6 +1,9 @@
 # Active tasks
 
 ## Done
+- Clean the Automation page wording/state model so Prime Stocks reads as the active plan product for local testing instead of a demo product
+- Remove mixed Demo Access vs subscribed wording from the active Prime Stocks Automation surface
+- Present Prime Stocks as `Prime Stocks Bot Trader` with active plan access in a local full-access test state until Stripe subscription wiring is completed
 - Clean the existing Automation page and convert it from placeholder-driven UI into product/subscription-driven UI inside the existing Automation system
 - Remove or reduce placeholder-heavy Automation sections that do not map to real product or subscription access state
 - Center Automation on real access outcomes:
@@ -34,21 +37,21 @@
 - Soften customer rows, module cards, and nav support bands without changing route structure or business logic
 
 ## Current
-- Desk-check the product/subscription-driven Automation page in both dark and light mode
+- Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - Keep the current customer shell, compact top-right menu, sidebar nav, and theme toggle behavior intact
 - Do not wire live Python runtime, browser polling, or browser-run bot logic in this phase
 - Avoid unrelated repo cleanup and do not touch guest or admin areas
 
 ## Next
-- Wire the Automation product-access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data after the visual surface is approved
-- Review whether the cleaned Automation page needs only targeted polish after live desk-check
+- Wire the active-plan Prime Stocks Automation state and runtime fields to real entitlement/subscription/runtime data after the visual surface is approved
+- Review whether the cleaned active-plan Automation page needs only targeted polish after live desk-check
 - Keep unrelated dirty files and backup artifacts out of any later staging or commit
 
 
 ## Active Follow-up - 2026-04-04
 
 Current next tasks:
-1. desk-check the product/subscription-driven Automation page in dark and light
+1. desk-check the active-plan Prime Stocks Automation page in dark and light
 2. collect visual review feedback only
 3. wire real Cloud Run-backed entitlement/subscription/runtime data later inside Automation after approval
 4. keep unrelated dirty files and `.bak` artifacts out of staging

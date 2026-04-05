@@ -205,3 +205,20 @@ Files worked during session included:
   - `php -l app/Support/ViewData/AutomationPageData.php`
   - `php artisan view:clear`
   - `php artisan view:cache`
+
+## 2026-04-04 - Prime Stocks active-plan wording cleanup
+
+- Removed `Demo Access product` wording from the active Prime Stocks Automation surface
+- Simplified the Prime Stocks active page state model so it now reads as:
+  - `Active plan access`
+  - `No active product`
+- Kept `Prime Stocks Bot Trader` as the only active product name on the local testing path
+- Reworded the local full-access path to state that:
+  - local full-access testing is active
+  - Stripe subscription wiring is still a later stage
+  - the page does not falsely claim live Stripe activation
+- Reworded signal/support fields to remove demo labels and use local test wording instead
+- Preserved explicit runtime wording:
+  - `Cloud Run runs the bot server-side`
+  - `control / monitoring only`
+  - `trading does not require the page to stay open`

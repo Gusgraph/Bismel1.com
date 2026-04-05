@@ -67,32 +67,28 @@ class AutomationPageData
         $basePlanCode = (string) data_get($entitlements, 'base_plan.code', '');
         $entitlementSummary = (string) data_get($runtimeState, 'entitlement_summary', data_get($entitlements, 'blocked_summary', 'Plan required'));
         $localFullAccessOverride = self::hasLocalFullAccessOverride($currentUser?->email);
-        $demoAccessProduct = self::isDemoAccessProduct($entitlements);
-        $accessState = self::accessState($subscriptionActive, $automationEntitled, $localFullAccessOverride, $demoAccessProduct);
-        $productLabel = $accessState === 'active_subscribed_product' ? 'Prime Stocks Bot Trader' : ($accessState === 'demo_access_product' ? 'Demo Access product' : 'No active product');
+        $accessState = self::accessState($subscriptionActive, $automationEntitled, $localFullAccessOverride);
+        $productLabel = $accessState === 'active_plan_access' ? 'Prime Stocks Bot Trader' : 'No active product';
         $productStatus = match ($accessState) {
-            'active_subscribed_product' => 'Active subscribed product',
-            'demo_access_product' => 'Demo Access product',
+            'active_plan_access' => 'Active plan access',
             default => 'No active product',
         };
         $accessAction = match ($accessState) {
-            'active_subscribed_product' => 'Manage in this control / monitoring zone',
-            'demo_access_product' => 'Demo access active now; subscribed/live rollout comes later',
+            'active_plan_access' => 'Manage in this control / monitoring zone',
             default => 'Upgrade / subscribe later when Stripe-backed subscriptions are introduced',
         };
         $accessActionContext = match ($accessState) {
-            'active_subscribed_product' => $localFullAccessOverride
-                ? 'customer.local@gusgraph.test and admin.local@gusgraph.test currently render as full-access local product users until Stripe subscriptions are wired later.'
-                : 'The current paid access posture allows this product inside Automation.',
-            'demo_access_product' => 'This workspace can review the product shape now without live subscribed runtime access yet.',
+            'active_plan_access' => $localFullAccessOverride
+                ? 'Local full-access test state is active for customer.local@gusgraph.test and admin.local@gusgraph.test until Stripe subscription wiring is completed.'
+                : 'The current paid plan posture allows this product inside Automation.',
             default => 'No active automation product is attached to this workspace yet.',
         };
         $latestSignal = $signals->first();
         $lastSignalValue = $latestSignal
             ? strtoupper((string) ($latestSignal->signal_type ?? $latestSignal->direction ?? 'signal'))
-            : ($accessState === 'active_subscribed_product' ? 'FirstLot demo' : 'No live signal yet');
+            : ($accessState === 'active_plan_access' ? 'FirstLot local test state' : 'No signal yet');
         $lastSignalTime = $latestSignal?->generated_at?->format('Y-m-d H:i').' UTC'
-            ?? ($accessState === 'no_active_product' ? 'No signal yet' : '2026-04-04 15:19 UTC demo');
+            ?? ($accessState === 'no_active_product' ? 'No signal yet' : '2026-04-04 15:19 UTC local test');
         $runtimeHeadline = self::accessHeadline($accessState, $productLabel);
         $runtimeDetails = self::accessDetails($accessState, $localFullAccessOverride);
         $recentActivityItems = $activityLogs
@@ -105,9 +101,9 @@ class AutomationPageData
             ->values()
             ->all();
         $accessItems = [
-            ['label' => 'Current automation access', 'value' => $productStatus, 'context' => $accessActionContext, 'icon' => 'fa-solid fa-wallet', 'tone' => $accessState === 'active_subscribed_product' ? 'emerald' : ($accessState === 'demo_access_product' ? 'amber' : 'rose')],
+            ['label' => 'Current automation access', 'value' => $productStatus, 'context' => $accessActionContext, 'icon' => 'fa-solid fa-wallet', 'tone' => $accessState === 'active_plan_access' ? 'emerald' : 'rose'],
             ['label' => 'Product name', 'value' => $productLabel, 'context' => 'Prime Stocks is the current automation product family inside this page.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
-            ['label' => 'Product state / status', 'value' => $productStatus, 'context' => $subscriptionActive ? 'Base plan: '.$basePlanLabel : 'No Stripe-confirmed subscription is active yet.', 'icon' => 'fa-solid fa-signal', 'tone' => $accessState === 'active_subscribed_product' ? 'emerald' : ($accessState === 'demo_access_product' ? 'amber' : 'rose')],
+            ['label' => 'Product state / status', 'value' => $productStatus, 'context' => $localFullAccessOverride ? 'Local active-plan test state is enabled until Stripe subscription wiring is completed.' : ($subscriptionActive ? 'Base plan: '.$basePlanLabel : 'No Stripe-confirmed subscription is active yet.'), 'icon' => 'fa-solid fa-signal', 'tone' => $accessState === 'active_plan_access' ? 'emerald' : 'rose'],
             ['label' => 'Upgrade / subscribe / manage state', 'value' => $accessAction, 'context' => $accessActionContext, 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
         ];
         $productItems = [
@@ -119,8 +115,8 @@ class AutomationPageData
             ['label' => 'Browser stay-open requirement', 'value' => 'Not required', 'context' => 'Trading does not require the page to stay open.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
         ];
         $signalItems = [
-            ['label' => 'Last action candidate or demo signal state', 'value' => $lastSignalValue, 'context' => $accessState === 'no_active_product' ? 'A signal will appear here after the product becomes active.' : 'Demo/static signal state is shown until live runtime wiring is ready.', 'icon' => 'fa-solid fa-bolt', 'tone' => 'violet'],
-            ['label' => 'Last signal time', 'value' => $lastSignalTime, 'context' => $latestSignal ? 'Most recent stored signal time from the workspace.' : 'Static placeholder time is used when live signal data is not ready.', 'icon' => 'fa-solid fa-calendar-check', 'tone' => 'sky'],
+            ['label' => 'Last action candidate or signal state', 'value' => $lastSignalValue, 'context' => $accessState === 'no_active_product' ? 'A signal will appear here after the product becomes active.' : 'Local static signal state is shown until live runtime wiring is ready.', 'icon' => 'fa-solid fa-bolt', 'tone' => 'violet'],
+            ['label' => 'Last signal time', 'value' => $lastSignalTime, 'context' => $latestSignal ? 'Most recent stored signal time from the workspace.' : 'Static local test time is used until live signal data is ready.', 'icon' => 'fa-solid fa-calendar-check', 'tone' => 'sky'],
             ['label' => 'Runtime summary', 'value' => $runtimeState['last_runtime_summary'] ?? $runtimeHeadline, 'context' => $runtimeState['last_runtime_status'] ?? 'No runtime status recorded yet', 'icon' => 'fa-solid fa-wave-square', 'tone' => 'sky'],
             ['label' => 'Recent activity', 'value' => $recentActivityItems[0]['value'] ?? 'No recent activity', 'context' => $recentActivityItems[0]['context'] ?? 'Recent automation activity will appear here when available.', 'icon' => 'fa-solid fa-list-check', 'tone' => 'amber'],
         ];
@@ -131,13 +127,13 @@ class AutomationPageData
             ['label' => 'Saved risk posture', 'value' => ucfirst((string) ($automationSetting?->risk_level ?? (($brokerReady && $strategyReady) ? 'balanced' : 'conservative'))), 'context' => 'This remains the saved operating posture for the current automation configuration.', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'amber'],
         ];
         $supportItems = [
-            ['label' => 'Plan access', 'value' => $subscriptionActive ? $basePlanLabel : 'No active plan', 'context' => $subscriptionActive ? ($basePlanCode !== '' ? 'Current base plan code: '.$basePlanCode : 'Current subscription is active.') : 'Subscriptions will be built with Stripe later.', 'icon' => 'fa-solid fa-wallet', 'tone' => 'emerald'],
+            ['label' => 'Plan access', 'value' => $accessState === 'active_plan_access' ? 'Active plan access' : 'No active plan', 'context' => $localFullAccessOverride ? 'Local full-access test state stands in for active plan access until Stripe subscription wiring is completed.' : ($subscriptionActive ? ($basePlanCode !== '' ? 'Current base plan code: '.$basePlanCode : 'Current subscription is active.') : 'Subscriptions will be built with Stripe later.'), 'icon' => 'fa-solid fa-wallet', 'tone' => $accessState === 'active_plan_access' ? 'emerald' : 'amber'],
             ['label' => 'Broker readiness', 'value' => $brokerReady ? 'Ready' : 'Action needed', 'context' => $brokerReady ? 'The broker connection and market-data path are ready.' : (string) ($brokerGuard['summary'] ?? 'Check the broker connection and recent sync status.'), 'icon' => 'fa-solid fa-plug-circle-bolt', 'tone' => $brokerReady ? 'emerald' : 'amber'],
             ['label' => 'Strategy readiness', 'value' => $strategyReady ? 'Ready' : 'Action needed', 'context' => $strategyReady ? 'A strategy is connected to automation.' : 'Create or activate a strategy before starting automation.', 'icon' => 'fa-solid fa-compass-drafting', 'tone' => $strategyReady ? 'emerald' : 'amber'],
-            ['label' => 'Subscription build stage', 'value' => 'Stripe later stage', 'context' => 'Billing and subscriptions will be built with Stripe later; this page uses current entitlement/demo state now.', 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
+            ['label' => 'Subscription build stage', 'value' => 'Stripe later stage', 'context' => 'Billing and subscriptions will be built with Stripe later; this page currently uses a local active-plan test state where needed.', 'icon' => 'fa-solid fa-credit-card', 'tone' => 'blue'],
         ];
         $productNotes = [
-            ['label' => 'Product naming', 'value' => $accessState === 'active_subscribed_product' ? 'Prime Stocks Bot Trader' : 'Demo Access product', 'context' => 'The page is structured so later subscribed/live naming becomes Prime Stocks Bot Trader without a layout rewrite.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
+            ['label' => 'Product naming', 'value' => $accessState === 'active_plan_access' ? 'Prime Stocks Bot Trader' : 'No active product', 'context' => 'Prime Stocks Bot Trader is the active-plan product name for local testing on this page.', 'icon' => 'fa-solid fa-tag', 'tone' => 'amber'],
             ['label' => 'Runtime ownership', 'value' => 'Cloud Run server-side', 'context' => 'The product runs as a Serverless Bot on Cloud Run, separate from the Laravel app shell.', 'icon' => 'fa-solid fa-server', 'tone' => 'sky'],
             ['label' => 'Browser role', 'value' => 'Control / monitoring only', 'context' => 'Users do not need to keep this page open for trading to continue.', 'icon' => 'fa-solid fa-window-maximize', 'tone' => 'emerald'],
         ];
@@ -156,11 +152,11 @@ class AutomationPageData
                 'title' => 'Automation',
                 'intro' => 'Review actual automation product access for this workspace, then manage the active control / monitoring zone from the same page.',
                 'subtitle' => $account
-                    ? 'Automation now renders around real access state: no active product, Demo Access product, or active subscribed product.'
+                    ? 'Automation now renders around an honest active-plan test state for Prime Stocks Bot Trader or a clean no-active-product fallback.'
                     : 'No workspace is available yet, so automation will stay focused on setup until account details are ready.',
                 'sections' => [
-                    ['heading' => 'Current automation access', 'description' => 'Show whether this workspace currently has no active product, Demo Access product, or active subscribed product access.'],
-                    ['heading' => 'Prime Stocks product state', 'description' => 'Render Prime Stocks as Demo Access product now or Prime Stocks Bot Trader when subscribed/live access is active.'],
+                    ['heading' => 'Current automation access', 'description' => 'Show whether this workspace currently has active plan access or no active product.'],
+                    ['heading' => 'Prime Stocks product state', 'description' => 'Render Prime Stocks Bot Trader as the active local plan product surface inside Automation.'],
                     ['heading' => 'Control / monitoring zone', 'description' => 'Keep configuration and runtime oversight in this Laravel page while Cloud Run stays the Serverless Bot runtime target.'],
                 ],
             ],
@@ -182,7 +178,7 @@ class AutomationPageData
             'supportItems' => $supportItems,
             'productNotes' => $productNotes,
             'relatedLinks' => [
-                ['route' => 'customer.billing.index', 'label' => 'Plans & Billing', 'description' => $accessState === 'no_active_product' ? 'Review billing posture before subscribed automation access is introduced later.' : 'Review the billing surface that will own subscription management later.'],
+                ['route' => 'customer.billing.index', 'label' => 'Plans & Billing', 'description' => $accessState === 'no_active_product' ? 'Review billing posture before active plan access is introduced later.' : 'Review the billing surface that will own Stripe-backed subscription management later.'],
                 ['route' => 'customer.broker.index', 'label' => 'Broker', 'description' => 'Confirm broker connectivity and masked credential posture for the current product state.'],
                 ['route' => 'customer.strategy.index', 'label' => 'Strategy', 'description' => 'Review strategy mapping before deeper runtime wiring is added.'],
             ],
@@ -190,14 +186,10 @@ class AutomationPageData
         ];
     }
 
-    protected static function accessState(bool $subscriptionActive, bool $automationEntitled, bool $localFullAccessOverride, bool $demoAccessProduct): string
+    protected static function accessState(bool $subscriptionActive, bool $automationEntitled, bool $localFullAccessOverride): string
     {
         if ($localFullAccessOverride || ($subscriptionActive && $automationEntitled)) {
-            return 'active_subscribed_product';
-        }
-
-        if ($demoAccessProduct) {
-            return 'demo_access_product';
+            return 'active_plan_access';
         }
 
         return 'no_active_product';
@@ -206,8 +198,7 @@ class AutomationPageData
     protected static function accessHeadline(string $accessState, string $productLabel): string
     {
         return match ($accessState) {
-            'active_subscribed_product' => $productLabel.' access active',
-            'demo_access_product' => 'Demo Access product visible in Automation',
+            'active_plan_access' => $productLabel.' active for local plan testing',
             default => 'No active automation product',
         };
     }
@@ -215,10 +206,9 @@ class AutomationPageData
     protected static function accessDetails(string $accessState, bool $localFullAccessOverride): string
     {
         return match ($accessState) {
-            'active_subscribed_product' => $localFullAccessOverride
-                ? 'Local full-access users currently see Prime Stocks Bot Trader as active here while Stripe-backed subscriptions are still a later-stage build. Cloud Run remains the Serverless Bot runtime, and trading does not require this page to stay open.'
-                : 'This workspace currently renders an active subscribed automation product here. Cloud Run remains the Serverless Bot runtime, and trading does not require this page to stay open.',
-            'demo_access_product' => 'This workspace currently renders Prime Stocks as a Demo Access product inside Automation. Cloud Run remains the Serverless Bot runtime target, and this page stays a control / monitoring zone only.',
+            'active_plan_access' => $localFullAccessOverride
+                ? 'Prime Stocks Bot Trader is active here in a local full-access test state while Stripe subscription wiring is still a later-stage build. Cloud Run runs the bot server-side, and trading does not require this page to stay open.'
+                : 'Prime Stocks Bot Trader is active here for the current paid plan posture. Cloud Run runs the bot server-side, and trading does not require this page to stay open.',
             default => 'No active automation product is attached to this workspace yet. This page still acts as the control / monitoring zone, and Cloud Run remains the intended Serverless Bot runtime once subscribed access is available.',
         };
     }
@@ -231,10 +221,4 @@ class AutomationPageData
         ], true);
     }
 
-    protected static function isDemoAccessProduct(array $entitlements): bool
-    {
-        return (bool) data_get($entitlements, 'capabilities.can_use_speed_execute', false)
-            || str_contains(strtolower((string) data_get($entitlements, 'blocked_summary', '')), 'demo plan')
-            || str_contains(strtolower((string) data_get($entitlements, 'mismatch_summary', '')), 'demo access');
-    }
 }

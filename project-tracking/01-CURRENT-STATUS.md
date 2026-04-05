@@ -4,9 +4,13 @@
 - Final authenticated customer finishing pass is active across the shared customer shell, page-intro treatment, dashboard bands, and billing-adjacent module surfaces
 - Customer shell theme switching remains repaired while spacing, intro hierarchy, icon consistency, and border/glow weight are being unified across the customer area
 - Automation now renders as a product/subscription-driven surface centered on real access states instead of generic placeholder-heavy sections
+- Automation wording is being tightened so Prime Stocks reads as one coherent active-plan local testing product surface without demo/subscribed contradictions
 - Repo contains unrelated dirty files and backup artifacts that must remain untouched during this task
 
 ## Recent fixes
+- Removed Demo Access wording from the active Prime Stocks Automation surface so the page now reads as local active-plan testing for `Prime Stocks Bot Trader`
+- Simplified the Automation state model from three mixed product states down to an honest active-plan local testing state plus a no-active-product fallback
+- Kept the wording honest by explicitly saying Stripe subscription wiring is still a later stage while local full-access testing remains active for `customer.local@gusgraph.test` and `admin.local@gusgraph.test`
 - Converted the existing Automation page away from generic placeholder overview/readiness cards and toward actual product/subscription access rendering
 - Centered Automation on three visible access states:
   - no active product
@@ -46,7 +50,7 @@
 - Guest/public pages and admin pages remain untouched; only authenticated customer shell visuals, shared icons, and related hero/header surfaces are adjusted where needed
 
 ## Next
-- Desk-check the product/subscription-driven Automation page in both dark and light mode
+- Desk-check the active-plan Prime Stocks Automation page in both dark and light mode
 - After visual approval, wire the Automation product access state and Prime Stocks runtime fields to real entitlement/subscription/runtime data without moving runtime ownership into the browser
 - Leave any non-critical page-specific polish outside the approved customer surface family for a later targeted pass only if it survives visual review
 - Leave unrelated dirty files and backup artifacts out of any later staging or commit
@@ -129,3 +133,22 @@ Current state:
 - the Automation page is now product-first instead of placeholder-first
 - the main visible fields now describe access, product state, Prime Stocks defaults, runtime target, browser requirement, and upgrade/manage posture
 - live Python runtime wiring is still intentionally deferred; demo/static product values remain where backend data is not ready yet
+
+
+## Session Update - 2026-04-04 - Prime Stocks active-plan wording cleanup
+
+Completed in this session:
+- inspected the current Automation controller/view/data flow before making wording changes
+- removed Demo Access wording from the active Prime Stocks Automation surface
+- simplified the visible state model so the page reads as:
+  - active plan access for local testing
+  - no active product fallback when access is unavailable
+- kept Prime Stocks presented as `Prime Stocks Bot Trader`
+- kept the wording honest that Stripe subscription wiring is still a later stage
+- kept Cloud Run, control / monitoring only, and no stay-open requirement wording explicit
+- validated the updated Automation surface with PHP lint and Blade view cache rebuild
+
+Current state:
+- the active Prime Stocks Automation page now reads as one coherent local active-plan test surface
+- contradictory demo-vs-subscribed wording has been removed from the active visible product path
+- live runtime and Stripe subscription wiring are still deferred to a later implementation step

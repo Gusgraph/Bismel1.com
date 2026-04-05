@@ -49,7 +49,7 @@
                                 <h2 class="customer-section__title">Automation products available to this workspace</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">This page now renders around real product access state: no active product, Demo Access product, or active subscribed product.</p>
+                        <p class="customer-section__body">This page now reads as one honest active-plan local test surface for Prime Stocks Bot Trader, with a clean no-active-product fallback when access is unavailable.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
@@ -165,7 +165,7 @@
                                 <h2 class="customer-section__title">Subscription, readiness, and rollout posture</h2>
                             </div>
                         </div>
-                        <p class="customer-section__body">The supporting details below are reduced to what maps to real access and rollout state for this workspace.</p>
+                        <p class="customer-section__body">The supporting details below stay aligned with active plan testing, local full-access posture, and the later Stripe wiring stage.</p>
                     </header>
 
                     <div class="customer-page__detail-grid">
